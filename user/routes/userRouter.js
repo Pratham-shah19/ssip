@@ -8,9 +8,9 @@ const authenticationMiddleware = require('../middleware/authentication')
 
 router.route('/orders').get(authenticationMiddleware,getOrdersSpecific) //orders of specific status
 
-router.route('/dishes').get(authenticationMiddleware,getAllDishes) // all the dishes
+router.route('/dishes').get(getAllDishes) // all the dishes
 router.route('/dishes/filter').get(authenticationMiddleware,getFilteredDishes) // filter includes both search and sort
-router.route('/dishes/category').get(authenticationMiddleware,getDishesCategorized)//category wise dishes 
+router.route('/dishes/category').get(getDishesCategorized)//category wise dishes 
 router.route('/dishes/rating').post(authenticationMiddleware,addRating)
 
 router.route('/:uid').get(getUserDetails).post(authenticationMiddleware,updateUserDetails)

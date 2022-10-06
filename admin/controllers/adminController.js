@@ -66,11 +66,21 @@ const getSpecificCustomers = async (req, res) => {
   const data = await User.find({ name: { $regex: name, $options: "i" } });
   res.status(StatusCodes.OK).json({ res: "success", data });
 };
+const getSpecificOrders = async(req,res)=>{
+  const { status } = req.query;
+  if (status === "NEW" || status === "COMPLETED") {
+    const orders = await Order.find({ status });
+    res.status(StatusCodes.OK).json({ res: "success", data: orders });
+  } else {
+    throw new BadRequestError("Invalid value of status");
+  }
+}
 
 module.exports = {
   validateOTP,
   updatePassword,
   getAdminDetails,
   getSpecificCustomers,
-  getCanteenDetails
+  getCanteenDetails,
+  getSpecificOrders
 };

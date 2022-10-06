@@ -1,5 +1,6 @@
 require('dotenv').config();
 require('express-async-errors');
+require('path')
 
 const express = require('express');
 const app = express();
@@ -8,7 +9,7 @@ const app = express();
 const connectDB = require('./db/connect')
 
 //middleware
-app.use(express.static(`${__dirname}/public`));
+// app.use(express.static(`${__dirname}/public`));
 
 
 // routers
@@ -17,6 +18,25 @@ const userRouter = require('./routes/userRouter')
 
 app.use(express.json());
 //routes canteen
+app.get('/file/:name', function (req, res, next) {
+  var options = {
+    root: path.join(__dirname, 'public'),
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true
+    }
+  }
+  console.log(options.root);
+  var fileName = req.params.name
+  res.sendFile(fileName, options, function (err) {
+    if (err) {
+      next(err)
+    } else {
+      console.log('Sent:', fileName)
+    }
+  })
+})
 app.use('/api/v1/user',userRouter)
 
 // error handler
