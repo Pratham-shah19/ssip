@@ -1,9 +1,6 @@
 require('dotenv').config();
 require('express-async-errors');
 
-// extra security packages
-const multer = require('multer')
-
 const express = require('express');
 const app = express();
 
@@ -19,17 +16,6 @@ const authenticationMiddleware = require('./middleware/authentication')
 const userRouter = require('./routes/userRouter')
 
 app.use(express.json());
-const multerStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "public");
-  },
-  filename: (req, file, cb) => {
-    const ext = file.mimetype.split("/")[1];
-    cb(null, `files/admin-${file.fieldname}-${Date.now()}.${ext}`);
-  },
-});
-const upload = multer({ storage: multerStorage })
-
 //routes canteen
 app.use('/api/v1/user',userRouter)
 
@@ -41,7 +27,7 @@ app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 
 const start = async () => {
   try {

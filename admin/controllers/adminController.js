@@ -50,12 +50,12 @@ const getAdminDetails = async (req, res) => {
 };
 
 const getCanteenDetails = async (req, res) => {
-  const { Canteen } = req.params;
-  const canteen = await Canteen.find({ name: canteen });
-  if (!canteen) {
+  const { canteen } = req.params;
+  const canteenobj = await Canteen.find({ name: canteen });
+  if (!canteenobj) {
     throw new BadRequestError("Invalid canteen name");
   }
-  res.status(StatusCodes.OK).json({ res: "success", data: canteen });
+  res.status(StatusCodes.OK).json({ res: "success", data: canteenobj });
 };
 
 const getSpecificCustomers = async (req, res) => {

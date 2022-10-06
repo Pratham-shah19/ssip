@@ -1,6 +1,5 @@
 require('dotenv').config();
 require('express-async-errors');
-const { StatusCodes } = require('http-status-codes')
 
 
 const express = require('express');
@@ -11,7 +10,6 @@ const connectDB = require('./db/connect')
 
 
 // routers
-const authenticationMiddleware = require('./middleware/authentication')
 const mainRouter = require('./routes/adminRouter')
 
 
