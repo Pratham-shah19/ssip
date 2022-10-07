@@ -126,7 +126,17 @@ const addToCart = async (req, res) => {
   const cartObject = await Basket.findOne({ userId: userId });
   if (cartObject) {
     cartObject.price += price;
-    cartObject.items.push({ dishId: itemId, qty: qty });
+    const arr = cartObject.items;
+    let items = [];
+    for (let i = 0; i < arr.length; i++) {
+      items[i] = arr[i];
+      if (arr[i].dishId === itemId) {
+        items[i].qty += qty;
+        break;
+      }
+    }
+    cartObject.items = items;
+    // cartObject.items.push({ dishId: itemId, qty: qty });
     var dish = await Basket.findOneAndUpdate({ userId }, cartObject, {
       new: true,
       runValidators: true,
@@ -153,18 +163,18 @@ const addToCart = async (req, res) => {
 const getCart = async (req, res) => {
   const userId = req.params.uid;
   const order = await Basket.findOne({ userId });
-
-  let j=0
-      let arr=[]
-      for(let i = 0; i < order.items.length; i++) {
-         const dishname = await Dish.findOne({_id: order.items[i].dishId})
-         arr[j]={qty:order.items[i].qty,items:dishname}
-        //  console.log(arr)
-         j++
-         
-         
-      }
-      const obj = {data:arr,price:order.price,userId}
+  if (!order) {
+    res.status(StatusCodes.OK).json({ res: "none", data: "no basket" });
+  }
+  let j = 0;
+  let arr = [];
+  for (let i = 0; i < order.items.length; i++) {
+    const dishname = await Dish.findOne({ _id: order.items[i].dishId });
+    arr[j] = { qty: order.items[i].qty, items: dishname };
+    //  console.log(arr)
+    j++;
+  }
+  const obj = { data: arr, price: order.price, userId };
   res.status(StatusCodes.OK).json({ res: "success", data: obj });
 };
 
@@ -204,10 +214,44 @@ const payCanteen = async (req, res) => {
     { new: true, runValidators: true }
   );
   const basket = await Basket.findOne({ userId: uid });
-  console.log(basket);
   if (!basket) {
     throw new BadRequestError("Invalid user id, could not find basket");
   }
+  console.log(basket);
+  var arr = [];
+  var items = basket.items;
+  items.forEach(async (e) => {
+    let obj = {};
+    const dish = await Dish.findOne({ _id: e.dishId,isAvailable:true });
+    if(!dish)
+    {
+      res.status(StatusCodes.OK).json({res:"fail",data:"dish is not actually available"})
+    }
+    if (dish.quantity >= e.qty) {
+      obj.dishId = e.dishId;
+      obj.qty = dish.quantity - e.qty;
+      if (obj.qty < 10) {
+        const dish = await Dish.findOneAndUpdate(
+          { _id: obj.dishId },
+          { quantity: obj.qty, isAvailable: false },
+          { runValidators: true, new: true }
+        );
+        console.log("less quantity", dish);
+      } else {
+        const dish = await Dish.findOneAndUpdate(
+          { _id: obj.dishId },
+          { quantity: Object.qty },
+          { runValidators: true, new: true }
+        );
+        console.log("enough quantity", dish);
+      }
+    } else {
+      res
+        .status(StatusCodes.OK)
+        .json({ res: "fail", data: "not enough quantity" });
+    }
+  });
+ 
   //generating otp
   const otp = Math.floor(Math.random() * 10000);
   const orderObj = {};
@@ -240,7 +284,7 @@ const addRating = async (req, res) => {
   res.status(StatusCodes.OK).json({ res: "success", data: Updated });
 };
 
-const validatePaymentOtp = async(req,res)=>{
+const validatePaymentOtp = async (req, res) => {
   var { otp } = req.body;
   const { uid } = req.params;
   // const test = await Order.deleteMany({});
@@ -252,7 +296,7 @@ const validatePaymentOtp = async(req,res)=>{
   if (!uid) {
     throw new BadRequestError("Please Provide user id");
   }
-  const order = await Order.findOne({ userId:uid,status:"NEW" });
+  const order = await Order.findOne({ userId: uid, status: "NEW" });
   if (!order) {
     throw new BadRequestError("Please Provide Valid user id");
   }
@@ -260,7 +304,7 @@ const validatePaymentOtp = async(req,res)=>{
     throw new BadRequestError("wrong otp");
   }
   res.status(StatusCodes.OK).json({ res: "success", data: order });
-}
+};
 
 module.exports = {
   getUserDetails,
@@ -277,5 +321,5 @@ module.exports = {
   updateUserDetails,
   updatePassword,
   validateOTP,
-  validatePaymentOtp
+  validatePaymentOtp,
 };

@@ -1,7 +1,4 @@
 const mongoose = require('mongoose')
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const User=require('./User')
 require('dotenv').config()
 
 const DishSchema = new mongoose.Schema({
@@ -13,6 +10,10 @@ const DishSchema = new mongoose.Schema({
     type:String,
     required:[true,'Please provide image']
   },
+  rating:{
+    type:mongoose.Decimal128,
+    default:1
+  },
   category:{
     type:String,
     required:[true,'Please provide category'],
@@ -20,6 +21,14 @@ const DishSchema = new mongoose.Schema({
   price:{
     type:Number,
     required:[true,'Please provide price']
+  },
+  quantity:{
+    type:Number,
+    default:0
+  },
+  isAvailable:{
+    type:Boolean,
+    default:false
   }
 })
 

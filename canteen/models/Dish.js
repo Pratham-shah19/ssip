@@ -21,6 +21,14 @@ const DishSchema = new mongoose.Schema({
   price:{
     type:Number,
     required:[true,'Please provide price']
+  },
+  quantity:{
+    type:Number,
+    default:0
+  },
+  isAvailable:{
+    type:Boolean,
+    default:false
   }
 })
 
