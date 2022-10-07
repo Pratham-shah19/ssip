@@ -23,7 +23,7 @@ const validateOTP = async (req, res) => {
   if (otp !== admin.otp) {
     throw new BadRequestError("Please Provide Valid OTP");
   }
-  res.status(StatusCodes.OK).json({ res: "Success", data: admin });
+  res.status(StatusCodes.OK).json({ res: "success", data: admin });
 };
 
 const updatePassword = async (req, res) => {
