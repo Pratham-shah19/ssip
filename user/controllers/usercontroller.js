@@ -33,7 +33,7 @@ const validateOTP = async (req, res) => {
   if (otp !== user.otp) {
     throw new BadRequestError("Please Provide Valid OTP");
   }
-  res.status(StatusCodes.OK).json({ res: "Success", data: user });
+  res.status(StatusCodes.OK).json({ res: "success", data: user });
 };
 const updatePassword = async (req, res) => {
   const { email } = req.params;
@@ -152,8 +152,20 @@ const addToCart = async (req, res) => {
 
 const getCart = async (req, res) => {
   const userId = req.params.uid;
-  const cartObject = await Basket.findOne({ userId });
-  res.status(StatusCodes.OK).json({ res: "success", data: cartObject });
+  const order = await Basket.findOne({ userId });
+
+  let j=0
+      let arr=[]
+      for(let i = 0; i < order.items.length; i++) {
+         const dishname = await Dish.findOne({_id: order.items[i].dishId})
+         arr[j]={qty:order.items[i].qty,items:dishname}
+        //  console.log(arr)
+         j++
+         
+         
+      }
+      const obj = {data:arr,price:order.price,userId}
+  res.status(StatusCodes.OK).json({ res: "success", data: obj });
 };
 
 const canPayWallet = async (req, res) => {
@@ -171,9 +183,8 @@ const payCanteen = async (req, res) => {
   const { uid } = req.params;
   const { price, canteenName } = req.body;
   const user = await User.findOne({ _id: uid });
-  if(!user)
-  {
-    throw new BadRequestError('Invalid userid')
+  if (!user) {
+    throw new BadRequestError("Invalid userid");
   }
   //deducting price from user's wallet
   const deduct = await User.findOneAndUpdate(
@@ -184,9 +195,8 @@ const payCanteen = async (req, res) => {
 
   //adding coins to canteen's wallet
   const canteen = await Canteen.findOne({ name: canteenName });
-  if(!canteen)
-  {
-    throw new BadRequestError('Invalid caneteen name')
+  if (!canteen) {
+    throw new BadRequestError("Invalid caneteen name");
   }
   const pay = await Canteen.findOneAndUpdate(
     { name: canteenName },
@@ -194,10 +204,9 @@ const payCanteen = async (req, res) => {
     { new: true, runValidators: true }
   );
   const basket = await Basket.findOne({ userId: uid });
-  console.log(basket)
-  if(!basket)
-  {
-    throw new BadRequestError('Invalid user id, could not find basket')
+  console.log(basket);
+  if (!basket) {
+    throw new BadRequestError("Invalid user id, could not find basket");
   }
   //generating otp
   const otp = Math.floor(Math.random() * 10000);
@@ -231,6 +240,28 @@ const addRating = async (req, res) => {
   res.status(StatusCodes.OK).json({ res: "success", data: Updated });
 };
 
+const validatePaymentOtp = async(req,res)=>{
+  var { otp } = req.body;
+  const { uid } = req.params;
+  // const test = await Order.deleteMany({});
+
+  otp = parseInt(otp);
+  if (!otp) {
+    throw new BadRequestError("Please Provide OTP");
+  }
+  if (!uid) {
+    throw new BadRequestError("Please Provide user id");
+  }
+  const order = await Order.findOne({ userId:uid,status:"NEW" });
+  if (!order) {
+    throw new BadRequestError("Please Provide Valid user id");
+  }
+  if (otp !== order.otp) {
+    throw new BadRequestError("wrong otp");
+  }
+  res.status(StatusCodes.OK).json({ res: "success", data: order });
+}
+
 module.exports = {
   getUserDetails,
   getBalance,
@@ -246,4 +277,5 @@ module.exports = {
   updateUserDetails,
   updatePassword,
   validateOTP,
+  validatePaymentOtp
 };

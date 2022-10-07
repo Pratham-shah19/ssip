@@ -1,8 +1,7 @@
 const express = require('express')
-const { getUserDetails ,getBalance,getOrdersSpecific,getAllDishes,getFilteredDishes,getDishesCategorized,addToCart,getCart,canPayWallet,payCanteen,addRating,updateUserDetails,updatePassword,validateOTP} = require('../controllers/usercontroller')
+const { validatePaymentOtp,getUserDetails ,getBalance,getOrdersSpecific,getAllDishes,getFilteredDishes,getDishesCategorized,addToCart,getCart,canPayWallet,payCanteen,addRating,updateUserDetails,updatePassword,validateOTP} = require('../controllers/usercontroller')
 const router = express.Router()
 const authenticationMiddleware = require('../middleware/authentication')
-const authenticationMiddleware = require('./middleware/authentication')
 
 
 
@@ -21,6 +20,6 @@ router.route('/:email/validateOtp').post(validateOTP)
 router.route('/:uid/cart').patch(authenticationMiddleware,addToCart).get(authenticationMiddleware,getCart)
 
 router.route('/:uid/payWallet').get(authenticationMiddleware,canPayWallet).post(authenticationMiddleware,payCanteen)
-
+router.route('/:uid/validatePaymentOtp').post(validatePaymentOtp)
 
 module.exports = router

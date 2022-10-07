@@ -7,7 +7,7 @@ const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
 const validateOTP = async (req, res) => {
-  const { otp } = req.body;
+  var { otp } = req.body;
   const { email } = req.params;
   otp = parseInt(otp);
   if (!otp) {
@@ -76,11 +76,50 @@ const getSpecificOrders = async(req,res)=>{
   }
 }
 
+const payCanteen = async(req,res)=>{
+  var {price} = req.body;
+  price = parseInt(price);
+  if(!price)
+  {
+    throw new BadRequestError('Enter price')
+  }
+  const canteen = await Canteen.findOne({name:'Sachivalaya'})
+  const bal = canteen.wallet - price;
+  const cashotp = Math.floor(Math.random() * 10000);
+  canteen.wallet = bal;
+  canteen.cashotp = cashotp;
+  const updated = await Canteen.findOneAndUpdate({name:'Sachivalaya'},canteen,{runValidators:true,new:true,setDefaultsOnInsert:true})
+  res.status(StatusCodes.OK).json({res:"success",data:updated});
+}
+
+const validateCashotp = async(req,res)=>{
+
+    var { otp,canteenName } = req.body;
+
+    otp = parseInt(otp);
+    if (!otp) {
+      throw new BadRequestError("Please Provide OTP");
+    }
+    if (!canteenName) {
+      throw new BadRequestError("Please Provide email");
+    }
+    const canteen = await Canteen.findOne({name:canteenName });
+    
+    if (!canteen) {
+      throw new BadRequestError("Please Provide Valid email");
+    }
+    if (otp !== canteen.cashotp) {
+      throw new BadRequestError("wrong otp");
+    }
+    res.status(StatusCodes.OK).json({ res: "success", data: canteen });
+}
 module.exports = {
   validateOTP,
   updatePassword,
   getAdminDetails,
   getSpecificCustomers,
   getCanteenDetails,
-  getSpecificOrders
+  getSpecificOrders,
+  payCanteen,
+  validateCashotp
 };

@@ -13,30 +13,10 @@ const connectDB = require('./db/connect')
 
 
 // routers
-const authenticationMiddleware = require('./middleware/authentication')
 const userRouter = require('./routes/userRouter')
 
 app.use(express.json());
-//routes canteen
-app.get('/file/:name', function (req, res, next) {
-  var options = {
-    root: path.join(__dirname, 'public'),
-    dotfiles: 'deny',
-    headers: {
-      'x-timestamp': Date.now(),
-      'x-sent': true
-    }
-  }
-  console.log(options.root);
-  var fileName = req.params.name
-  res.sendFile(fileName, options, function (err) {
-    if (err) {
-      next(err)
-    } else {
-      console.log('Sent:', fileName)
-    }
-  })
-})
+//routes
 app.use('/api/v1/user',userRouter)
 
 // error handler
