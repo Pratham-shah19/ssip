@@ -1,0 +1,9 @@
+.menu-card-list-container{
+    display: flex;
+    padding-left: 3px;
+    justify-content: left;
+    padding-right: 0px;
+    flex-wrap: wrap;
+    overflow: scroll;
+    gap: 11px;
+}

@@ -1,0 +1,10 @@
+.one-result{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 83vw;
+    padding-top: 5px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25),
+                0 6px 5px rgba(0,0,0,0.22);
+    border-radius: 30px;
+}

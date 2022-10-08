@@ -1,0 +1,18 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nunitovfbeta.css);
+*{
+    font-family: 'Nunito VF Beta', sans-serif;
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+    text-transform: capitalize;
+    outline: none; border: none;
+    text-decoration: none;
+    transition: all .2s linear;
+    font-weight: 100;
+}
+:root{
+    --theme: linear-gradient(to right, #ff4b28, #ff228c);
+}
+*::selection{
+    background: var(--theme);
+    color: #222;
+}

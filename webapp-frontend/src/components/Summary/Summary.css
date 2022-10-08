@@ -1,0 +1,60 @@
+.sum_cart_handler{
+    box-shadow: 0 14px 28px rgba(0,0,0,0.1),
+    0 10px 10px rgba(0,0,0,0.1);    
+    border-radius: .5rem;
+    height: 69%;
+    margin-right: 10px;
+    margin-left: 5px;
+    width: 500px;
+}
+
+.summary_title{
+    margin-left: 110px;
+}
+
+.summary_title_text{
+    font-size: 2rem;
+    font-weight: bolder;
+    padding-top: 30px;
+}
+.Sub_total{
+    padding-right: 19px;
+    float: right;
+}
+
+.Sub_total_text{
+    font-size: 1.5rem;
+}
+.Sub_total_text_GST{
+    
+    font-size: 1.5rem;
+}   
+.Sub_total_text_TOTAL{
+    font-size: 1.5rem;
+}
+.sum_label_cart{
+    display: flex;
+}
+.sum_item_lab_cart{
+    flex: 1;
+    margin-left: 40px;
+    font-size: larger;
+    font-weight: bold;
+}
+.sum_item_lab_qty{
+    flex: 0.5;
+    margin-left:50px;
+    font-weight: bold;
+    font-size: larger;
+}
+.sum_item_lab_price{
+    margin-right: 40px;
+    font-size: larger;
+    font-weight: bold;
+}
+
+.sum_cart_item_main_main{
+    max-height:55%;
+    overflow-y: scroll;
+    border: 1px solid black;
+}

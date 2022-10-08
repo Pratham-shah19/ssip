@@ -1,0 +1,4 @@
+http://127.0.0.1:5000/api/v1/admin/customer?name='${name}'
+
+http://127.0.0.1:5000/api/v1/admin/orders?.status='COMPLETED'
+
