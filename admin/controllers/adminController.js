@@ -113,6 +113,11 @@ const validateCashotp = async(req,res)=>{
     }
     res.status(StatusCodes.OK).json({ res: "success", data: canteen });
 }
+
+const getCustomersLength = async(req,res)=>{
+  const customers = await User.find({});
+  res.status(StatusCodes.OK).json({res:"success",data:customers.length})
+}
 module.exports = {
   validateOTP,
   updatePassword,
@@ -121,5 +126,6 @@ module.exports = {
   getCanteenDetails,
   getSpecificOrders,
   payCanteen,
-  validateCashotp
+  validateCashotp,
+  getCustomersLength
 };

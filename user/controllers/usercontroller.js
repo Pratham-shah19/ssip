@@ -14,6 +14,7 @@ const getUserDetails = async (req, res) => {
   if (!user) {
     throw new BadRequestError("Invalid user id");
   }
+  // const de = await Orders.deleteMany({});
   res.status(StatusCodes.OK).json({ res: "success", data: user });
 };
 const validateOTP = async (req, res) => {
@@ -230,7 +231,9 @@ const payCanteen = async (req, res) => {
     if (dish.quantity >= e.qty) {
       obj.dishId = e.dishId;
       obj.qty = dish.quantity - e.qty;
+      console.log(obj.qty);
       if (obj.qty < 10) {
+        console.log(obj);
         const dish = await Dish.findOneAndUpdate(
           { _id: obj.dishId },
           { quantity: obj.qty, isAvailable: false },
@@ -240,7 +243,7 @@ const payCanteen = async (req, res) => {
       } else {
         const dish = await Dish.findOneAndUpdate(
           { _id: obj.dishId },
-          { quantity: Object.qty },
+          { quantity: obj.qty },
           { runValidators: true, new: true }
         );
         console.log("enough quantity", dish);
@@ -303,7 +306,8 @@ const validatePaymentOtp = async (req, res) => {
   if (otp !== order.otp) {
     throw new BadRequestError("wrong otp");
   }
-  res.status(StatusCodes.OK).json({ res: "success", data: order });
+  const newOrder = await Order.findOneAndUpdate({userId:uid,status:"NEW"},{status:"COMPLETED"},{runValidators:true,new:true})
+  res.status(StatusCodes.OK).json({ res: "success", data:newOrder });
 };
 
 module.exports = {
