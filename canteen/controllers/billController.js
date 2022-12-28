@@ -30,7 +30,7 @@ const billController = async (req,res) => {
   setTimeout(() => {
     console.log(name)
     const data = {
-      orders:{order,qty,name}
+      orders:{order,qty,name,uname:user.name}
     }
     const filepathname = __dirname+'\\bill.ejs'
     const htmlstring = fs.readFileSync(filepathname).toString()
