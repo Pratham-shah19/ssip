@@ -7,6 +7,7 @@ const helmet = require('helmet')
 const cors = require('cors')
 const xss = require('xss-clean')
 const rateLimit = require('express-rate-limit')
+const multer = require('multer')
 const path=require('path')
 
 const express = require('express');
@@ -22,8 +23,10 @@ app.use(express.static(`${__dirname}/public`));
 // routers
 const authenticationMiddleware = require('./middleware/authentication')
 const CanteenRoute = require('./routes/CanteenRoute')
+const Dish = require('./models/Dish')
 const OTPValidateRoute = require('./routes/OTPValidateRoute')
 const PasswordChangeRoute = require('./routes/PasswordChangeRoute')
+const billRoute = require('./routes/billRoute')
 
 
 app.use(express.json());
@@ -32,9 +35,37 @@ app.use(rateLimit({
   windowMs:15*60*1000, // 15 minutes
   max: 100,
 }))
+app.use(helmet())
+app.use(cors())
+app.use(xss())
+// extra packages
+const multerStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public");
+  },
+  filename: (req, file, cb) => {
+    const ext = file.mimetype.split("/")[1];
+    cb(null, `admin-${file.fieldname}-${Date.now()}.${ext}`);
+  },
+});
+const upload = multer({ storage: multerStorage })
 
 //routes canteen
 app.use('/api/v1/canteen',authenticationMiddleware,CanteenRoute)
+
+app.use('/api/v1/bill',authenticationMiddleware,billRoute)
+
+//routes adddish
+app.use('/api/v1/adddish',upload.single('imageUri'),async (req,res)=>{
+  const obj = {
+    name:req.body.name,
+    category:req.body.category,
+    price:req.body.price,
+    imageUrl:req.file.filename
+  }
+  const dish = await Dish.create(obj)
+     res.status(StatusCodes.CREATED).json({res:'Success',data:dish})
+})
 
 //routes otpvalidation
 app.use('/api/v1/canteenotpvalidate',OTPValidateRoute)

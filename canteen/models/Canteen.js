@@ -30,6 +30,10 @@ const CanteenSchema = new mongoose.Schema({
   otp:{
     type:Number,
     default:0
+  },
+  cashotp:{
+    type:Number,
+    default:0
   }
 });
 
