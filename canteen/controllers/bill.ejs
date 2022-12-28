@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bill</title>
+  <style>
+    table,tr,th,td{
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    table{
+      text-align: center;
+    }
+  </style>
+</head>
+<body style="width: 100%;">
+  <p style="text-align: center;font-size: 50px;"><b>Sachivalaya Canteen</b></p>
+  <p style="text-align:center;font-size: 50px;"><b>Quantity: <%= orders.qty %></b></p>
+  <div style="justify-content: center;align-content: center;align-items: center;padding: 50px;">
+
+    <table style="width:100%;font-size: 30px;border:1px solid black;border-collapse: collapse;text-align: center;align-content: center;align-self:center;">
+      <tr>
+        <th style="width: 60%;">Dish Name</th>
+        <th>Quantity</th>
+        <th>Price</th>
+      </tr>
+      <% for(let i=0;i<orders.name.length;++i){ %>
+        <tr>
+          <td><%= orders.name[i].names %></td>
+          <td><%= orders.name[i].qty %></td>
+          <td><%= orders.name[i].price %></td>
+        </tr>
+        
+        <% }%>
+      </table>
+    </div>
+      <br><br>
+  <p style="font-size: 50px;"><b>Total Price: <%= orders.order.price %></b></p>
+</body>
+</html>
