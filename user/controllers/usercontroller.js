@@ -137,7 +137,6 @@ const addToCart = async (req, res) => {
       }
     }
     cartObject.items = items;
-    // cartObject.items.push({ dishId: itemId, qty: qty });
     var dish = await Basket.findOneAndUpdate({ userId }, cartObject, {
       new: true,
       runValidators: true,
@@ -169,15 +168,16 @@ const getCart = async (req, res) => {
   }
   let j = 0;
   let arr = [];
-  for (let i = 0; i < order.items.length; i++) {
-    const dishname = await Dish.findOne({ _id: order.items[i].dishId });
-    arr[j] = { qty: order.items[i].qty, items: dishname };
-    //  console.log(arr)
+  for (let i = 0; i < order?.items.length; i++) {
+    const dishname = await Dish.findOne({ _id: order?.items[i].dishId });
+    arr[j] = { qty: order?.items[i].qty, items: dishname };
     j++;
   }
   const obj = { data: arr, price: order.price, userId };
   res.status(StatusCodes.OK).json({ res: "success", data: obj });
 };
+
+
 
 const canPayWallet = async (req, res) => {
   const { uid } = req.params;
@@ -319,6 +319,7 @@ module.exports = {
   getDishesCategorized,
   addToCart,
   getCart,
+  removeItem,
   canPayWallet,
   payCanteen,
   addRating,
