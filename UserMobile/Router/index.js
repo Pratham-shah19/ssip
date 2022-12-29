@@ -11,77 +11,10 @@ import HomeScreen from '../screens/HomeScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useAuthContext} from '../src/Context/AuthContext';
 import BottomTabNav from './BottomTabNav';
-// import {useNavigation} from '@react-navigation/native';
-
 const Stack = createNativeStackNavigator();
 
 const index = () => {
-  // const [user, setUser] = useState(false);
   const {user} = useAuthContext();
-
-  //   const {setDbStudent, dbStudent} = useAuthContext();
-  // const navigation = useNavigation();
-  // const sub = user?.attributes.sub;
-
-  // const getData = async () => {
-  //   const value = await AsyncStorage.getItem('userDetail');
-  //   if (value == null) {
-  //     setUser(false);
-  //     console.log(JSON.stringify(value));
-  //   } else {
-  //     setUser(true);
-  //   }
-  // };
-  // useEffect(() => {
-  //   getData();
-  // }, []);
-  //   const checkUser = async () => {
-  //     try {
-  //       const authUser = await Auth.currentAuthenticatedUser({bypassCache: true});
-  //       setUser(authUser);
-  //     } catch (e) {
-  //       setUser(null);
-  //     }
-  //   };
-
-  //   useEffect(() => {
-  //     DataStore.query(Student, student => student.sub('eq', sub)).then(
-  //       students => {
-  //         setDbStudent(students[0]);
-  //       },
-  //     );
-  //   }, [sub]);
-
-  //   useEffect(() => {
-  //     checkUser();
-  //   }, []);
-
-  //   useEffect(() => {
-  //     const listener = data => {
-  //       if (data.payload.event === 'signIn' || data.payload.event === 'signOut') {
-  //         checkUser();
-  //         // saveDbUser();
-  //       }
-  //     };
-
-  //     Hub.listen('auth', listener);
-  //     return () => Hub.remove('auth', listener);
-  //   }, []);
-
-  //   if (user === undefined) {
-  //     return (
-  //       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-  //         <ActivityIndicator />
-  //       </View>
-  //     );
-  //   }
-  // if (dbStudent === undefined) {
-  //   return (
-  //     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-  //       <ActivityIndicator />
-  //     </View>
-  //   );
-  // }
 
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
@@ -96,7 +29,6 @@ const index = () => {
       ) : (
         <>
           <Stack.Screen name="SignIn" component={SignInScreen} />
-          {/* <Stack.Screen name="HomeScreen" component={HomeScreen} /> */}
           <Stack.Screen name="SignUp" component={SignUpScreen} />
           <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />
           <Stack.Screen

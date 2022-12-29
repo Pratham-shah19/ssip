@@ -14,6 +14,10 @@ import Payment from '../screens/Payment';
 import UpdateProfile from '../screens/UpdateProfile';
 import FavouriteScreen from '../screens/FavouriteScreen';
 import OtpScreen from '../screens/OtpScreen';
+import StarterScreen from '../screens/StarterScreen';
+import IceCreamScreen from '../screens/IceCreamScreen';
+import MainCourseScreen from '../screens/MainCourseScreen';
+import SearchScreen from '../screens/SearchScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -65,7 +69,6 @@ const BottomTabNav = () => {
           headerShown: false,
           tabBarLabelStyle: {marginTop: -6, marginBottom: 2},
           tabBarIcon: ({color}) => (
-            // <Octicons name="checklist" size={23} color={color} />
             <FontAwesome5 name="user-alt" size={23} color={color} />
           ),
         }}
@@ -108,6 +111,10 @@ const HomeStack = () => {
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen component={HomeScreen} name="HomeScreen" />
       <Stack.Screen component={DishDetailScreen} name="DishDetailScreen" />
+      <Stack.Screen component={StarterScreen} name="StarterScreen" />
+      <Stack.Screen component={IceCreamScreen} name="IceCreamScreen" />
+      <Stack.Screen component={MainCourseScreen} name="MainCourseScreen" />
+      <Stack.Screen component={SearchScreen} name="SearchScreen" />
     </Stack.Navigator>
   );
 };

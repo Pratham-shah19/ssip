@@ -14,6 +14,7 @@ import {useRoute, useNavigation} from '@react-navigation/native';
 // import BasketScreen from './BasketScreen';
 // import {Dish} from '../src/models';
 // import {DataStore} from 'aws-amplify';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useAuthContext} from '../src/Context/AuthContext';
 import axios from 'axios';
 // import {useBasketContext} from '../src/Contexts/BasketContext';
@@ -21,7 +22,7 @@ import axios from 'axios';
 // const dish = RestaurantNearbyMeData[0].dishes[0];
 const DishDetailScreen = () => {
   const [dish, setDish] = useState(null);
-  const {dbUser} = useAuthContext();
+  const {dbUser, tokens} = useAuthContext();
   const [quantity, setQuantity] = useState(1);
   const rating = `${dish?.rating?.$numberDecimal}`;
   const navigation = useNavigation();
@@ -29,8 +30,16 @@ const DishDetailScreen = () => {
   const id = route.params?.id;
   const userID = dbUser?.userID;
   useEffect(() => {
-    fetchDishDetail();
+    getData();
+    console.log(jsonValue);
+    setTimeout(() => fetchDishDetail(), 510);
   }, []);
+
+  let jsonValue;
+  const getData = async () => {
+    const value = await AsyncStorage.getItem('userDetail');
+    jsonValue = JSON.parse(value);
+  };
   const fetchDishDetail = async data => {
     // const {email, password} = data;
 
@@ -48,12 +57,13 @@ const DishDetailScreen = () => {
     // const response = await responsedata.json();
     // console.log(data);
     console.log(id);
+    console.log(jsonValue.token);
     const response = await axios.post(
       `http://10.0.2.2:6000/api/v1/canteen/dish/${id}`,
       {},
-      {headers: {Authorization: `Bearer ${dbUser?.token}`}},
+      {headers: {Authorization: `Bearer ${jsonValue.token}`}},
     );
-    // console.log(response);
+    console.log(response);
     const jsonResponse = response.data.data;
     // console.log(jsonResponse);
     setDish(jsonResponse);

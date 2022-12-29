@@ -7,16 +7,42 @@ import {
   Text,
   ScrollView,
 } from 'react-native';
+import {useEffect, useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 // import {Auth} from 'aws-amplify';
 import {useNavigation} from '@react-navigation/native';
 import {useAuthContext} from '../src/Context/AuthContext';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ProfileScreen() {
   const {dbUser} = useAuthContext();
   const navigation = useNavigation();
+  const {setUser, users, tokens, jsonValue, setTokens} = useAuthContext();
+  const [wallet, setWallet] = useState(null);
+  useEffect(() => {
+    walletDetail();
+  }, []);
+  const logout = async () => {
+    await AsyncStorage.clear();
+    // jsonValue = '';
+    setTimeout(() => setTokens(null), 200);
+    setTimeout(() => setUser(false), 500);
+    // console.log('done');
+  };
+
+  const walletDetail = async () => {
+    const response = await axios.get(
+      `http://10.0.2.2:8000/api/v1/user/${users}/wallet`,
+      {headers: {Authorization: `Bearer ${tokens}`}},
+    );
+    // navigation.navigate('OtpScreen');
+    console.log(response.data.data);
+    setWallet(response.data.data);
+  };
+
   return (
     <ScrollView style={{backgroundColor: 'white'}}>
       <View style={styles.container}>
@@ -44,6 +70,17 @@ export default function ProfileScreen() {
               {dbUser.address}
             </Text>
           </View>
+        </View>
+        <View style={{padding: 7}}>
+          <Text
+            style={{
+              fontFamily: 'Fredoka-Regular',
+              color: 'black',
+              fontSize: 20,
+            }}>
+            Current Balance: {'\u20B9'}
+            {wallet}
+          </Text>
         </View>
         <View
           style={{
@@ -187,7 +224,7 @@ export default function ProfileScreen() {
               paddingHorizontal: 28,
               alignItems: 'center',
             }}
-            onPress={() => {}}>
+            onPress={logout}>
             <Text
               style={{
                 color: 'white',

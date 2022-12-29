@@ -16,7 +16,7 @@ import {useForm} from 'react-hook-form';
 // import {Auth} from 'aws-amplify';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Feather from 'react-native-vector-icons/Feather';
-// import axios from 'axios';
+import axios from 'axios';
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -56,7 +56,8 @@ const SignUpScreen = () => {
       name: response.data.user.name,
     };
     const jsonValue = JSON.stringify(obj);
-    await AsyncStorage.setItem('useDetail', jsonValue);
+    await AsyncStorage.setItem('userDetail', jsonValue);
+    navigation.navigate('SignIn');
     // try {
     //   await Auth.signUp({
     //     address,
