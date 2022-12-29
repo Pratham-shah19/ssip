@@ -127,29 +127,33 @@ const addToCart = async (req, res) => {
   const cartObject = await Basket.findOne({ userId: userId });
   if (cartObject) {
     cartObject.price += price;
-    const arr = cartObject.items;
-    let items = [];
-    for (let i = 0; i < arr.length; i++) {
-      items[i] = arr[i];
-      if (arr[i].dishId === itemId) {
-        items[i].qty += qty;
-        break;
+    var arr = cartObject.items;
+    arr.forEach((e) => {
+      if (e.dishId === itemId) {
+        e.qty += qty;
       }
-    }
-    cartObject.items = items;
+    });
+    // let items = [];
+    // for (let i = 0; i < arr.length; i++) {
+    //   items[i] = arr[i];
+    //   if (arr[i].dishId === itemId) {
+    //     console.log("same item!");
+    //     items[i].qty += qty;
+    //   }
+    // }
+    cartObject.items = arr;
+    console.log(cartObject);
     // cartObject.items.push({ dishId: itemId, qty: qty });
     var dish = await Basket.findOneAndUpdate({ userId }, cartObject, {
       new: true,
       runValidators: true,
-      setDefaultsOnInsert: true,
     });
+    // console.log(dish);
   } else {
-    const newObj = {};
+    var newObj = {};
     let arr = [];
-    arr.push({ dishId: itemId, qty: qty });
-    newObj.userId = userId;
-    newObj.price = price;
-    newObj.items = arr;
+    arr.push({ dishId: req.body.itemId, qty: req.body.qty });
+    newObj = { items: arr, userId, price: req.body.price };
     var dish = await Basket.findOneAndUpdate({ userId }, newObj, {
       upsert: true,
       new: true,
@@ -169,9 +173,9 @@ const getCart = async (req, res) => {
   }
   let j = 0;
   let arr = [];
-  for (let i = 0; i < order.items.length; i++) {
-    const dishname = await Dish.findOne({ _id: order.items[i].dishId });
-    arr[j] = { qty: order.items[i].qty, items: dishname };
+  for (let i = 0; i < order?.items.length; i++) {
+    const dishname = await Dish.findOne({ _id: order?.items[i].dishId });
+    arr[j] = { qty: order?.items[i].qty, items: dishname };
     //  console.log(arr)
     j++;
   }
@@ -223,10 +227,11 @@ const payCanteen = async (req, res) => {
   var items = basket.items;
   items.forEach(async (e) => {
     let obj = {};
-    const dish = await Dish.findOne({ _id: e.dishId,isAvailable:true });
-    if(!dish)
-    {
-      res.status(StatusCodes.OK).json({res:"fail",data:"dish is not actually available"})
+    const dish = await Dish.findOne({ _id: e.dishId, isAvailable: true });
+    if (!dish) {
+      res
+        .status(StatusCodes.OK)
+        .json({ res: "fail", data: "dish is not actually available" });
     }
     if (dish.quantity >= e.qty) {
       obj.dishId = e.dishId;
@@ -254,7 +259,7 @@ const payCanteen = async (req, res) => {
         .json({ res: "fail", data: "not enough quantity" });
     }
   });
- 
+
   //generating otp
   const otp = Math.floor(Math.random() * 10000);
   const orderObj = {};
@@ -306,8 +311,12 @@ const validatePaymentOtp = async (req, res) => {
   if (otp !== order.otp) {
     throw new BadRequestError("wrong otp");
   }
-  const newOrder = await Order.findOneAndUpdate({userId:uid,status:"NEW"},{status:"COMPLETED"},{runValidators:true,new:true})
-  res.status(StatusCodes.OK).json({ res: "success", data:newOrder });
+  const newOrder = await Order.findOneAndUpdate(
+    { userId: uid, status: "NEW" },
+    { status: "COMPLETED" },
+    { runValidators: true, new: true }
+  );
+  res.status(StatusCodes.OK).json({ res: "success", data: newOrder });
 };
 
 module.exports = {
