@@ -128,16 +128,15 @@ const addToCart = async (req, res) => {
   if (cartObject) {
     cartObject.price += price;
     var arr = cartObject.items;
-    var flag = 0
+    var flag = 0;
     arr.forEach((e) => {
       if (e.dishId === itemId) {
         e.qty += qty;
-        flag = 1
+        flag = 1;
       }
     });
-    if(flag===0)
-    {
-        arr.push({dishId:itemId,qty:qty})
+    if (flag === 0) {
+      arr.push({ dishId: itemId, qty: qty });
     }
 
     cartObject.items = arr;
@@ -192,12 +191,10 @@ const removeItem = async (req, res) => {
     const userBasket = await Basket.findOne({ userId });
     let items = [];
     const dishes = userBasket.items;
-    if(dishes.length===1)
-    {
-      const deleteBasket = await Basket.findOneAndDelete({userId})
+    if (dishes.length === 1) {
+      const deleteBasket = await Basket.findOneAndDelete({ userId });
       res.status(200).json({ status: "success" });
-    }
-    else{
+    } else {
       dishes.forEach((e) => {
         if (e.dishId === itemId) {
           userBasket.price -= e.qty * item.price;
@@ -222,7 +219,7 @@ const canPayWallet = async (req, res) => {
   const { uid } = req.params;
   const user = await User.findOne({ _id: uid });
   const basket = await Basket.findOne({ userId: uid });
-  if (basket.price <= user.wallet) {
+  if (basket?.price <= user?.wallet) {
     res.status(StatusCodes.OK).json({ res: "success", data: true });
   } else {
     res.status(StatusCodes.OK).json({ res: "success", data: false });
@@ -235,6 +232,7 @@ const payCanteen = async (req, res) => {
   const user = await User.findOne({ _id: uid });
   if (!user) {
     throw new BadRequestError("Invalid userid");
+    return;
   }
   //deducting price from user's wallet
   const deduct = await User.findOneAndUpdate(
@@ -246,7 +244,9 @@ const payCanteen = async (req, res) => {
   //adding coins to canteen's wallet
   const canteen = await Canteen.findOne({ name: canteenName });
   if (!canteen) {
+    console.log("canteen not found");
     throw new BadRequestError("Invalid caneteen name");
+    return;
   }
   const pay = await Canteen.findOneAndUpdate(
     { name: canteenName },
@@ -255,7 +255,9 @@ const payCanteen = async (req, res) => {
   );
   const basket = await Basket.findOne({ userId: uid });
   if (!basket) {
+    console.log("basket not present");
     throw new BadRequestError("Invalid user id, could not find basket");
+    return;
   }
   var arr = [];
   var items = basket.items;
@@ -263,32 +265,34 @@ const payCanteen = async (req, res) => {
     let obj = {};
     const dish = await Dish.findOne({ _id: e.dishId, isAvailable: true });
     if (!dish) {
+      console.log("dish not available");
       res
         .status(StatusCodes.OK)
         .json({ res: "fail", data: "dish is not actually available" });
-    }
-    if (dish.quantity >= e.qty) {
-      obj.dishId = e.dishId;
-      obj.qty = dish.quantity - e.qty;
-      if (obj.qty < 10) {
-        const dish = await Dish.findOneAndUpdate(
-          { _id: obj.dishId },
-          { quantity: obj.qty, isAvailable: false },
-          { runValidators: true, new: true }
-        );
-        console.log("less quantity", dish);
-      } else {
-        const dish = await Dish.findOneAndUpdate(
-          { _id: obj.dishId },
-          { quantity: obj.qty },
-          { runValidators: true, new: true }
-        );
-        console.log("enough quantity", dish);
-      }
     } else {
-      res
-        .status(StatusCodes.OK)
-        .json({ res: "fail", data: "not enough quantity" });
+      if (dish?.quantity >= e.qty) {
+        obj.dishId = e.dishId;
+        obj.qty = dish?.quantity - e.qty;
+        if (obj.qty < 10) {
+          const dish = await Dish.findOneAndUpdate(
+            { _id: obj.dishId },
+            { quantity: obj.qty, isAvailable: false },
+            { runValidators: true, new: true }
+          );
+          console.log("less quantity", dish);
+        } else {
+          const dish = await Dish.findOneAndUpdate(
+            { _id: obj.dishId },
+            { quantity: obj.qty },
+            { runValidators: true, new: true }
+          );
+          console.log("enough quantity", dish);
+        }
+      } else {
+        res
+          .status(StatusCodes.OK)
+          .json({ res: "fail", data: "not enough quantity" });
+      }
     }
   });
 

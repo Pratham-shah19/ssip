@@ -1,6 +1,7 @@
 import {View, Text} from 'react-native';
 import React, {useEffect, useState, createContext, useContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const AuthContext = createContext({});
 
@@ -9,6 +10,8 @@ const AuthContextProvider = ({children}) => {
   const [user, setUser] = useState(false);
   const [tokens, setTokens] = useState(null);
   const [users, setUsers] = useState(null);
+  const [dish, setDish] = useState([]);
+  const [price, setPrice] = useState(null);
   let jsonValue;
 
   useEffect(() => {
@@ -34,6 +37,19 @@ const AuthContextProvider = ({children}) => {
     }
   };
 
+  const onCreateOrder = async () => {
+    const response = await axios.get(
+      `http://10.0.2.2:8000/api/v1/user/${users}/cart`,
+      {
+        headers: {
+          Authorization: `Bearer ${tokens}`,
+        },
+      },
+    );
+    setDish(response.data.data.data);
+    setPrice(response.data.data.price);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -45,6 +61,9 @@ const AuthContextProvider = ({children}) => {
         setTokens,
         jsonValue,
         getData,
+        onCreateOrder,
+        dish,
+        price,
       }}>
       {children}
     </AuthContext.Provider>

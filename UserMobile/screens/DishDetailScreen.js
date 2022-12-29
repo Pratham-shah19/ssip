@@ -9,20 +9,14 @@ import {
 import React, {useState, useEffect} from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-// import RestaurantNearbyMeData from '../data/RestaurantNearbyMeData.json';
 import {useRoute, useNavigation} from '@react-navigation/native';
-// import BasketScreen from './BasketScreen';
-// import {Dish} from '../src/models';
-// import {DataStore} from 'aws-amplify';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useAuthContext} from '../src/Context/AuthContext';
 import axios from 'axios';
-// import {useBasketContext} from '../src/Contexts/BasketContext';
 
-// const dish = RestaurantNearbyMeData[0].dishes[0];
 const DishDetailScreen = () => {
   const [dish, setDish] = useState(null);
-  const {dbUser, tokens} = useAuthContext();
+  const {dbUser, tokens, getData: gt, onCreateOrder} = useAuthContext();
   const [quantity, setQuantity] = useState(1);
   const rating = `${dish?.rating?.$numberDecimal}`;
   const navigation = useNavigation();
@@ -30,65 +24,31 @@ const DishDetailScreen = () => {
   const id = route.params?.id;
   const userID = dbUser?.userID;
   useEffect(() => {
-    getData();
-    console.log(jsonValue);
-    setTimeout(() => fetchDishDetail(), 510);
+    fetchDishDetail();
   }, []);
 
-  let jsonValue;
-  const getData = async () => {
-    const value = await AsyncStorage.getItem('userDetail');
-    jsonValue = JSON.parse(value);
-  };
+  // let jsonValue;
+  // const getData = async () => {
+  //   const value = await AsyncStorage.getItem('userDetail');
+  //   jsonValue = JSON.parse(value);
+  // };
   const fetchDishDetail = async data => {
-    // const {email, password} = data;
-
-    // if (loading) {
-    //   return;
-    // }
-    // const responsedata = await fetch('http://10.0.2.2:3000/api/v1/user/login', {
-    //   method: 'POST',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({email: data.email, password: data.password}),
-    // });
-    // const response = await responsedata.json();
-    // console.log(data);
-    console.log(id);
-    console.log(jsonValue.token);
     const response = await axios.post(
       `http://10.0.2.2:6000/api/v1/canteen/dish/${id}`,
       {},
-      {headers: {Authorization: `Bearer ${jsonValue.token}`}},
+      {headers: {Authorization: `Bearer ${tokens}`}},
     );
-    console.log(response);
     const jsonResponse = response.data.data;
-    // console.log(jsonResponse);
     setDish(jsonResponse);
-    // console.log(dish);
   };
-  // const {addDishToBasket} = useBasketContext();
-
-  // useEffect(() => {
-  //   if (id) {
-  //     DataStore.query(Dish, id).then(setDish);
-  //   }
-  // }, [id]);
 
   const onAddToBasket = async () => {
-    // await addDishToBasket(dish, quantity);
-    // navigation.goBack();
-    console.log('userid:', userID);
-    const eg = {itemId: id, qty: quantity, price: dish?.price * quantity};
-    console.log(eg);
     const response = await axios.patch(
       `http://10.0.2.2:8000/api/v1/user/${userID}/cart`,
       {itemId: id, qty: quantity, price: dish?.price * quantity},
       {headers: {Authorization: `Bearer ${dbUser?.token}`}},
     );
-    console.log(response.data.items);
+    await onCreateOrder();
     navigation.goBack();
   };
 
@@ -99,25 +59,11 @@ const DishDetailScreen = () => {
   };
   const onPlus = () => {
     setQuantity(quantity + 1);
-    // console.log(`http://127.0.0.1:8080/${dish?.imageUrl}`);
   };
   const getTotal = () => {
     return (dish?.price * quantity).toFixed(0);
   };
-  // if (!dish) {
-  //   return (
-  //     <View
-  //       style={{
-  //         alignSelf: 'center',
-  //         justifyContent: 'center',
-  //         alignItems: 'center',
-  //         alignContent: 'center',
-  //         flex: 1,
-  //       }}>
-  //       <ActivityIndicator color={'violet'} size={'large'} />
-  //     </View>
-  //   );
-  // }
+
   return (
     <View>
       <ScrollView style={{}} showsVerticalScrollIndicator={false}>
@@ -125,10 +71,7 @@ const DishDetailScreen = () => {
           <Image
             source={{
               uri: dish?.imageUrl,
-              //   uri: 'http://127.0.0.1:8080/admin-imageUri-1665012747760.jpeg',
-              //   // uri: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/delish-homemade-pizza-horizontal-1542312378.png',
             }}
-            // source={source}
             style={{
               height: '100%',
               width: '100%',
@@ -193,9 +136,7 @@ const DishDetailScreen = () => {
                 fontSize: 15,
                 lineHeight: 20,
                 fontFamily: 'Fredoka-Regular',
-              }}>
-              {/* {dish.productDescription} */}
-            </Text>
+              }}></Text>
           </View>
           <View
             style={{
@@ -254,16 +195,3 @@ const DishDetailScreen = () => {
 };
 
 export default DishDetailScreen;
-
-{
-  /* <FlatList
-          ListHeaderComponent={() => (
-            <ProductHeaderComponent dish={dishCustomize} />
-          )}
-          data={dishCustomize.customize}
-          renderItem={({item}) => <CustomizeComponent customize={item} />}
-        /> */
-}
-{
-  /* <View style={{marginBottom: 50}}></View> */
-}
