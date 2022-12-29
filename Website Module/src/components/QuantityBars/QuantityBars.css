@@ -1,0 +1,25 @@
+.qty-img{
+    width: 100px;
+    height: 60px;
+    object-fit: cover;
+}
+
+.qty-result{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 85vw;
+    padding: 5px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25),
+                0 6px 5px rgba(0,0,0,0.22);
+    border-radius: 20px;
+}
+
+.qty-name, .qty-qty{
+    padding-top: 5px;
+}
+
+.qty-btn{
+    width: 90px;
+    padding: 10px 10px;
+}

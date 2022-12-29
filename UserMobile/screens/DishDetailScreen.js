@@ -80,6 +80,9 @@ const DishDetailScreen = () => {
   const onAddToBasket = async () => {
     // await addDishToBasket(dish, quantity);
     // navigation.goBack();
+    console.log('userid:', userID);
+    const eg = {itemId: id, qty: quantity, price: dish?.price * quantity};
+    console.log(eg);
     const response = await axios.patch(
       `http://10.0.2.2:8000/api/v1/user/${userID}/cart`,
       {itemId: id, qty: quantity, price: dish?.price * quantity},
