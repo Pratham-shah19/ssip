@@ -5,25 +5,33 @@ import {
   TextInput,
   StyleSheet,
   FlatList,
-  Pressable,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-// import {useAuthContext} from '../../src/Contexts/AuthContext';
-import {useAuthContext} from '../../src/Context/AuthContext';
+import {useAuthContext} from '../src/Context/AuthContext';
 import axios from 'axios';
-import SearchComponent from './SearchComponent';
-import {useNavigation} from '@react-navigation/native';
-// import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-// import {FlatList} from 'react-native-gesture-handler';
+import SearchComponent from '../components/HomeScreenComponents/SearchComponent';
 
-const Header = () => {
+const SearchScreen = () => {
   const {dbUser, tokens} = useAuthContext();
   const [search, setSearch] = useState(null);
-  const navigation = useNavigation();
   const [searchResult, setSearchResult] = useState(null);
+  const onPress = async () => {
+    // console.log(tokens);
+    if (search.length >= 2) {
+      const response = await axios.get(
+        `http://10.0.2.2:8000/api/v1/user/dishes/filter?search=${search}`,
+        {headers: {Authorization: `Bearer ${tokens}`}},
+      );
+      // console.log(response.data.data);
+      console.log(search);
+      setSearchResult(response.data.data);
+    } else {
+      setSearchResult(null);
+    }
+  };
   const today = new Date();
   const greeting = () => {
     if (today.getHours() < 12 && today.getHours() > 6) {
@@ -37,7 +45,7 @@ const Header = () => {
     }
   };
   return (
-    <View style={{padding: 15, backgroundColor: 'white'}}>
+    <View style={{padding: 15, backgroundColor: 'white', flex: 1}}>
       <View
         style={{
           flexDirection: 'row',
@@ -105,46 +113,41 @@ const Header = () => {
           {greeting()}
         </Text>
       </View>
-
-      <Pressable
-        style={styles.searchSection}
-        onPress={() => navigation.navigate('SearchScreen')}>
+      <View style={styles.searchSection}>
         <Ionicons
           style={styles.searchIcon}
           name="ios-search"
           size={20}
           color="gray"
         />
-        {/* <TextInput
+        <TextInput
           style={styles.input}
           value={search}
           onChangeText={setSearch}
-          // onChange={search !== '' ? onPress : () => {}}
+          onTextInput={onPress}
           placeholder="Search dishes..."
           placeholderTextColor={'grey'}
           underlineColorAndroid="transparent"
-        /> */}
-        <View style={styles.input}>
-          <Text>Search dishes...</Text>
-        </View>
-      </Pressable>
-      {/* <View>
+        />
+      </View>
+      <View>
         <FlatList
           data={searchResult}
           renderItem={({item}) => <SearchComponent dish={item} />}
           keyExtractor={item => item._id}
           showsVerticalScrollIndicator={false}
         />
-      </View> */}
+      </View>
     </View>
   );
 };
 const styles = StyleSheet.create({
   searchSection: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    // height: 200,
     backgroundColor: '#fff',
     marginTop: 14,
     borderRadius: 10,
@@ -163,12 +166,11 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
+
     paddingLeft: 0,
     borderRadius: 10,
     backgroundColor: '#fff',
     color: '#424242',
-    height: 45,
-    justifyContent: 'center',
   },
 });
-export default Header;
+export default SearchScreen;

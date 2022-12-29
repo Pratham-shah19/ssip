@@ -5,67 +5,47 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const AuthContext = createContext({});
 
 const AuthContextProvider = ({children}) => {
-  // const [authStudent, setAuthStudent] = useState(null);
   const [dbUser, setDbUser] = useState(null);
-  // const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(false);
   const [tokens, setTokens] = useState(null);
   const [users, setUsers] = useState(null);
-  const token = dbUser?.token;
-  //   const sub = authStudent?.attributes?.sub;
-  //   const id = dbStudent?.id;
-
-  //   useEffect(() => {
-  //     Auth.currentAuthenticatedUser({bypassCache: true}).then(setAuthStudent);
-  //   }, []);
+  let jsonValue;
 
   useEffect(() => {
     getData();
+    console.log('in context');
+    setTimeout(() => console.log('h'), 1000);
+    setTimeout(() => console.log(jsonValue?.token), 1);
   }, []);
 
   const getData = async () => {
+    console.log('inside get auth');
     const value = await AsyncStorage.getItem('userDetail');
-    const jsonValue = JSON.parse(value);
-    // if (value != null) {
-    console.log('user in auth context:', jsonValue);
-    setUser(true);
-    setUsers(jsonValue.userID);
-    setTokens(jsonValue.token);
-    setDbUser(jsonValue);
-
-    // } else {
-    // setUser(false);
-    // }
+    jsonValue = JSON.parse(value);
+    if (value != null) {
+      console.log('user in auth context:', jsonValue);
+      setUser(true);
+      setUsers(jsonValue?.userID);
+      setTokens(jsonValue?.token);
+      setDbUser(jsonValue);
+    } else {
+      setUser(false);
+      // jsonValue = '';
+    }
   };
-  //   useEffect(() => {
-  //     // if (!sub) {
-  //     //   return;
-  //     // }
-  //     DataStore.query(Student, student => student.sub('eq', sub)).then(
-  //       students => {
-  //         setDbStudent(students[0]);
-  //         setLoading(false);
-  //       },
-  //     );
-  //   }, [sub]);
-
-  //   useEffect(() => {
-  //     if (!dbStudent) {
-  //       return;
-  //     }
-  //     const subscription = DataStore.observe(Student, dbStudent.id).subscribe(
-  //       msg => {
-  //         if (msg.opType === 'UPDATE') {
-  //           setDbStudent(msg.element);
-  //         }
-  //       },
-  //     );
-
-  //     return () => subscription.unsubscribe();
-  //   }, [dbStudent]);
 
   return (
-    <AuthContext.Provider value={{user, setUser, dbUser, token, tokens, users}}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        dbUser,
+        tokens,
+        users,
+        setTokens,
+        jsonValue,
+        getData,
+      }}>
       {children}
     </AuthContext.Provider>
   );

@@ -14,17 +14,14 @@ import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import SocialSignInButtons from '../../components/SocialSignInButtons';
 import {useNavigation} from '@react-navigation/native';
-import {useForm, Controller} from 'react-hook-form';
+import {useForm, Controller, set} from 'react-hook-form';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useAuthContext} from '../../src/Context/AuthContext';
 
-// import {Auth} from 'aws-amplify';
-// import {useAuthContext} from '../../src/Contexts/AuthContext';
-
 const SignInScreen = () => {
   const {height} = useWindowDimensions();
-  const {user, setUser} = useAuthContext();
+  const {user, setUser, setTokens, tokens, getData} = useAuthContext();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
 
@@ -35,26 +32,13 @@ const SignInScreen = () => {
   } = useForm();
 
   const onSignInPressed = async data => {
-    // const {email, password} = data;
-
-    // if (loading) {
-    //   return;
-    // }
-    // const responsedata = await fetch('http://10.0.2.2:3000/api/v1/user/login', {
-    //   method: 'POST',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({email: data.email, password: data.password}),
-    // });
-    // const response = await responsedata.json();
-    console.log(data);
+    // console.log(data);
     const response = await axios.post(
       'http://10.0.2.2:3000/api/v1/user/login',
       data,
     );
-    console.log(response.token);
+    // console.log('hello');
+    // console.log(response.data.token);
 
     const obj = {
       token: response.data.token,
@@ -63,8 +47,16 @@ const SignInScreen = () => {
     };
     const jsonValue = JSON.stringify(obj);
     await AsyncStorage.setItem('userDetail', jsonValue);
+    // console.log('token: ', response.data.token);
+    // setTokens(response.data.token);
     // navigation.navigate('HomeScreen');
-    setUser(true);
+    // setTimeout(() => console.log('hellooo'), 100);
+    setTokens(response.data.token);
+    console.log('b', response.data.token);
+    await getData();
+    setTimeout(() => console.log('a', tokens), 1000);
+
+    // setUser(true);
   };
 
   const onForgotPasswordPressed = () => {

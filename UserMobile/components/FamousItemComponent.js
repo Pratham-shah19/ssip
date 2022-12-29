@@ -1,9 +1,14 @@
 import React from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, Pressable} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 const FamousItemComponent = ({food}) => {
+  const navigation = useNavigation();
+  const onPress = () => {
+    navigation.navigate('DishDetailScreen', {id: food._id});
+  };
   return (
-    <View>
+    <Pressable onPress={onPress}>
       <View
         style={{
           width: 70,
@@ -34,7 +39,7 @@ const FamousItemComponent = ({food}) => {
           {food?.name}
         </Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

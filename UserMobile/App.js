@@ -14,6 +14,7 @@ const App = () => {
       <GestureHandlerRootView style={{flex: 1}}>
         <AuthContextProvider>
           <Router />
+          {/* <Text>JAY SHREE KRISHNA</Text> */}
         </AuthContextProvider>
       </GestureHandlerRootView>
     </NavigationContainer>
