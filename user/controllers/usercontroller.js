@@ -308,7 +308,7 @@ const payCanteen = async (req, res) => {
   //deleting basket
   const emptyBasket = await Basket.findOneAndDelete({ userId: uid });
 
-  res.status(StatusCodes.CREATED).json({ res: "success", data: deduct.wallet });
+  res.status(StatusCodes.CREATED).json({ res: "success", data: {"current balance":deduct.wallet,"orderOtp":otp }});
 };
 
 const addRating = async (req, res) => {
