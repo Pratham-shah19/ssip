@@ -19,39 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useRef} from 'react';
 
 const FoodDishes = () => {
-  // const [dishes, setDishes] = useState([]);
-  // const [iceCream, setIceCream] = useState([]);
-  // const [starter, setStarter] = useState([]);
-  // const [mainCourse, setMainCourse] = useState([]);
   const navigation = useNavigation();
-  // let jsonValue;
-  // const getData = async () => {
-  //   console.log('inside get data:');
-  //   const value = await AsyncStorage.getItem('userDetail');
-  //   jsonValue = JSON.parse(value);
-  //   console.log('user in auth context of famousItem:', jsonValue);
-  //   setUsers(jsonValue.userID);
-  //   setTokens(jsonValue.token);
-  //   console.log('get done');
-  // };
-
-  // useEffect(() => {
-  //   getData();
-  //   setTimeout(() => fetchDishess(), 510);
-  // }, []);
-
-  // const fetchDishess = async () => {
-  //   const response = await axios.post(
-  //     `http://10.0.2.2:6000/api/v1/canteen/dishes/category`,
-  //     {},
-  //     {headers: {Authorization: `Bearer ${jsonValue.token}`}},
-  //   );
-  //   const jsonResponse = await response?.data?.data;
-  //   setDishes(jsonResponse);
-  //   setIceCream(jsonResponse.IceCream);
-  //   setStarter(jsonResponse.Starter);
-  //   setMainCourse(jsonResponse.MainCourse);
-  // };
 
   return (
     <View>

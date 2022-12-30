@@ -45,7 +45,7 @@ const StarterScreen = () => {
       <FlatList
         data={starter}
         renderItem={({item}) => <ProductScreenComponent dish={item} />}
-        keyExtractor={item => item._id}
+        keyExtractor={item => item.imageUrl}
         showsVerticalScrollIndicator={false}
       />
     </View>

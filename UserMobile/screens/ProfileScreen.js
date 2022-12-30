@@ -20,7 +20,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function ProfileScreen() {
   const {dbUser} = useAuthContext();
   const navigation = useNavigation();
-  const {setUser, users, tokens, jsonValue, setTokens} = useAuthContext();
+  const {setUser, users, tokens, jsonValue, setTokens, setItems} =
+    useAuthContext();
   const [wallet, setWallet] = useState(null);
   useEffect(() => {
     walletDetail();
@@ -28,6 +29,7 @@ export default function ProfileScreen() {
   const logout = async () => {
     await AsyncStorage.clear();
     // jsonValue = '';
+    setItems([]);
     setTimeout(() => setTokens(null), 200);
     setTimeout(() => setUser(false), 500);
     // console.log('done');
@@ -39,7 +41,7 @@ export default function ProfileScreen() {
       {headers: {Authorization: `Bearer ${tokens}`}},
     );
     // navigation.navigate('OtpScreen');
-    console.log(response.data.data);
+    // console.log(response.data.data);
     setWallet(response.data.data);
   };
 
@@ -156,7 +158,7 @@ export default function ProfileScreen() {
               alignItems: 'center',
               marginTop: 10,
             }}
-            onPress={() => {}}>
+            onPress={() => navigation.navigate('HistoryScreen')}>
             <Ionicons name="ios-fast-food-outline" size={25} color="#f35858" />
             <Text style={styles.textcolour}>Your Orders</Text>
           </Pressable>

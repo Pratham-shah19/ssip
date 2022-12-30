@@ -16,22 +16,80 @@ import axios from 'axios';
 
 const DishDetailScreen = () => {
   const [dish, setDish] = useState(null);
-  const {dbUser, tokens, getData: gt, onCreateOrder} = useAuthContext();
+  const {
+    dbUser,
+    tokens,
+    getData: gt,
+    onCreateOrder,
+    items,
+    setItems,
+    setItem: csetItem,
+    getItem,
+  } = useAuthContext();
   const [quantity, setQuantity] = useState(1);
+  const [favourite, setFavourite] = useState(false);
   const rating = `${dish?.rating?.$numberDecimal}`;
   const navigation = useNavigation();
   const route = useRoute();
   const id = route.params?.id;
   const userID = dbUser?.userID;
+
+  let jsonValue;
   useEffect(() => {
     fetchDishDetail();
   }, []);
 
-  // let jsonValue;
-  // const getData = async () => {
-  //   const value = await AsyncStorage.getItem('userDetail');
-  //   jsonValue = JSON.parse(value);
+  useEffect(() => {
+    checkFavourite();
+  }, [jsonValue]);
+
+  const checkFavourite = async () => {
+    const value = await AsyncStorage.getItem(id);
+    jsonValue = JSON.parse(value);
+    if (jsonValue) {
+      setFavourite(true);
+    }
+    // console.log(jsonValue);
+  };
+
+  const onAddToFavourite = async () => {
+    if (!favourite) {
+      const jsonValues = JSON.stringify(id);
+      await AsyncStorage.setItem(id, jsonValues);
+      // setItemss();
+      setFavourite(true);
+    } else {
+      await AsyncStorage.removeItem(id);
+      // setItems(items.filter(item => item.id !== id));
+      // csetItem();
+      setFavourite(false);
+      // console.log('on remove', items);
+    }
+  };
+
+  // const setItemss = async () => {
+  //   const obj1 = {
+  //     rating: rating,
+  //     id: id,
+  //     name: dish?.name,
+  //     imageUrl: dish?.imageUrl,
+  //     price: dish?.price,
+  //     category: dish?.category,
+  //   };
+  //   console.log('obj', obj1);
+  //   setItems([...items, obj1]);
+  //   // console.log('items: ', items);
+  //   csetItem();
   // };
+
+  // const onPress = async () => {
+  //   setItems([]);
+  //   setFavourite(false);
+  //   await AsyncStorage.removeItem('Favourites');
+  //   // await AsyncStorage.clear();
+  //   console.log(items);
+  // };
+
   const fetchDishDetail = async data => {
     const response = await axios.post(
       `http://10.0.2.2:6000/api/v1/canteen/dish/${id}`,
@@ -63,11 +121,14 @@ const DishDetailScreen = () => {
   const getTotal = () => {
     return (dish?.price * quantity).toFixed(0);
   };
+  if (!jsonValue) {
+    <ActivityIndicator size={'large'} color={'red'} />;
+  }
 
   return (
     <View>
       <ScrollView style={{}} showsVerticalScrollIndicator={false}>
-        <View style={{height: 290}}>
+        <View style={{height: 290, backgroundColor: 'white'}}>
           <Image
             source={{
               uri: dish?.imageUrl,
@@ -75,6 +136,8 @@ const DishDetailScreen = () => {
             style={{
               height: '100%',
               width: '100%',
+              borderBottomLeftRadius: 38,
+              borderBottomRightRadius: 38,
             }}
           />
         </View>
@@ -190,6 +253,26 @@ const DishDetailScreen = () => {
           ADD {quantity} item - {'\u20B9'} {getTotal()}
         </Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        onPress={onAddToFavourite}
+        style={{
+          alignContent: 'center',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop: 40,
+        }}>
+        <AntDesign
+          name={favourite ? 'heart' : 'hearto'}
+          color={'#f35858'}
+          size={26}
+        />
+      </TouchableOpacity>
+      {/* <TouchableOpacity onPress={getItem} style={{marginTop: 20}}>
+        <Text>remove</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={onPress} style={{marginTop: 30}}>
+        <Text>remove</Text>
+      </TouchableOpacity> */}
     </View>
   );
 };

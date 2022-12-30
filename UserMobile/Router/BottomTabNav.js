@@ -18,6 +18,7 @@ import StarterScreen from '../screens/StarterScreen';
 import IceCreamScreen from '../screens/IceCreamScreen';
 import MainCourseScreen from '../screens/MainCourseScreen';
 import SearchScreen from '../screens/SearchScreen';
+import HistoryDetailScreen from '../screens/HistoryDetailScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -83,6 +84,10 @@ const HistoryStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen component={HistoryScreen} name="HistoryScreen" />
+      <Stack.Screen
+        component={HistoryDetailScreen}
+        name="HistoryDetailScreen"
+      />
     </Stack.Navigator>
   );
 };
