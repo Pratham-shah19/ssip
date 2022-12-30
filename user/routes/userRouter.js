@@ -5,7 +5,7 @@ const authenticationMiddleware = require('../middleware/authentication')
 
 
 
-router.route('/orders').get(authenticationMiddleware,getOrdersSpecific) //orders of specific status for order history
+router.route('/:uid/orders').get(authenticationMiddleware,getOrdersSpecific) //orders of specific status for order history
 
 router.route('/dishes').get(authenticationMiddleware,getAllDishes) // all the dishes
 router.route('/dishes/filter').get(authenticationMiddleware,getFilteredDishes) // filter includes both search and sort

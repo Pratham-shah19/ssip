@@ -72,8 +72,22 @@ const getBalance = async (req, res) => {
 
 const getOrdersSpecific = async (req, res) => {
   const { status } = req.query;
+  const  userId  = req.params.uid;
+
   if (status === "NEW" || status === "COMPLETED") {
-    const orders = await Order.find({ status });
+    const orders = await Order.find({status,userId});
+    for(let i=0;i<orders.length;i++)
+    {
+      var items = orders[i].items;
+      var updatedItems=[]
+      for (let j=0;j<items.length;j++)
+      {
+        const dish = await Dish.findOne({_id:items[j].dishId})
+        const obj = {qty:items[i].qty,dish}
+        updatedItems.push(obj);
+      }
+      orders[i].items = updatedItems;
+    }
     res.status(StatusCodes.OK).json({ res: "success", data: orders });
   } else {
     throw new BadRequestError("Invalid value of status");
