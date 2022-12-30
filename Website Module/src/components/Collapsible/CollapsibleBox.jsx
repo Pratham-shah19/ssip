@@ -25,6 +25,8 @@ const CollapsibleBox = ({
     setOpen(!open);
   };
 
+  // const _OrderItem = lazy(() => import("../../store/actions/Orders"));
+  // const _Collapsible = lazy(() => import("react-collapsible"));
   const labels = () => {
     return (
       <div className="labels">
@@ -38,15 +40,15 @@ const CollapsibleBox = ({
     );
   };
   const completedHandler = async () => {
-    const completedButton_action = await axios.post(
+    const completedButton_action = axios.post(
       `http://127.0.0.1:4000/api/v1/canteen/guestcompletedbutton/${orderId}`,
       {},
       {
         headers: { Authorization: `Bearer ${token_main}` },
       }
     );
-    function completedButton() {
-      completedButton_action;
+    async function completedButton() {
+      await completedButton_action;
       console.log("completed");
       setOrderID(orderId);
     }

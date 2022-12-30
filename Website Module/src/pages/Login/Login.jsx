@@ -152,7 +152,7 @@ const Login = () => {
               value={ownerPassword}
               onChange={(e) => handlePassword_Owner(e)}
               required
-              class={Owner_isError ? "ow-er-ow ow-er" : "ow-er-ow"}
+              // className={Owner_isError ? "ow-er-ow ow-er" : "ow-er-ow"}
             />
             {Owner_isError && showerror(Owner_Error)}
             {/* <Link to="/owner-dashboard"> */}

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, lazy, Suspense } from "react";
 import HistoryIcon from "@mui/icons-material/History";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
+import axios from "axios";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import "./HomeOwnerDashboard.css";
 import Header from "../../components/Header_Home/Header";
@@ -11,8 +12,10 @@ import * as OrdersActions from "../../store/actions/Orders";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
-const HomeOwnerDashboard = ({ newOrder, token, orderId, getCurrentOrders }) => {
-  let [newOrders, setNewOrders] = useState(newOrder);
+
+const HomeOwnerDashboard = ({ token, orderId, getCurrentOrders }) => {
+  let [newOrders, setNewOrders] = useState([]);
+
   let [first_id, setFirst_id] = useState(0);
   let [time, setTime] = useState(Date.now());
   let [loading, setloading] = useState(true);
@@ -34,17 +37,47 @@ const HomeOwnerDashboard = ({ newOrder, token, orderId, getCurrentOrders }) => {
       navigate("/");
     }
   }, []);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      getCurrentOrders();
-      setloading(false);
-      setTime(Date.now());
-    }, 5000);
+  async function getData() {
+    const data = await axios.get(
+      "http://127.0.0.1:4000/api/v1/canteen/order/current",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return data.data.data;
+  }
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     // getCurrentOrders();
+  //     console.time("what");
+  //     getData().then((data) => {
+  //       // console.log("data", data);
+  //       setNewOrders(data);
+  //       setloading(false);
+  //       console.timeEnd("what");
+  //     });
 
-    return () => {
-      clearInterval(interval);
-    };
-  });
+  //     // setTime(Date.now());
+  //   }, 5000);
+
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // });
+  useEffect(() => {
+    getData().then((data) => {
+      // console.log("data", data);
+      setNewOrders(data);
+      setloading(false);
+    });
+  }, []);
+  function render() {
+    console.time("doSomething");
+
+    console.timeEnd("doSomething");
+  }
   return (
     <>
       {loading === false ? (
@@ -69,7 +102,7 @@ const HomeOwnerDashboard = ({ newOrder, token, orderId, getCurrentOrders }) => {
               </div>
               <div className="home_comp">
                 {!loading &&
-                  newOrder.map((item) => {
+                  newOrders.map((item) => {
                     return (
                       <CollapsibleBox
                         _button={item.data.button}
@@ -93,7 +126,7 @@ const HomeOwnerDashboard = ({ newOrder, token, orderId, getCurrentOrders }) => {
 
 function mapStateToProps(state) {
   return {
-    newOrder: state.Orders.newOrders,
+    // newOrder: state.Orders.newOrders,
     token: state.auth.token,
     orderId: state.Orders.orderId,
   };
