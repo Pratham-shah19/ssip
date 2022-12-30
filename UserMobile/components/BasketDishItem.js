@@ -1,7 +1,20 @@
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, Pressable} from 'react-native';
 import React from 'react';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {useAuthContext} from '../src/Context/AuthContext';
+import axios from 'axios';
 
 const BasketDishItem = ({basketDish}) => {
+  const {users, onCreateOrder, tokens} = useAuthContext();
+  const onDelete = async () => {
+    console.log(basketDish.items._id);
+    const response = await axios.patch(
+      `http://10.0.2.2:8000/api/v1/user/${users}/removeItem`,
+      {itemId: basketDish.items._id},
+      {headers: {Authorization: `Bearer ${tokens}`}},
+    );
+    await onCreateOrder();
+  };
   return (
     <View
       style={{
@@ -18,7 +31,7 @@ const BasketDishItem = ({basketDish}) => {
           style={{height: 65, width: 65, borderRadius: 10}}
         />
       </View>
-      <View style={{flex: 4, marginHorizontal: 8}}>
+      <View style={{flex: 3, marginHorizontal: 8}}>
         <View
           style={{
             flexDirection: 'row',
@@ -50,14 +63,14 @@ const BasketDishItem = ({basketDish}) => {
               </Text>
             </View>
           </View>
-          <Text
+          {/* <Text
             style={{
               color: 'black',
               fontSize: 15,
               fontFamily: 'Fredoka-Regular',
             }}>
             {'\u20B9'} {basketDish.items.price}
-          </Text>
+          </Text> */}
         </View>
         <View>
           <Text
@@ -71,6 +84,32 @@ const BasketDishItem = ({basketDish}) => {
           </Text>
         </View>
       </View>
+      <View
+        style={{
+          flex: 0.8,
+          alignItems: 'center',
+          alignContent: 'center',
+          justifyContent: 'center',
+        }}>
+        <Text
+          style={{
+            color: 'black',
+            fontSize: 15,
+            fontFamily: 'Fredoka-Regular',
+          }}>
+          {'\u20B9'} {basketDish.items.price}
+        </Text>
+      </View>
+      <Pressable
+        onPress={onDelete}
+        style={{
+          flex: 0.5,
+          alignItems: 'center',
+          alignContent: 'center',
+          justifyContent: 'center',
+        }}>
+        <MaterialIcons name="delete" color={'black'} size={24} />
+      </Pressable>
     </View>
   );
 };

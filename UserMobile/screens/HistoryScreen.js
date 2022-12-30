@@ -12,7 +12,7 @@ import axios from 'axios';
 
 const HistoryScreen = () => {
   const [orders, setOrders] = useState([]);
-  const {users} = useAuthContext();
+  // const {users} = useAuthContext();
   const {tokens} = useAuthContext();
   useEffect(() => {
     fetchDetail();
@@ -20,14 +20,14 @@ const HistoryScreen = () => {
   // const {id} = useAuthContext();
   const [fc, setFc] = useState([]);
   const fetchDetail = async () => {
-    const response = await axios.post(
-      `http://10.0.2.2:6000/api/v1/canteen/order/history/${users}`,
-      {},
+    const response = await axios.get(
+      `http://10.0.2.2:8000/api/v1/user/orders?status=COMPLETED`,
       {headers: {Authorization: `Bearer ${tokens}`}},
     );
-    console.log('history:', response.data);
-    const data = response.data.data;
+    // console.log('history:', response.data);
+    // const data = response.data.data;
     // eg();
+    console.log(response.data.data);
     setOrders(response.data.data);
   };
 
@@ -61,10 +61,10 @@ const HistoryScreen = () => {
           Your History
         </Text>
       </View>
-      <FlatList
+      {/* <FlatList
         data={orders}
         renderItem={({item}) => <HistoryScreenComponent favourite={item} />}
-      />
+      /> */}
     </View>
   );
 };
