@@ -4,6 +4,8 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
+  FlatList,
+  Pressable,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -11,9 +13,17 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 // import {useAuthContext} from '../../src/Contexts/AuthContext';
 import {useAuthContext} from '../../src/Context/AuthContext';
+import axios from 'axios';
+import SearchComponent from './SearchComponent';
+import {useNavigation} from '@react-navigation/native';
+// import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+// import {FlatList} from 'react-native-gesture-handler';
 
 const Header = () => {
-  const {dbUser} = useAuthContext();
+  const {dbUser, tokens} = useAuthContext();
+  const [search, setSearch] = useState(null);
+  const navigation = useNavigation();
+  const [searchResult, setSearchResult] = useState(null);
   const today = new Date();
   const greeting = () => {
     if (today.getHours() < 12 && today.getHours() > 6) {
@@ -96,20 +106,36 @@ const Header = () => {
         </Text>
       </View>
 
-      <View style={styles.searchSection}>
+      <Pressable
+        style={styles.searchSection}
+        onPress={() => navigation.navigate('SearchScreen')}>
         <Ionicons
           style={styles.searchIcon}
           name="ios-search"
           size={20}
           color="gray"
         />
-        <TextInput
+        {/* <TextInput
           style={styles.input}
-          placeholder="Search dishes, restaurant"
+          value={search}
+          onChangeText={setSearch}
+          // onChange={search !== '' ? onPress : () => {}}
+          placeholder="Search dishes..."
           placeholderTextColor={'grey'}
           underlineColorAndroid="transparent"
+        /> */}
+        <View style={styles.input}>
+          <Text>Search dishes...</Text>
+        </View>
+      </Pressable>
+      {/* <View>
+        <FlatList
+          data={searchResult}
+          renderItem={({item}) => <SearchComponent dish={item} />}
+          keyExtractor={item => item._id}
+          showsVerticalScrollIndicator={false}
         />
-      </View>
+      </View> */}
     </View>
   );
 };
@@ -137,11 +163,12 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-
     paddingLeft: 0,
     borderRadius: 10,
     backgroundColor: '#fff',
     color: '#424242',
+    height: 45,
+    justifyContent: 'center',
   },
 });
 export default Header;

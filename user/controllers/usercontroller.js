@@ -72,8 +72,22 @@ const getBalance = async (req, res) => {
 
 const getOrdersSpecific = async (req, res) => {
   const { status } = req.query;
+  const  userId  = req.params.uid;
+
   if (status === "NEW" || status === "COMPLETED") {
-    const orders = await Order.find({ status });
+    const orders = await Order.find({status,userId});
+    for(let i=0;i<orders.length;i++)
+    {
+      var items = orders[i].items;
+      var updatedItems=[]
+      for (let j=0;j<items.length;j++)
+      {
+        const dish = await Dish.findOne({_id:items[j].dishId})
+        const obj = {qty:items[i].qty,dish}
+        updatedItems.push(obj);
+      }
+      orders[i].items = updatedItems;
+    }
     res.status(StatusCodes.OK).json({ res: "success", data: orders });
   } else {
     throw new BadRequestError("Invalid value of status");
@@ -127,29 +141,29 @@ const addToCart = async (req, res) => {
   const cartObject = await Basket.findOne({ userId: userId });
   if (cartObject) {
     cartObject.price += price;
-    const arr = cartObject.items;
-    let items = [];
-    for (let i = 0; i < arr.length; i++) {
-      items[i] = arr[i];
-      if (arr[i].dishId === itemId) {
-        items[i].qty += qty;
-        break;
+    var arr = cartObject.items;
+    var flag = 0;
+    arr.forEach((e) => {
+      if (e.dishId === itemId) {
+        e.qty += qty;
+        flag = 1;
       }
+    });
+    if (flag === 0) {
+      arr.push({ dishId: itemId, qty: qty });
     }
-    cartObject.items = items;
-    // cartObject.items.push({ dishId: itemId, qty: qty });
+
+    cartObject.items = arr;
+    console.log(cartObject);
     var dish = await Basket.findOneAndUpdate({ userId }, cartObject, {
       new: true,
       runValidators: true,
-      setDefaultsOnInsert: true,
     });
   } else {
-    const newObj = {};
+    var newObj = {};
     let arr = [];
-    arr.push({ dishId: itemId, qty: qty });
-    newObj.userId = userId;
-    newObj.price = price;
-    newObj.items = arr;
+    arr.push({ dishId: req.body.itemId, qty: req.body.qty });
+    newObj = { items: arr, userId, price: req.body.price };
     var dish = await Basket.findOneAndUpdate({ userId }, newObj, {
       upsert: true,
       new: true,
@@ -166,36 +180,73 @@ const getCart = async (req, res) => {
   const order = await Basket.findOne({ userId });
   if (!order) {
     res.status(StatusCodes.OK).json({ res: "none", data: "no basket" });
+  } else {
+    let j = 0;
+    let arr = [];
+    for (let i = 0; i < order?.items.length; i++) {
+      const dishname = await Dish.findOne({ _id: order?.items[i].dishId });
+      arr[j] = { qty: order?.items[i].qty, items: dishname };
+
+      j++;
+    }
+    const obj = { data: arr, price: order?.price, userId };
+    res.status(StatusCodes.OK).json({ res: "success", data: obj });
   }
-  let j = 0;
-  let arr = [];
-  for (let i = 0; i < order.items.length; i++) {
-    const dishname = await Dish.findOne({ _id: order.items[i].dishId });
-    arr[j] = { qty: order.items[i].qty, items: dishname };
-    //  console.log(arr)
-    j++;
+};
+
+const removeItem = async (req, res) => {
+  const userId = req.params.uid;
+  const { itemId } = req.body;
+
+  if (!itemId) {
+    throw new BadRequestError("please provide item id!");
+  } else {
+    const item = await Dish.findOne({ _id: itemId });
+    const userBasket = await Basket.findOne({ userId });
+    let items = [];
+    const dishes = userBasket.items;
+    if (dishes.length === 1) {
+      const deleteBasket = await Basket.findOneAndDelete({ userId });
+      res.status(200).json({ status: "success" });
+    } else {
+      dishes.forEach((e) => {
+        if (e.dishId === itemId) {
+          userBasket.price -= e.qty * item.price;
+        } else {
+          items.push(e);
+        }
+      });
+      userBasket.items = items;
+      const removed = await Basket.findOneAndUpdate({ userId }, userBasket, {
+        upsert: true,
+        new: true,
+        runValidators: true,
+        setDefaultsOnInsert: true,
+      });
+
+      res.status(200).json({ status: "success", data: removed });
+    }
   }
-  const obj = { data: arr, price: order.price, userId };
-  res.status(StatusCodes.OK).json({ res: "success", data: obj });
 };
 
 const canPayWallet = async (req, res) => {
   const { uid } = req.params;
   const user = await User.findOne({ _id: uid });
   const basket = await Basket.findOne({ userId: uid });
-  console.log(user.wallet, basket.price);
-  if (basket.price <= user.wallet) {
+  if (basket?.price <= user?.wallet) {
     res.status(StatusCodes.OK).json({ res: "success", data: true });
   } else {
     res.status(StatusCodes.OK).json({ res: "success", data: false });
   }
 };
+
 const payCanteen = async (req, res) => {
   const { uid } = req.params;
   const { price, canteenName } = req.body;
   const user = await User.findOne({ _id: uid });
   if (!user) {
     throw new BadRequestError("Invalid userid");
+    return;
   }
   //deducting price from user's wallet
   const deduct = await User.findOneAndUpdate(
@@ -207,7 +258,9 @@ const payCanteen = async (req, res) => {
   //adding coins to canteen's wallet
   const canteen = await Canteen.findOne({ name: canteenName });
   if (!canteen) {
+    console.log("canteen not found");
     throw new BadRequestError("Invalid caneteen name");
+    return;
   }
   const pay = await Canteen.findOneAndUpdate(
     { name: canteenName },
@@ -216,45 +269,47 @@ const payCanteen = async (req, res) => {
   );
   const basket = await Basket.findOne({ userId: uid });
   if (!basket) {
+    console.log("basket not present");
     throw new BadRequestError("Invalid user id, could not find basket");
+    return;
   }
-  console.log(basket);
   var arr = [];
   var items = basket.items;
   items.forEach(async (e) => {
     let obj = {};
-    const dish = await Dish.findOne({ _id: e.dishId,isAvailable:true });
-    if(!dish)
-    {
-      res.status(StatusCodes.OK).json({res:"fail",data:"dish is not actually available"})
-    }
-    if (dish.quantity >= e.qty) {
-      obj.dishId = e.dishId;
-      obj.qty = dish.quantity - e.qty;
-      console.log(obj.qty);
-      if (obj.qty < 10) {
-        console.log(obj);
-        const dish = await Dish.findOneAndUpdate(
-          { _id: obj.dishId },
-          { quantity: obj.qty, isAvailable: false },
-          { runValidators: true, new: true }
-        );
-        console.log("less quantity", dish);
-      } else {
-        const dish = await Dish.findOneAndUpdate(
-          { _id: obj.dishId },
-          { quantity: obj.qty },
-          { runValidators: true, new: true }
-        );
-        console.log("enough quantity", dish);
-      }
-    } else {
+    const dish = await Dish.findOne({ _id: e.dishId, isAvailable: true });
+    if (!dish) {
+      console.log("dish not available");
       res
         .status(StatusCodes.OK)
-        .json({ res: "fail", data: "not enough quantity" });
+        .json({ res: "fail", data: "dish is not actually available" });
+    } else {
+      if (dish?.quantity >= e.qty) {
+        obj.dishId = e.dishId;
+        obj.qty = dish?.quantity - e.qty;
+        if (obj.qty < 10) {
+          const dish = await Dish.findOneAndUpdate(
+            { _id: obj.dishId },
+            { quantity: obj.qty, isAvailable: false },
+            { runValidators: true, new: true }
+          );
+          console.log("less quantity", dish);
+        } else {
+          const dish = await Dish.findOneAndUpdate(
+            { _id: obj.dishId },
+            { quantity: obj.qty },
+            { runValidators: true, new: true }
+          );
+          console.log("enough quantity", dish);
+        }
+      } else {
+        res
+          .status(StatusCodes.OK)
+          .json({ res: "fail", data: "not enough quantity" });
+      }
     }
   });
- 
+
   //generating otp
   const otp = Math.floor(Math.random() * 10000);
   const orderObj = {};
@@ -267,7 +322,7 @@ const payCanteen = async (req, res) => {
   //deleting basket
   const emptyBasket = await Basket.findOneAndDelete({ userId: uid });
 
-  res.status(StatusCodes.CREATED).json({ res: "success", data: deduct.wallet });
+  res.status(StatusCodes.CREATED).json({ res: "success", data: {"current balance":deduct.wallet,"orderOtp":otp }});
 };
 
 const addRating = async (req, res) => {
@@ -290,7 +345,6 @@ const addRating = async (req, res) => {
 const validatePaymentOtp = async (req, res) => {
   var { otp } = req.body;
   const { uid } = req.params;
-  // const test = await Order.deleteMany({});
 
   otp = parseInt(otp);
   if (!otp) {
@@ -306,8 +360,12 @@ const validatePaymentOtp = async (req, res) => {
   if (otp !== order.otp) {
     throw new BadRequestError("wrong otp");
   }
-  const newOrder = await Order.findOneAndUpdate({userId:uid,status:"NEW"},{status:"COMPLETED"},{runValidators:true,new:true})
-  res.status(StatusCodes.OK).json({ res: "success", data:newOrder });
+  const newOrder = await Order.findOneAndUpdate(
+    { userId: uid, status: "NEW" },
+    { status: "COMPLETED" },
+    { runValidators: true, new: true }
+  );
+  res.status(StatusCodes.OK).json({ res: "success", data: newOrder });
 };
 
 module.exports = {
@@ -319,6 +377,7 @@ module.exports = {
   getDishesCategorized,
   addToCart,
   getCart,
+  removeItem,
   canPayWallet,
   payCanteen,
   addRating,

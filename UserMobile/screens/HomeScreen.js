@@ -22,13 +22,6 @@ import FoodDishes from '../components/HomeScreenComponents/FoodDishes';
 
 const HomeScreen = () => {
   const {user, setUser} = useAuthContext();
-
-  const logout = async () => {
-    const value = await AsyncStorage.removeItem('userDetail');
-    setUser(false);
-    console.log('done');
-  };
-
   return (
     <ScrollView
       style={{backgroundColor: 'white'}}
@@ -99,13 +92,49 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
-// import {View, Text} from 'react-native';
-// import React from 'react';
-
+// import {View, Text, Pressable, ActivityIndicator} from 'react-native';
+// import React, {useState, useEffect} from 'react';
+// import {useAuthContext} from '../src/Context/AuthContext';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 // const HomeScreen = () => {
+//   // const {setUser, tokens, jsonValue} = useAuthContext();
+//   const [users, setUsers] = useState(null);
+//   const [tokens, setTokens] = useState(null);
+//   let jsonValue;
+//   const logout = async () => {
+//     await AsyncStorage.removeItem('userDetail');
+//     // setUser(false);
+//     console.log('done');
+//   };
+//   const getData = async () => {
+//     const value = await AsyncStorage.getItem('userDetail');
+//     jsonValue = JSON.parse(value);
+//     console.log('user in auth context:', jsonValue);
+//     // setUser(true);
+//     setUsers(jsonValue.userID);
+//     setTokens(jsonValue.token);
+//     // setDbUser(jsonValue);
+//   };
+//   useEffect(() => {
+//     getData();
+//     console.log('in homescreen');
+//     setTimeout(() => console.log('hello'), 1000);
+//     // console.log(jsonValue?.token);
+//     setTimeout(() => console.log('after:', jsonValue.token), 1);
+//     setTimeout(() => setTokens(jsonValue?.token), 1000);
+//   }, []);
+
+//   if (jsonValue?.token === null) {
+//     return <ActivityIndicator size={25} color={'blue'} />;
+//   }
+
 //   return (
 //     <View>
-//       <Text>HomeScreen</Text>
+//       <Text>Jay Shree Krishna🙏</Text>
+//       <Text style={{color: 'black'}}>{tokens}</Text>
+//       <Pressable onPress={logout}>
+//         <Text>logout</Text>
+//       </Pressable>
 //     </View>
 //   );
 // };

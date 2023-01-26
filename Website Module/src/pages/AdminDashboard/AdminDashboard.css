@@ -1,0 +1,117 @@
+.admin-container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-outer {
+  border-radius: 12px;
+  height: 88vh;
+  width: 85vw;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+}
+
+.top-components {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.admin-box {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 26%;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  padding: 10px 16px 3px;
+  border-radius: 20px;
+}
+
+.box-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  height: 98%;
+}
+
+.box-right-top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.box-right-top p {
+  position: relative;
+  top: 4px;
+}
+
+.box-title {
+  color: gray;
+  font-weight: bolder;
+  font-size: 0.9rem;
+}
+
+.box-value {
+  font-size: 2.1rem;
+  font-weight: 500;
+}
+
+.box-desc {
+  text-decoration: dotted;
+  cursor: pointer;
+}
+
+.green {
+  color: green;
+}
+
+.red {
+  color: red;
+}
+
+.yellow {
+  color: rgb(235, 235, 5);
+}
+
+.admin-search {
+  margin: 40px auto;
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-search-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(233, 232, 232);
+  width: 50%;
+  padding: 5px 10px;
+  border-radius: 20px;
+  height: 50px;
+}
+
+.admin-search-inner input {
+  background-color: transparent;
+  margin-left: -7px;
+  width: 100%;
+  border: none;
+}
+
+.admin-search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow: scroll;
+  height: 33vh;
+  padding: 10px 20px;
+}
