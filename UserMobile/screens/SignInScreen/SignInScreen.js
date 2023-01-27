@@ -34,9 +34,11 @@ const SignInScreen = () => {
   const onSignInPressed = async data => {
     // console.log(data);
     const response = await axios.post(
-      'http://10.0.2.2:3000/api/v1/user/login',
+      'http://localhost:3000/api/v1/user/login',
       data,
     );
+    // http://10.0.2.2:3000/api/v1/user/login
+    // http://54.90.48.129:3000/
     // console.log('hello');
     // console.log(response.data.token);
 
