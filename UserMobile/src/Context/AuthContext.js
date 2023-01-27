@@ -13,6 +13,7 @@ const AuthContextProvider = ({children}) => {
   const [dish, setDish] = useState([]);
   const [price, setPrice] = useState(null);
   const [items, setItems] = useState([]);
+  const [loginPending, setLoginPending] = useState(false);
   let jsonValue;
   let favourite;
   useEffect(() => {
@@ -39,22 +40,8 @@ const AuthContextProvider = ({children}) => {
     }
   };
 
-  // const getItem = async () => {
-  //   const value = await AsyncStorage.getItem('Favourites');
-  //   favourite = JSON.parse(value);
-  //   if (favourite) {
-  //     setItems(favourite);
-  //   }
-  //   console.log('item', favourite);
-  // };
-
-  // const setItem = async () => {
-  //   console.log('inside cset:', items);
-  //   const json = JSON.stringify(items);
-  //   await AsyncStorage.setItem('Favourites', json);
-  // };
-
   const onCreateOrder = async () => {
+    setLoginPending(true);
     const response = await axios.get(
       `http://10.0.2.2:8000/api/v1/user/${users}/cart`,
       {
@@ -65,6 +52,7 @@ const AuthContextProvider = ({children}) => {
     );
     setDish(response.data.data.data);
     setPrice(response.data.data.price);
+    setLoginPending(false);
   };
 
   return (
@@ -85,6 +73,8 @@ const AuthContextProvider = ({children}) => {
         setItems,
         // getItem,
         // setItem,
+        loginPending,
+        setLoginPending,
       }}>
       {children}
     </AuthContext.Provider>

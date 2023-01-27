@@ -3,9 +3,11 @@ import React, {useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import ProductScreenComponent from '../components/ProductScreenComponent';
+import AppLoader from '../components/AppLoader';
 
 const StarterScreen = () => {
   const [starter, setStarter] = useState([]);
+  const [loadingPending, setLoadingPending] = useState(false);
   let jsonValue;
   const getData = async () => {
     const value = await AsyncStorage.getItem('userDetail');
@@ -18,6 +20,7 @@ const StarterScreen = () => {
   }, []);
 
   const fetchDishess = async () => {
+    setLoadingPending(true);
     const response = await axios.post(
       `http://10.0.2.2:6000/api/v1/canteen/dishes/category`,
       {},
@@ -25,29 +28,37 @@ const StarterScreen = () => {
     );
     const jsonResponse = await response?.data?.data;
     setStarter(jsonResponse.Starter);
+    setLoadingPending(false);
   };
 
   return (
-    <View>
-      <View style={{padding: 10}}>
-        <Text
-          style={{fontFamily: 'Fredoka-Regular', color: 'black', fontSize: 17}}>
-          Starter
-        </Text>
+    <>
+      <View>
+        <View style={{padding: 10}}>
+          <Text
+            style={{
+              fontFamily: 'Fredoka-Regular',
+              color: 'black',
+              fontSize: 17,
+            }}>
+            Starter
+          </Text>
+        </View>
+        <View
+          style={{
+            backgroundColor: 'grey',
+            height: 1,
+            marginHorizontal: 15,
+          }}></View>
+        <FlatList
+          data={starter}
+          renderItem={({item}) => <ProductScreenComponent dish={item} />}
+          keyExtractor={item => item.imageUrl}
+          showsVerticalScrollIndicator={false}
+        />
       </View>
-      <View
-        style={{
-          backgroundColor: 'grey',
-          height: 1,
-          marginHorizontal: 15,
-        }}></View>
-      <FlatList
-        data={starter}
-        renderItem={({item}) => <ProductScreenComponent dish={item} />}
-        keyExtractor={item => item.imageUrl}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
+      {loadingPending ? <AppLoader /> : null}
+    </>
   );
 };
 
