@@ -2,6 +2,7 @@ import {View, Text} from 'react-native';
 import React, {useEffect, useState, createContext, useContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import AppLoader from '../../components/AppLoader';
 
 const AuthContext = createContext({});
 
@@ -18,14 +19,15 @@ const AuthContextProvider = ({children}) => {
   let favourite;
   useEffect(() => {
     getData();
-    console.log('in context');
-    // getItem();
-    setTimeout(() => console.log('h'), 1000);
-    setTimeout(() => console.log(jsonValue?.token), 1);
+    // console.log('in context');
+    // // getItem();
+    // setTimeout(() => console.log('h'), 1000);
+    // setTimeout(() => console.log(jsonValue?.token), 1);
   }, []);
 
   const getData = async () => {
-    console.log('inside get auth');
+    // console.log('inside get auth');
+    setLoginPending(true);
     const value = await AsyncStorage.getItem('userDetail');
     jsonValue = JSON.parse(value);
     if (value != null) {
@@ -38,6 +40,7 @@ const AuthContextProvider = ({children}) => {
       setUser(false);
       // jsonValue = '';
     }
+    setLoginPending(false);
   };
 
   const onCreateOrder = async () => {
@@ -77,6 +80,7 @@ const AuthContextProvider = ({children}) => {
         setLoginPending,
       }}>
       {children}
+      {loginPending ? <AppLoader /> : null}
     </AuthContext.Provider>
   );
 };
