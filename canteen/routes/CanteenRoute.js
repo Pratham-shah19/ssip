@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const {deletebtn,resetWallet,addDish,modifyQuantity,getCurrentOrders,getHistoryOrders,getUser,getAllDish,getDish,modifyDish,fetchAllCanteen,getUserByEmail,addOrder,updateCanteenDetails,guestCompletedButton,dishFilter,dishCategory} = require('../controllers/CanteenController')
+const {reportGeneration,deletebtn,resetWallet,addDish,modifyQuantity,getCurrentOrders,getHistoryOrders,getUser,getAllDish,getDish,modifyDish,fetchAllCanteen,getUserByEmail,addOrder,updateCanteenDetails,guestCompletedButton,dishFilter,dishCategory} = require('../controllers/CanteenController')
 
 router.route('/order/current').get(getCurrentOrders)
 router.route('/order/history').get(getHistoryOrders)
@@ -20,6 +20,7 @@ router.route('/dishes/category').post(dishCategory)
 router.route('/modifyquantity/:did').post(modifyQuantity)
 router.route("/deletebtn/:did").get(deletebtn)
 router.route('/resetwallet').get(resetWallet)
+router.route('/report').get(reportGeneration)
 
 
 
