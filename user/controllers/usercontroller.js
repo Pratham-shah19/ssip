@@ -72,18 +72,16 @@ const getBalance = async (req, res) => {
 
 const getOrdersSpecific = async (req, res) => {
   const { status } = req.query;
-  const  userId  = req.params.uid;
+  const userId = req.params.uid;
 
   if (status === "NEW" || status === "COMPLETED") {
-    const orders = await Order.find({status,userId});
-    for(let i=0;i<orders.length;i++)
-    {
+    const orders = await Order.find({ status, userId });
+    for (let i = 0; i < orders.length; i++) {
       var items = orders[i].items;
-      var updatedItems=[]
-      for (let j=0;j<items.length;j++)
-      {
-        const dish = await Dish.findOne({_id:items[j].dishId})
-        const obj = {qty:items[i].qty,dish}
+      var updatedItems = [];
+      for (let j = 0; j < items.length; j++) {
+        const dish = await Dish.findOne({ _id: items[j].dishId });
+        const obj = { qty: items[i].qty, dish };
         updatedItems.push(obj);
       }
       orders[i].items = updatedItems;
@@ -322,16 +320,20 @@ const payCanteen = async (req, res) => {
   //deleting basket
   const emptyBasket = await Basket.findOneAndDelete({ userId: uid });
 
-  res.status(StatusCodes.CREATED).json({ res: "success", data: {"current balance":deduct.wallet,"orderOtp":otp }});
+  res.status(StatusCodes.CREATED).json({
+    res: "success",
+    data: { "current balance": deduct.wallet, orderOtp: otp },
+  });
 };
 
 const addRating = async (req, res) => {
-  const { dishId, rating } = req.body;
+  console.log(req.body);
+  let { dishId, rating } = req.body;
   const dish = await Dish.findOne({ _id: dishId });
   if (!dish) {
     throw new BadRequestError("Invalid dish id");
   }
-  rating = new Number(rating);
+  // rating = Number(rating);
   dish.rating = (dish.rating + rating) / 2;
   const Updated = await Dish.findOneAndUpdate({ _id: dishId }, dish, {
     new: true,

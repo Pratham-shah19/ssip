@@ -2,6 +2,7 @@ import {View, Text} from 'react-native';
 import React, {useEffect, useState, createContext, useContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import AppLoader from '../../components/AppLoader';
 
 const AuthContext = createContext({});
 
@@ -13,18 +14,20 @@ const AuthContextProvider = ({children}) => {
   const [dish, setDish] = useState([]);
   const [price, setPrice] = useState(null);
   const [items, setItems] = useState([]);
+  const [loginPending, setLoginPending] = useState(false);
   let jsonValue;
   let favourite;
   useEffect(() => {
     getData();
-    console.log('in context');
-    // getItem();
-    setTimeout(() => console.log('h'), 1000);
-    setTimeout(() => console.log(jsonValue?.token), 1);
+    // console.log('in context');
+    // // getItem();
+    // setTimeout(() => console.log('h'), 1000);
+    // setTimeout(() => console.log(jsonValue?.token), 1);
   }, []);
 
   const getData = async () => {
-    console.log('inside get auth');
+    // console.log('inside get auth');
+    setLoginPending(true);
     const value = await AsyncStorage.getItem('userDetail');
     jsonValue = JSON.parse(value);
     if (value != null) {
@@ -37,24 +40,11 @@ const AuthContextProvider = ({children}) => {
       setUser(false);
       // jsonValue = '';
     }
+    setLoginPending(false);
   };
 
-  // const getItem = async () => {
-  //   const value = await AsyncStorage.getItem('Favourites');
-  //   favourite = JSON.parse(value);
-  //   if (favourite) {
-  //     setItems(favourite);
-  //   }
-  //   console.log('item', favourite);
-  // };
-
-  // const setItem = async () => {
-  //   console.log('inside cset:', items);
-  //   const json = JSON.stringify(items);
-  //   await AsyncStorage.setItem('Favourites', json);
-  // };
-
   const onCreateOrder = async () => {
+    setLoginPending(true);
     const response = await axios.get(
       `http://10.0.2.2:8000/api/v1/user/${users}/cart`,
       {
@@ -65,6 +55,7 @@ const AuthContextProvider = ({children}) => {
     );
     setDish(response.data.data.data);
     setPrice(response.data.data.price);
+    setLoginPending(false);
   };
 
   return (
@@ -85,8 +76,11 @@ const AuthContextProvider = ({children}) => {
         setItems,
         // getItem,
         // setItem,
+        loginPending,
+        setLoginPending,
       }}>
       {children}
+      {loginPending ? <AppLoader /> : null}
     </AuthContext.Provider>
   );
 };
