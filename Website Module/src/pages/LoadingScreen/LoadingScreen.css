@@ -1,0 +1,9 @@
+#loading {
+  background: no-repeat center center;
+  position: absolute;
+  bottom: 50;
+  left: 100;
+  height: 100%;
+  width: 100%;
+  z-index: 9999999;
+}

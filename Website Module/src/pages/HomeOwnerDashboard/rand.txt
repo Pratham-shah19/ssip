@@ -1,0 +1,53 @@
+<>
+      {loading === false ? (
+        <div className="owner-dashboard-container">
+          <div className="owner-inner-container">
+            <div className="owner-left">
+              <Sidebar />
+            </div>
+            <div className="owner-right">
+              <div className="header_handle">
+                <Header
+                  title="Current Orders"
+                  btn1={btn1_handle}
+                  btn1title={<HistoryIcon sx={{ fontSize: 40 }} />}
+                  btn2="btn2_handle"
+                  btn2title={<AccountCircleIcon sx={{ fontSize: 40 }} />}
+                />
+              </div>
+
+              <div className="hr_line">
+                <hr />
+              </div>
+              <div className="home_comp">
+                {!loading &&
+                  newOrder.map((item) => {
+                    console.log(item.price);
+                    console.log("orders", newOrder);
+                    return (
+                      <CollapsibleBox
+                        _button={item.data.button}
+                        orderId={item.data._id}
+                        item_arr={item.items}
+                        otp={item.data.otp}
+                        cust_name={item.userdetail.username}
+                      />
+                    );
+                  })}
+                {/* <CollapsibleBox/>
+            <CollapsibleBox/>
+            <CollapsibleBox/>
+            <CollapsibleBox/>
+            <CollapsibleBox/>
+            <CollapsibleBox/>
+            <CollapsibleBox/>
+            <CollapsibleBox/> */}
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <LoadingScreen />
+      )}
+    </>
+  );

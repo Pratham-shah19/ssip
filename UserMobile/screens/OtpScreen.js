@@ -22,26 +22,33 @@ const OtpScreen = () => {
         style={{
           color: 'black',
           fontFamily: 'Fredoka-Regular',
-          fontSize: 23,
+          fontSize: 20,
           alignSelf: 'center',
           marginTop: 15,
           opacity: status === 'success' ? 0 : 1,
         }}>
-        Enter OTP :
+        Please provide this OTP to canteen administrator, your OTP is:
       </Text>
-      <TextInput
+      <Text
         style={{
           color: 'black',
-          fontSize: 25,
+          fontFamily: 'Fredoka-Medium',
+          fontSize: 27,
+          alignSelf: 'center',
+          marginTop: 15,
           opacity: status === 'success' ? 0 : 1,
-        }}
-        placeholder="OTP"
-        placeholderTextColor="#9a73ef"
-        autoCapitalize="none"
-        value={text}
-        onChangeText={setText}
-        keyboardType={'number-pad'}
-      />
+        }}>
+        1111
+      </Text>
+      <Text
+        style={{
+          color: 'black',
+          fontFamily: 'Fredoka-Regular',
+          fontSize: 20,
+          alignSelf: 'center',
+          marginTop: 15,
+          opacity: status === 'success' ? 0 : 1,
+        }}></Text>
       <Pressable
         onPress={onPress}
         style={{

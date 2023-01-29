@@ -17,38 +17,20 @@ const Payment = () => {
     walletDetail();
   }, []);
   const navigation = useNavigation();
-  // const token = dbUser.token;
-  // const userID = '633e140b3c019d3208f40d83';
-  // const tokens =
-  //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzNiMmQ5MjAyOWNkODNlNzQyNGNjZDAiLCJuYW1lIjoiS2FuZGFycCIsImlhdCI6MTY2NTEwODAyNiwiZXhwIjoxNjY3NzAwMDI2fQ.ibs8d_jfKwh0UO1ZnCDxNIfm34un53OdDn8DtNXxqVo';
-  // // const userID = dbUser.userID;
-  // const userID = '633e140b3c019d3208f40d83';
   const onCreateOrder = async () => {
-    // console.log(token);
     const response = await axios.post(
       `http://10.0.2.2:8000/api/v1/user/${users}/payWallet`,
       {price: price, canteenName: 'Sachivalaya'},
       {headers: {Authorization: `Bearer ${tokens}`}},
     );
     navigation.navigate('OtpScreen');
-    // console.log(response);
-    // console.log(response.data.data.data);
-    // console.log(response.data.data.price);
-    // setDish(response.data.data.data);
-    // setPrice(response.data.data.price);
-    // const newOrder = await createOrder();
-    // navigation.navigate('Orders', {
-    //   screen: 'OrderDetailNavigator',
-    //   params: {id: newOrder.id},
-    // });
   };
   const walletDetail = async () => {
     const response = await axios.get(
       `http://10.0.2.2:8000/api/v1/user/${users}/wallet`,
       {headers: {Authorization: `Bearer ${tokens}`}},
     );
-    // navigation.navigate('OtpScreen');
-    console.log(response.data.data);
+    // console.log(response.data.data);
     setWallet(response.data.data);
   };
 
@@ -69,13 +51,11 @@ const Payment = () => {
           Payment Gateway
         </Text>
       </View>
-      {/* {visibility && ( */}
       <View
         style={{
           alignContent: 'center',
           alignItems: 'center',
           marginTop: 40,
-          // opacity: visibility ? 1 : 0,
         }}>
         <View style={{alignSelf: 'center'}}>
           <Ionicons
@@ -130,8 +110,6 @@ const Payment = () => {
           </Text>
         </View>
       </View>
-      {/* // )} */}
-      {/* {visibility && ( */}
       <View
         style={{alignContent: 'center', alignItems: 'center', marginTop: 45}}>
         <Text style={{color: 'black'}}>----------</Text>

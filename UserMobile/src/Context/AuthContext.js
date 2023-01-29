@@ -1,72 +1,86 @@
 import {View, Text} from 'react-native';
 import React, {useEffect, useState, createContext, useContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import AppLoader from '../../components/AppLoader';
 
 const AuthContext = createContext({});
 
 const AuthContextProvider = ({children}) => {
-  // const [authStudent, setAuthStudent] = useState(null);
   const [dbUser, setDbUser] = useState(null);
-  // const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(false);
   const [tokens, setTokens] = useState(null);
   const [users, setUsers] = useState(null);
-  const token = dbUser?.token;
-  //   const sub = authStudent?.attributes?.sub;
-  //   const id = dbStudent?.id;
-
-  //   useEffect(() => {
-  //     Auth.currentAuthenticatedUser({bypassCache: true}).then(setAuthStudent);
-  //   }, []);
-
+  const [dish, setDish] = useState([]);
+  const [price, setPrice] = useState(null);
+  const [items, setItems] = useState([]);
+  const [loginPending, setLoginPending] = useState(false);
+  let jsonValue;
+  let favourite;
   useEffect(() => {
     getData();
+    // console.log('in context');
+    // // getItem();
+    // setTimeout(() => console.log('h'), 1000);
+    // setTimeout(() => console.log(jsonValue?.token), 1);
   }, []);
 
   const getData = async () => {
+    // console.log('inside get auth');
+    setLoginPending(true);
     const value = await AsyncStorage.getItem('userDetail');
-    const jsonValue = JSON.parse(value);
-    // if (value != null) {
-    console.log('user in auth context:', jsonValue);
-    setUser(true);
-    setUsers(jsonValue.userID);
-    setTokens(jsonValue.token);
-    setDbUser(jsonValue);
-
-    // } else {
-    // setUser(false);
-    // }
+    jsonValue = JSON.parse(value);
+    if (value != null) {
+      console.log('user in auth context:', jsonValue);
+      setUser(true);
+      setUsers(jsonValue?.userID);
+      setTokens(jsonValue?.token);
+      setDbUser(jsonValue);
+    } else {
+      setUser(false);
+      // jsonValue = '';
+    }
+    setLoginPending(false);
   };
-  //   useEffect(() => {
-  //     // if (!sub) {
-  //     //   return;
-  //     // }
-  //     DataStore.query(Student, student => student.sub('eq', sub)).then(
-  //       students => {
-  //         setDbStudent(students[0]);
-  //         setLoading(false);
-  //       },
-  //     );
-  //   }, [sub]);
 
-  //   useEffect(() => {
-  //     if (!dbStudent) {
-  //       return;
-  //     }
-  //     const subscription = DataStore.observe(Student, dbStudent.id).subscribe(
-  //       msg => {
-  //         if (msg.opType === 'UPDATE') {
-  //           setDbStudent(msg.element);
-  //         }
-  //       },
-  //     );
-
-  //     return () => subscription.unsubscribe();
-  //   }, [dbStudent]);
+  const onCreateOrder = async () => {
+    setLoginPending(true);
+    const response = await axios.get(
+      `http://10.0.2.2:8000/api/v1/user/${users}/cart`,
+      {
+        headers: {
+          Authorization: `Bearer ${tokens}`,
+        },
+      },
+    );
+    setDish(response.data.data.data);
+    setPrice(response.data.data.price);
+    setLoginPending(false);
+  };
 
   return (
-    <AuthContext.Provider value={{user, setUser, dbUser, token, tokens, users}}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        dbUser,
+        tokens,
+        users,
+        setTokens,
+        jsonValue,
+        getData,
+        onCreateOrder,
+        dish,
+        price,
+        items,
+        setItems,
+        // getItem,
+        // setItem,
+        loginPending,
+        setLoginPending,
+      }}>
       {children}
+      {loginPending ? <AppLoader /> : null}
     </AuthContext.Provider>
   );
 };
