@@ -36,7 +36,7 @@ const OrderSchema = new mongoose.Schema({
   },
   paymentmode:{
     type:String,
-    required:[true,'Please provide price']
+    default:'KOT'
   }
 })
 //kahdkwh
