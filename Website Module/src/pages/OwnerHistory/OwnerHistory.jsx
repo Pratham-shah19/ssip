@@ -3,48 +3,50 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import "./OwnerHistory.css";
 import Header from "../../components/Header_Home/Header";
 import * as WalletActions from "../../store/actions/wallet";
-import { useSelector, useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import CollapsibleGen from "../../components/CollapsibleGen/CollapsibleGen";
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-const OwnerHistory = () => {
-  let [newOrders, setNewOrders] = useState([]);
+import * as AuthActions from "../../store/actions/auth";
+const OwnerHistory = ({
+  token,
+  orderHistory,
+  getOrderHistory,
+  setHistloaded,
+  Histflag,
+}) => {
   let [loading, setloading] = useState(true);
-  const [time, setTime] = useState(Date.now());
-  const newOrder = useSelector((state) => state.wallet.orderHistory);
-  //   //le.log("order1", newOrder);
-  const dispatch = useDispatch();
-
-  const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
   const btn2_handle = () => {
     navigate("/owner-dashboard/profileScreen");
   };
-  const loadProducts = useCallback(async () => {
-    try {
-      await dispatch(WalletActions.setOrderHistory());
-      setNewOrders(newOrder);
-      //le.log("orders", newOrder);
-    } catch (err) {
-      //le.log(err.message);
-    }
-  }, [dispatch]);
-
-  //Just an Session Handling
-
   useEffect(() => {
     if (!token) {
       navigate("/");
     }
-    const interval = setInterval(() => {
-      loadProducts().then(() => setloading(false));
-      setTime(Date.now());
-    }, 5000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [newOrder]);
+  }, []);
+  useEffect(() => {
+    if (Histflag == true) {
+      const interval = setInterval(() => {
+        getOrderHistory();
+      }, 15000);
+
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  });
+  useEffect(() => {
+    if (Histflag == false) {
+      getOrderHistory();
+      setloading(false);
+      setHistloaded(true);
+    }
+    if (Histflag == true) {
+      setloading(false);
+    }
+  }, []);
 
   return (
     <>
@@ -68,7 +70,7 @@ const OwnerHistory = () => {
               </div>
               <div className="home_comp">
                 {!loading &&
-                  newOrder.map((item) => {
+                  orderHistory.map((item) => {
                     return (
                       <CollapsibleGen
                         _button={item.data.button}
@@ -90,4 +92,22 @@ const OwnerHistory = () => {
   );
 };
 
-export default OwnerHistory;
+function mapStateToProps(state) {
+  return {
+    orderHistory: state.wallet.orderHistory,
+    token: state.auth.token,
+    Histflag: state.auth.Histflag,
+  };
+}
+function mapStateToDispatch(dispatch) {
+  return {
+    getOrderHistory: () => {
+      return dispatch(WalletActions.setOrderHistory());
+    },
+    setHistloaded: (Histflag) => {
+      return dispatch(AuthActions.setHistloaded(Histflag));
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapStateToDispatch)(OwnerHistory);
