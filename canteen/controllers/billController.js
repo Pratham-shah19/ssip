@@ -14,7 +14,11 @@ const billController = async (req,res) => {
   if(!oid){
     throw new BadRequestError('Please Provide Dish id')
   }
-  const order = await Order.findOne({_id:oid})
+  const order = await Order.findOneAndUpdate({_id:oid} , {status:'COMPLETED'} , {
+    new: true,
+    runValidators: true,
+  })
+
   const user = await User.findOne({_id:order.userId})
   const path = __dirname + `\\bill-${oid}.pdf`
   let qty = 0
