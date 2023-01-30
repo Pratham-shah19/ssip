@@ -8,7 +8,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-
+import { useNavigate } from "react-router-dom";
 import "./Menu.css";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -49,6 +49,7 @@ const Menu = ({ setDummyHot, Starters, MainCourse, IceCreams, token }) => {
   const [onRefreshing, setOnRefreshing] = React.useState(false);
   const [error, setError] = React.useState(false);
   console.log("Log");
+  let navigate = useNavigate();
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };

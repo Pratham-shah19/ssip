@@ -32,7 +32,7 @@ const AdminDashboard = () => {
   dispatch(WalletActions.setOrderHistory());
   const wallet = useSelector((state) => state.wallet.Wallet);
 
-  const handleChange = async (e) => {
+  async function handleChange(e) {
     // console.log("e.target.value", e.target.value);
     //setSearch(e.target.value)
     //dispatch(CustomerActions.setCustomers(e.target.value))
@@ -53,10 +53,10 @@ const AdminDashboard = () => {
     // console.log("data", data);
 
     setSearchres(data.data.data);
-  };
+  }
 
   useEffect(() => {
-    handleChange;
+    handleChange();
   }, []);
   return (
     <div className="admin-container">

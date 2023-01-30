@@ -4,6 +4,9 @@ import axios from "axios";
 // import './OTP.css'
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import OTP from "../OTP/OTP";
+import "./ForgetEmail.css";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+
 const ForgetEmail = () => {
   const [email, setEmail] = useState("");
   const [Error, setError] = useState("");
@@ -46,9 +49,11 @@ const ForgetEmail = () => {
   }
 
   return (
-    <div className="otp-container">
-      <div className="otp-outer">
-        <h1 className="otp-title">Enter The E-Mail</h1>
+    <>
+      {!successMail ? (
+        <div className="otp-container">
+          <div className="otp-outer">
+            {/* <h1 className="otp-title">Enter The E-Mail</h1>
         <input
           type="text"
           name="forget-email"
@@ -69,9 +74,43 @@ const ForgetEmail = () => {
         )}
         <button type="button" onClick={handleTest} className="otp-btn">
           TEST
-        </button>
-      </div>
-    </div>
+        </button> */}
+
+            <div className="f-e-upper">
+              <div className="round-e">
+                <LockOpenIcon className="lock-icon" fontSize="large" />
+              </div>
+            </div>
+            <div className="f-e-lower">
+              <h1 className="otp-title">Enter The E-Mail</h1>
+              <input
+                type="text"
+                name="forget-email"
+                id="forget-email"
+                onChange={handleChange}
+                value={email}
+              />
+              {Error && <p>{Error}</p>}
+              {!successMail && (
+                <button
+                  type="button"
+                  onClick={handleForgetPassword}
+                  className="otp-btn"
+                >
+                  SUBMIT
+                </button>
+              )}
+
+              <button type="button" onClick={handleTest} className="otp-btn">
+                Test
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        handleOTP()
+      )}
+    </>
   );
 };
 

@@ -1,0 +1,1 @@
+--> Suspanse in App.js -> bundle.js time in Network Inspection -> 31ms to 23ms
