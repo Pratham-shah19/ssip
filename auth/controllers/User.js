@@ -35,16 +35,33 @@ const forgotPasswordUser = async (req, res) => {
     throw new BadRequestError("Please provide valid email");
   }
 
+  // const transporter = nodemailer.createTransport({
+  //   host: "smtp-mail.outlook.com", // hostname
+  //   secureConnection: false, // TLS requires secureConnection to be false
+  //   port: 587, // port for secure SMTP
+  //   tls: {
+  //     ciphers: "SSLv3",
+  //   },
+  //   auth: {
+  //     user: "ssip69@outlook.com",
+  //     pass: "Password@69",
+  //   },
+  // });
+
   const transporter = nodemailer.createTransport({
-    host: "smtp-mail.outlook.com", // hostname
+    host: "smtp.gmail.com", // hostname
     secureConnection: false, // TLS requires secureConnection to be false
     port: 587, // port for secure SMTP
     tls: {
       ciphers: "SSLv3",
     },
+    // auth: {
+    //   user: "vedant.k.raval@gmail.com",
+    //   pass: "mtisrmygmnaapsoj",
+    // },
     auth: {
-      user: "ssip69@outlook.com",
-      pass: "Password@69",
+      user: "hetpatel5542@gmail.com",
+      pass: "xivslyvrfcrgewtb",
     },
   });
 
