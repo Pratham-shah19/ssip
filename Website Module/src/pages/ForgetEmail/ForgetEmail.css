@@ -1,0 +1,33 @@
+.f-e-upper{
+    min-height: 40%;
+    width: 100%;
+    background: linear-gradient(to right, #ff4b28, #ff228c);
+    position: relative;
+}
+
+.round-e{
+    height: 150px;
+    width: 150px;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    left: 39%;
+    top: 44%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lock-icon{
+    height: 6rem;
+    width: 7rem;
+    transform: scale(3);
+    color:#f56447;
+}
+
+.f-e-lower{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

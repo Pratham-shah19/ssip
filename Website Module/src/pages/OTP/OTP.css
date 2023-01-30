@@ -11,11 +11,14 @@
 
 .otp-title{
     font-weight: 200;
+    font-size: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 0.8rem;
 }
 
 .otp-btn{
     width: auto;
-    font-size: 1.1rem;
+    font-size: 1rem;
     background: var(--theme);
     color: white;
     font-weight: 400;
@@ -32,10 +35,49 @@
     width: 50%;
     margin: auto;
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     flex-direction: column;
     gap: 20px;
     box-shadow: 0 1rem 2rem rgba(0, 0,0,0.2);
     border-radius: 15px;
+    position: relative;
+}
+
+.f-e-upper{
+    min-height: 40%;
+    width: 100%;
+    background: linear-gradient(to right, #ff4b28, #ff228c);
+    position: relative;
+}
+
+.round{
+    height: 150px;
+    width: 150px;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    left: 42%;
+    top: 44%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lock-icon{
+    height: 6rem;
+    width: 7rem;
+    transform: scale(3);
+    color:#f56447;
+}
+
+.f-e-lower{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.otp-boxes{
+    width: 60%;
 }

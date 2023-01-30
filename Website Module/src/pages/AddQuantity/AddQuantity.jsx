@@ -10,7 +10,7 @@ import Unknown from "../../components/Unknown/Unknown";
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
-
+import { useNavigate } from "react-router-dom";
 const AddQuantity = ({
   token,
   Items,
@@ -18,6 +18,9 @@ const AddQuantity = ({
   qtyError,
   setqtyError,
 }) => {
+  console.log("Add Quantity", Items.data.data);
+  // Items = Items.data.data;
+  const navigate = useNavigate();
   const [value, setValue] = React.useState(0);
   const [isLoading, setIsLoading] = React.useState(false);
   const [onRefreshing, setOnRefreshing] = React.useState(false);
@@ -29,19 +32,14 @@ const AddQuantity = ({
       navigate("/");
     }
   }, []);
-  const handlePopup = () => {
+  function handlePopup() {
     alert("error" + qtyError);
-    return (
-      <Popup trigger={<button> Trigger</button>} position="right center">
-        <div>Popup content here !!</div>
-      </Popup>
-    );
-  };
+  }
   useEffect(() => {
     // console.log("Items", Items);
     if (qtyError) {
       setqtyError("");
-      handlePopup;
+      handlePopup();
     } else {
       const interval = setInterval(() => {
         setAllProducts();
@@ -68,7 +66,7 @@ const AddQuantity = ({
               </div>
               <div className="quantity-bars">
                 {Items ? (
-                  Items.map((item) => {
+                  Items.data.data.map((item) => {
                     return (
                       <Unknown
                         id={item._id}
@@ -96,7 +94,7 @@ const AddQuantity = ({
 function mapStateToProps(state) {
   return {
     token: state.auth.token,
-    Items: state.items.AllItems.data.data,
+    Items: state.items.AllItems,
     qtyError: state.items.qtyError,
   };
 }

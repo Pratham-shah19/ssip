@@ -33,8 +33,13 @@ const OrderSchema = new mongoose.Schema({
   button:{
     type:Boolean,
     default:false
+  },
+  paymentmode:{
+    type:String,
+    default:'KOT'
   }
 })
+//kahdkwh
 
 
 module.exports = mongoose.model('Order',OrderSchema)
