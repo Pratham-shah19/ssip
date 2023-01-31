@@ -3,6 +3,7 @@ import { MuiOtpInput } from 'mui-one-time-password-input'
 import './OTP.css'
 import { Link, Navigate,useNavigate} from "react-router-dom";
 import axios from 'axios';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
 
 const OTP = () => {
   const [otp, setOtp] = React.useState('')
@@ -40,9 +41,21 @@ const OTP = () => {
   return (
     <div className="otp-container">
         <div className="otp-outer" style={{width:"70%",}}>
-            <h1 className="otp-title">Enter The OTP</h1>
+            {/* <h1 className="otp-title">Enter The OTP</h1>
             <MuiOtpInput value={otp} onChange={handleChange} />
-            <button type="button" onClick={handleOtp} className="otp-btn">SUBMIT</button>
+            <button type="button" onClick={handleOtp} className="otp-btn">SUBMIT</button> */}
+
+
+            <div className="f-e-upper">
+              <div className="round">
+                <LockOpenIcon className="lock-icon"/>
+              </div>
+            </div>
+            <div className="f-e-lower">
+              <h1 className="otp-title">Enter The OTP</h1>
+              <MuiOtpInput value={otp} onChange={handleChange} className="otp-boxes"/>
+              <button type="button" onClick={handleOtp} className="otp-btn">SUBMIT</button>
+            </div>
         </div>
     </div>
   )

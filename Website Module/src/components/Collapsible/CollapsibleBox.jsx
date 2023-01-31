@@ -37,16 +37,18 @@ const CollapsibleBox = ({
       </div>
     );
   };
-  const completedHandler = async () => {
-    const completedButton_action = await axios.post(
-      `http://127.0.0.1:4000/api/v1/canteen/guestcompletedbutton/${orderId}`,
-      {},
-      {
-        headers: { Authorization: `Bearer ${token_main}` },
-      }
-    );
+  const completedHandler = () => {
+    async function completedButton_action() {
+      await axios.post(
+        `http://127.0.0.1:4000/api/v1/canteen/guestcompletedbutton/${orderId}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token_main}` },
+        }
+      );
+    }
     function completedButton() {
-      completedButton_action;
+      completedButton_action();
       console.log("completed");
       setOrderID(orderId);
     }

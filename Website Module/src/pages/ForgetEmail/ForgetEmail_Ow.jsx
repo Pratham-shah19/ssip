@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import axios from "axios";
 // import './OTP.css'
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import "./ForgetEmail.css";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 
 import OTW_Ow from "../OTP/OTP_Ow";
 const ForgetEmail = () => {
@@ -47,9 +49,11 @@ const ForgetEmail = () => {
     return <OTW_Ow />;
   }
   return (
-    <div className="otp-container">
-      <div className="otp-outer">
-        <h1 className="otp-title">Enter The E-Mail</h1>
+    <>
+      {!successMail ? (
+        <div className="otp-container">
+          <div className="otp-outer">
+            {/* <h1 className="otp-title">Enter The E-Mail</h1>
         <input
           type="text"
           name="forget-email"
@@ -71,9 +75,44 @@ const ForgetEmail = () => {
 
         <button type="button" onClick={handleTest} className="otp-btn">
           Test
-        </button>
-      </div>
-    </div>
+        </button> */}
+
+            <div className="f-e-upper">
+              <div className="round-e">
+                <LockOpenIcon className="lock-icon" fontSize="large" />
+              </div>
+            </div>
+            <div className="f-e-lower">
+              <h1 className="otp-title">Enter The E-Mail</h1>
+              <input
+                type="text"
+                name="forget-email"
+                id="forget-email"
+                onChange={handleChange}
+                value={email}
+              />
+              {Error && <p>{Error}</p>}
+              {/* {successMail && handleOtp()} */}
+              {!successMail && (
+                <button
+                  type="button"
+                  onClick={handleForgetPassword}
+                  className="otp-btn"
+                >
+                  SUBMIT
+                </button>
+              )}
+
+              <button type="button" onClick={handleTest} className="otp-btn">
+                Test
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        handleOtp()
+      )}
+    </>
   );
 };
 
