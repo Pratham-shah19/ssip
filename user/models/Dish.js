@@ -29,6 +29,14 @@ const DishSchema = new mongoose.Schema({
   isAvailable:{
     type:Boolean,
     default:false
+  },
+  prodId:{
+    type:String,
+    required:[true,'Please provide product id']
+  },
+  priceId:{
+    type:String,
+    required:[true,'Please provide price id']
   }
 })
 
