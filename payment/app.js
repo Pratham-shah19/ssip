@@ -25,7 +25,7 @@ app.post("/payment-sheet", async (req, res) => {
     },
   });
 
-  res.json({
+  res.status(200).json({
     paymentIntent: paymentIntent.client_secret,
     ephemeralKey: ephemeralKey.secret,
     customer: customer.id,
@@ -33,3 +33,6 @@ app.post("/payment-sheet", async (req, res) => {
       "pk_test_51KyqwvSFXhJBixXADhCK7QcvopmkFSi5zg7i2wFLoGvFHYXNb2waPBALIHBoj6ONtR9mZMRAYAi5f5wurs14H1cL00mKeQfwrs",
   });
 });
+
+
+app.listen(6990,()=> console.log("Listening on port 6990..."))
