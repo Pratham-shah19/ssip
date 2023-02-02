@@ -36,12 +36,7 @@ const OrderSchema = new mongoose.Schema({
   },
   paymentmode:{
     type:String,
-    default:'KOT',
-    enum:[
-      "KOT",
-      "ONLINE",
-      "OFFLINE"
-    ]
+    default:'KOT'
   }
 })
 

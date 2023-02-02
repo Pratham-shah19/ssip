@@ -31,7 +31,7 @@ const CanteenSchema = new mongoose.Schema({
     type:Number,
     default:0
   },
-  cashotp:{
+  onlinewallet:{
     type:Number,
     default:0
   }
