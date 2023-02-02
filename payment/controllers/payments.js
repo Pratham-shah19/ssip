@@ -1,4 +1,8 @@
 const Users = require('../models/User')
+const Canteen = require('../models/Canteen')
+const Basket = require('../models/Basket')
+const Dish= require('../models/Dish')
+const Orders = require("../models/Orders")
 
 const stripe = require("stripe")(
   "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"
@@ -31,6 +35,86 @@ const paymentsheet = async (req, res) => {
   });
 };
 
+const payCanteen = async (req, res) => {
+    const { customer ,amount_total} = req.body;
+    const user = await Users.findOne({ customerId: customer });
+    if (!user) {
+      throw new BadRequestError("Invalid userid");
+    }
+  
+    //adding coins to canteen's wallet
+    const canteen = await Canteen.findOne({ name: 'Sachivalaya' });
+    if (!canteen) {
+      console.log("canteen not found");
+      throw new BadRequestError("Invalid caneteen name");
+
+    }
+    const pay = await Canteen.findOneAndUpdate(
+      { name: 'Sachivalaya'},
+      { onlinewallet: canteen.onlinewallet + amount_total/100 },
+      { new: true, runValidators: true }
+    );
+    const basket = await Basket.findOne({ userId: user._id });
+    if (!basket) {
+      console.log("basket not present");
+      throw new BadRequestError("Invalid user id, could not find basket");
+      return;
+    }
+    var arr = [];
+    var items = basket.items;
+    items.forEach(async (e) => {
+      let obj = {};
+      const dish = await Dish.findOne({ _id: e.dishId, isAvailable: true });
+      if (!dish) {
+        console.log("dish not available");
+        res
+          .status(StatusCodes.OK)
+          .json({ res: "fail", data: "dish is not actually available" });
+      } else {
+        if (dish?.quantity >= e.qty) {
+          obj.dishId = e.dishId;
+          obj.qty = dish?.quantity - e.qty;
+          if (obj.qty < 10) {
+            const dish = await Dish.findOneAndUpdate(
+              { _id: obj.dishId },
+              { quantity: obj.qty, isAvailable: false },
+              { runValidators: true, new: true }
+            );
+            console.log("less quantity", dish);
+          } else {
+            const dish = await Dish.findOneAndUpdate(
+              { _id: obj.dishId },
+              { quantity: obj.qty },
+              { runValidators: true, new: true }
+            );
+            console.log("enough quantity", dish);
+          }
+        } else {
+          res
+            .status(StatusCodes.OK)
+            .json({ res: "fail", data: "not enough quantity" });
+        }
+      }
+    });
+  
+    //generating otp
+    const otp = Math.floor(Math.random() * 10000);
+    const orderObj = {};
+    orderObj.items = basket.items;
+    orderObj.userId = basket.userId;
+    orderObj.price = price;
+    orderObj.otp = otp;
+    orderObj.paymentmode = "ONLINE";
+    //creating order
+    const order = await Orders.create(orderObj);
+    //deleting basket
+    const emptyBasket = await Basket.findOneAndDelete({ userId: user._id });
+  
+    res.status(StatusCodes.CREATED).json({
+      res: "success",
+      data: { "current balance": deduct.wallet, orderOtp: otp },
+    });
+  };
 const webhook = async (req, res) => {
   let event = req.body;
   // Only verify the event if you have an endpoint secret defined.
@@ -57,6 +141,7 @@ const webhook = async (req, res) => {
       console.log(`PaymentIntent for ${paymentIntent.amount} was successful!`);
       // Then define and call a method to handle the successful payment intent.
       // handlePaymentIntentSucceeded(paymentIntent);
+      payCanteen(req,res)
       break;
     case "payment_method.attached":
       const paymentMethod = event.data.object;

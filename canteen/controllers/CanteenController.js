@@ -7,6 +7,9 @@ const xl = require('excel4node')
 const path = require('path')
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
+const stripe = require('stripe')('sk_test_51KyqwvSFXhJBixXAbp2HBSBo65HD0T1BqG60ABDZrLJnFBWonmCw1KCdHIFVFG7TDYkE0qCZs6BORYhBSQX3be5g00hRtIdRtI');
+
+
 
 const getCurrentOrders = async (req, res) => {
   // console.log('Request Received')
@@ -234,6 +237,18 @@ const addDish = async (req, res) => {
   if (!name || !imageUrl || !category || !price) {
     throw new BadRequestError("Please Provide valid credentials");
   }
+  const product = await stripe.products.create({
+    name: name,
+    images:[imageUrl],
+    description:category
+  });
+  const priceid  = await stripe.prices.create({
+    unit_amount: price*100,
+    currency: 'inr',
+    product: product.id,
+  })
+  req.body.priceId = priceid.id
+  req.body.prodId = product.id;
   const dish = await Dish.create(req.body);
   res.status(StatusCodes.OK).json({ res: "Success", data: dish });
 };

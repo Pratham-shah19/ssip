@@ -36,7 +36,12 @@ const OrderSchema = new mongoose.Schema({
   },
   paymentmode:{
     type:String,
-    default:'KOT'
+    default:'KOT',
+    enum:[
+      'KOT',
+      'ONLINE',
+      'CASH'
+    ]
   }
 })
 

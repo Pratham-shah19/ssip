@@ -40,7 +40,7 @@ const OrderSchema = new mongoose.Schema({
     enum:[
       "KOT",
       "ONLINE",
-      "OFFLINE"
+      "CASH"
     ]
   }
 })
