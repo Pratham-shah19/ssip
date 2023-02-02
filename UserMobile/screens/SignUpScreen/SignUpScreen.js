@@ -96,9 +96,7 @@ const SignUpScreen = () => {
           {/* <View style={{flexDirection: 'row', alignContent: 'center'}}>
           <Feather name="chevron-left" size={28} color={'black'} style={{}} /> */}
           <Image
-            source={{
-              uri: 'https://gandhinagarportal.com/wp-content/uploads/2012/05/government_gujarat_gandhinagar.jpg',
-            }}
+            source={require('../../data/logo.png')}
             style={[styles.logo, {height: height * 0.25}]}
             resizeMode="contain"
           />
@@ -219,10 +217,11 @@ const styles = StyleSheet.create({
     color: '#FDB075',
   },
   logo: {
-    width: '70%',
-    maxWidth: 300,
-    maxHeight: 200,
+    width: 130,
+    maxWidth: 130,
+    maxHeight: 130,
     marginBottom: 10,
+    borderRadius: 65,
   },
 });
 

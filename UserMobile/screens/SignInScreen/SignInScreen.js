@@ -26,6 +26,7 @@ const SignInScreen = () => {
     getData,
     loginPending,
     setLoginPending,
+    setName,
   } = useAuthContext();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
@@ -56,6 +57,7 @@ const SignInScreen = () => {
     const jsonValue = JSON.stringify(obj);
     await AsyncStorage.setItem('userDetail', jsonValue);
     setTokens(response.data.token);
+    setName(response.data.user.name);
     console.log('b', response.data.token);
     await getData();
     setTimeout(() => console.log('a', tokens), 1000);
@@ -77,10 +79,8 @@ const SignInScreen = () => {
         style={{backgroundColor: 'white', padding: 20}}>
         <View style={{alignItems: 'center'}}>
           <Image
-            source={{
-              uri: 'https://gandhinagarportal.com/wp-content/uploads/2012/05/government_gujarat_gandhinagar.jpg',
-            }}
-            style={{height: 130, width: 210}}
+            source={require('../../data/logo.png')}
+            style={{height: 130, width: 130, borderRadius: 20, marginTop: 30}}
           />
           <View
             style={{

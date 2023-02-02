@@ -19,6 +19,8 @@ import IceCreamScreen from '../screens/IceCreamScreen';
 import MainCourseScreen from '../screens/MainCourseScreen';
 import SearchScreen from '../screens/SearchScreen';
 import HistoryDetailScreen from '../screens/HistoryDetailScreen';
+import StripeScreen from '../screens/StripeScreen';
+import {StripeProvider} from '@stripe/stripe-react-native';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -98,6 +100,7 @@ const BasketStack = () => {
       <Stack.Screen component={BasketScreen} name="BasketScreen" />
       <Stack.Screen component={Payment} name="Payment" />
       <Stack.Screen component={OtpScreen} name="OtpScreen" />
+      <Stack.Screen component={StripeScreen} name="StripeScreen" />
     </Stack.Navigator>
   );
 };

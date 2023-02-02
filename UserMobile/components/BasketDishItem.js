@@ -7,7 +7,7 @@ import axios from 'axios';
 const BasketDishItem = ({basketDish}) => {
   const {users, onCreateOrder, tokens} = useAuthContext();
   const onDelete = async () => {
-    console.log(basketDish.items._id);
+    // console.log(basketDish.items._id);
     const response = await axios.patch(
       `http://10.0.2.2:8000/api/v1/user/${users}/removeItem`,
       {itemId: basketDish.items._id},

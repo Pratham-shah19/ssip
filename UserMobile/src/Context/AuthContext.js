@@ -14,6 +14,7 @@ const AuthContextProvider = ({children}) => {
   const [dish, setDish] = useState([]);
   const [price, setPrice] = useState(null);
   const [items, setItems] = useState([]);
+  const [name, setName] = useState(null);
   const [loginPending, setLoginPending] = useState(false);
   let jsonValue;
   let favourite;
@@ -78,6 +79,8 @@ const AuthContextProvider = ({children}) => {
         // setItem,
         loginPending,
         setLoginPending,
+        name,
+        setName,
       }}>
       {children}
       {loginPending ? <AppLoader /> : null}
