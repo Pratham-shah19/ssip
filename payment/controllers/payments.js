@@ -1,29 +1,24 @@
 const Users = require('../models/User')
 
 const stripe = require("stripe")(
-  "sk_test_51KyqwvSFXhJBixXAbp2HBSBo65HD0T1BqG60ABDZrLJnFBWonmCw1KCdHIFVFG7TDYkE0qCZs6BORYhBSQX3be5g00hRtIdRtI"
+  "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"
 );
 const endpointSecret = "whsec_fb5686e7f586c42bd82e5e7a0839f44d5dd6c582ee7cf1fcce0f7be84d306fa1";
-const pubkey = "pk_test_51KyqwvSFXhJBixXADhCK7QcvopmkFSi5zg7i2wFLoGvFHYXNb2waPBALIHBoj6ONtR9mZMRAYAi5f5wurs14H1cL00mKeQfwrs";
+const pubkey = "pk_live_51KyqwvSFXhJBixXAkcyirlXABSuwuQoC9a6daIFPkc7mrRotk18Xe1eISkB7tFR1krgUbuw8FY6SQxvmTx9ZZ89100S4jkwTWc";
 
 const paymentsheet = async (req, res) => {
   // Use an existing Customer ID if this is a returning customer.
-  var { customerId, userId } = req.body;
-  if (customerId === null || customerId === "") {
-    var customer = await stripe.customers.create();
-    const updateUser = await Users.findOneAndUpdate({_id:userId},{customerId:customer.id},{runValidators:true,new:true})
-    customerId = customer.id;
-  }
-  const customerBasket = await Basket.find({ _id: userId });
+  var { price, userId } = req.body;
+  const customer = await Users.findOne({_id:userId})
 
   const ephemeralKey = await stripe.ephemeralKeys.create(
-    { customer: customerId },
+    { customer: customer.customerId },
     { apiVersion: "2020-08-27" }
   );
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: customerBasket.price * 100,
+    amount: price * 100,
     currency: "inr",
-    customer: customer.id,
+    customer: customer.customerId,
     automatic_payment_methods: {
       enabled: true,
     },
@@ -31,7 +26,7 @@ const paymentsheet = async (req, res) => {
   res.status(200).json({
     paymentIntent: paymentIntent.client_secret,
     ephemeralKey: ephemeralKey.secret,
-    customer: customer.id,
+    customer: customer.customerId,
     publishableKey:pubkey,
   });
 };
@@ -74,7 +69,7 @@ const webhook = async (req, res) => {
   }
 
   // Return a 200 response to acknowledge receipt of the event
-  res.send();
+  res.status(200).send("order placed");
 };
 
 module.exports = {paymentsheet,webhook}

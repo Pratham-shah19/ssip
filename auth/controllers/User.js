@@ -1,10 +1,12 @@
 const express = require("express");
-const app = express();
 const User = require("../models/User");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, UnauthenticatedError } = require("../errors/index");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+
+const stripe = require('stripe')('sk_test_51KyqwvSFXhJBixXAbp2HBSBo65HD0T1BqG60ABDZrLJnFBWonmCw1KCdHIFVFG7TDYkE0qCZs6BORYhBSQX3be5g00hRtIdRtI');
+
 
 const registerUser = async (req, res) => {
   const { name, email, password, address } = req.body;
@@ -12,6 +14,10 @@ const registerUser = async (req, res) => {
     throw new BadRequestError("Please provide necessary credentials");
   }
   req.body.wallet = 5000;
+  const customer = await stripe.customers.create({
+    email:email,name:name,address:address
+  });
+  req.body.customerId = customer.id;
   const user = await User.create(req.body);
   const token = user.createJWT();
   res
@@ -35,18 +41,6 @@ const forgotPasswordUser = async (req, res) => {
     throw new BadRequestError("Please provide valid email");
   }
 
-  // const transporter = nodemailer.createTransport({
-  //   host: "smtp-mail.outlook.com", // hostname
-  //   secureConnection: false, // TLS requires secureConnection to be false
-  //   port: 587, // port for secure SMTP
-  //   tls: {
-  //     ciphers: "SSLv3",
-  //   },
-  //   auth: {
-  //     user: "ssip69@outlook.com",
-  //     pass: "Password@69",
-  //   },
-  // });
 
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com", // hostname
@@ -55,10 +49,6 @@ const forgotPasswordUser = async (req, res) => {
     tls: {
       ciphers: "SSLv3",
     },
-    // auth: {
-    //   user: "vedant.k.raval@gmail.com",
-    //   pass: "mtisrmygmnaapsoj",
-    // },
     auth: {
       user: "hetpatel5542@gmail.com",
       pass: "xivslyvrfcrgewtb",
