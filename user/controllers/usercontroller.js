@@ -18,7 +18,7 @@ const getUserDetails = async (req, res) => {
   res.status(StatusCodes.OK).json({ res: "success", data: user });
 };
 const validateOTP = async (req, res) => {
-  const { otp } = req.body;
+  var { otp } = req.body;
   const { email } = req.params;
   otp = parseInt(otp);
   if (!otp) {
