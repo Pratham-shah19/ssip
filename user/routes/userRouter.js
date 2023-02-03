@@ -15,7 +15,7 @@ router.route('/dishes/rating').post(authenticationMiddleware,addRating)
 router.route('/:uid').get(authenticationMiddleware,getUserDetails).post(authenticationMiddleware,updateUserDetails)
 router.route('/:email/updatePassword').patch(authenticationMiddleware,updatePassword)//update password using email
 router.route('/:uid/wallet').get(authenticationMiddleware,getBalance)
-router.route('/:email/validateOtp').post(authenticationMiddleware,validateOTP)
+router.route('/:email/validateOtp').post(validateOTP)
 
 router.route('/:uid/cart').patch(authenticationMiddleware,addToCart).get(authenticationMiddleware,getCart)
 router.route('/:uid/removeItem').patch(authenticationMiddleware,removeItem)
