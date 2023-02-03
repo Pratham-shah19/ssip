@@ -62,7 +62,8 @@ const loginCanteen = async (req,res) => {
   if(!canteen){
     throw new UnauthenticatedError('Invalid Credentials')
   }
-  if(password!==canteen.password){
+  const isPasswordCorrect = await canteen.comparePassword(password)
+  if (!isPasswordCorrect) {
     throw new UnauthenticatedError('Invalid Credentials')
   }
   const token = canteen.createJWT()
