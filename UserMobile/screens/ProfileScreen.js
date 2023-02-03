@@ -48,7 +48,7 @@ export default function ProfileScreen() {
 
   const walletDetail = async () => {
     const response = await axios.get(
-      `http://10.0.2.2:8000/api/v1/user/${users}/wallet`,
+      `http://13.233.214.112:8000/api/v1/user/${users}/wallet`,
       {headers: {Authorization: `Bearer ${tokens}`}},
     );
     // navigation.navigate('OtpScreen');

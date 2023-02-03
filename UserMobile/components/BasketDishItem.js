@@ -9,7 +9,7 @@ const BasketDishItem = ({basketDish}) => {
   const onDelete = async () => {
     // console.log(basketDish.items._id);
     const response = await axios.patch(
-      `http://10.0.2.2:8000/api/v1/user/${users}/removeItem`,
+      `http://13.233.214.112:8000/api/v1/user/${users}/removeItem`,
       {itemId: basketDish.items._id},
       {headers: {Authorization: `Bearer ${tokens}`}},
     );

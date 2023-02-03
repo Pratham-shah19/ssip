@@ -39,12 +39,12 @@ const FamousItems = () => {
   useEffect(() => {
     getData();
     // console.log('inside famousItem: ');
-    setTimeout(() => fetchDishes(), 500);
+    setTimeout(() => fetchDishes(), 100);
   }, []);
 
   const fetchDishes = async () => {
     const response = await axios.post(
-      `http://10.0.2.2:6000/api/v1/canteen/dishes/filter?sort=rating`,
+      `http://35.153.67.221:6000/api/v1/canteen/dishes/filter?sort=rating`,
       {},
       {headers: {Authorization: `Bearer ${jsonValue.token}`}},
     );
@@ -59,15 +59,13 @@ const FamousItems = () => {
           flexDirection: 'row',
           marginLeft: 15,
           alignItems: 'center',
-          marginTop: 10,
+          marginTop: 3,
         }}>
-        <View style={{}}>
-          <Entypo name="emoji-happy" size={23} color="#f35858" />
-        </View>
+        <View style={{}}></View>
         <View style={{marginHorizontal: 3}}>
           <Text
             style={{
-              fontSize: 19,
+              fontSize: 16,
               marginLeft: 4,
               color: 'black',
               fontFamily: 'Fredoka-Medium',
@@ -85,22 +83,17 @@ const FamousItems = () => {
             horizontal
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{paddingVertical: 10}}>
+            // contentContainerStyle={{paddingVertical: 10}}
+          >
             <FlatList
               data={dishes}
               contentContainerStyle={{alignSelf: 'flex-start'}}
               numColumns={Math.ceil(4)}
-              scrollEnabled={false}
+              // scrollEnabled={false}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
               style={{marginTop: 10}}
-              renderItem={({item}) => (
-                <FamousItemComponent
-                  // famousFood={item.famousFood}
-                  // restaurantImage={item.restaurantImage}
-                  food={item}
-                />
-              )}
+              renderItem={({item}) => <FamousItemComponent food={item} />}
               keyExtractor={item => item.name}
             />
           </ScrollView>

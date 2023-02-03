@@ -23,7 +23,7 @@ const IceCreamScreen = () => {
   const fetchDishess = async () => {
     setLoadingPending(true);
     const response = await axios.post(
-      `http://10.0.2.2:6000/api/v1/canteen/dishes/category`,
+      `http://35.153.67.221:6000/api/v1/canteen/dishes/category`,
       {},
       {headers: {Authorization: `Bearer ${jsonValue.token}`}},
     );
