@@ -40,6 +40,7 @@ const ProductScreenComponent = ({dish}) => {
   };
 
   const onAddToBasket = async () => {
+    setModal(false);
     const response = await axios.patch(
       `http://65.0.189.107:8000/api/v1/user/${userID}/cart`,
       {itemId: id, qty: quantity, price: dishes?.price * quantity},
@@ -114,42 +115,45 @@ const ProductScreenComponent = ({dish}) => {
               {dish.category}
             </Text>
           </View>
-          <View
-            style={{
-              borderWidth: 1,
-              backgroundColor: '#fcfcf2',
-              borderColor: dish.isAvailable ? '#fce651' : 'grey',
-              padding: 1,
-              borderRadius: 4,
-              alignItems: 'center',
-              width: 90,
-              marginTop: 7,
-            }}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              {[0, 0, 0, 0, 0].map((el, i) => (
-                <FontAwesome
-                  style={{margin: 0.5}}
-                  name={i < Math.floor(rating) ? 'star' : 'star-o'}
-                  size={11}
-                  color={dish.isAvailable ? '#fabe1b' : 'grey'}
-                />
-              ))}
-
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View
+              style={{
+                borderWidth: 1,
+                backgroundColor: '#fcfcf2',
+                borderColor: dish.isAvailable ? '#fce651' : 'grey',
+                padding: 1,
+                borderRadius: 4,
+                alignItems: 'center',
+                width: 90,
+                marginTop: 7,
+              }}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                {[0, 0, 0, 0, 0].map((el, i) => (
+                  <FontAwesome
+                    style={{margin: 0.5}}
+                    name={i < Math.floor(rating) ? 'star' : 'star-o'}
+                    size={11}
+                    color={dish.isAvailable ? '#fabe1b' : 'grey'}
+                  />
+                ))}
+              </View>
+            </View>
+            <View>
               <Text
                 style={{
-                  fontSize: 11,
+                  fontSize: 10,
                   color: '#696965',
-                  fontWeight: 'bold',
+                  marginTop: 6,
                   marginHorizontal: 3,
                 }}>
-                {/* {dish?.rating} */}
+                {dish?.noOfRating}
               </Text>
             </View>
           </View>
           <View style={{justifyContent: 'center', marginTop: 7}}>
-            <Text style={{fontSize: 12, fontWeight: '400', color: 'black'}}>
+            <Text style={{fontSize: 11, fontWeight: '400', color: 'black'}}>
               {'\u20B9'}
-              <Text style={{fontSize: 13, color: 'black'}}>{dish.price}</Text>
+              <Text style={{fontSize: 11, color: 'black'}}>{dish.price}</Text>
             </Text>
           </View>
           <View style={{marginTop: 0}}>
@@ -238,10 +242,10 @@ const ProductScreenComponent = ({dish}) => {
               </Text>
             </View>
           </View>
-          <View style={{position: 'absolute', top: '80%', left: '8%'}}>
+          <View style={{position: 'absolute', top: '80%', left: '12%'}}>
             <Text
               style={{
-                fontSize: 11,
+                fontSize: 10,
                 color: '#848385',
                 fontFamily: 'Fredoka-Regular',
               }}>
@@ -251,150 +255,153 @@ const ProductScreenComponent = ({dish}) => {
         </View>
       </Pressable>
       <Modal transparent={true} visible={modal} animationType={'slide'}>
-        <Pressable
-          style={{
-            backgroundColor: '#000000aa',
-            paddingTop: 200,
-            // paddingBottom: 10,
-          }}
-          onPress={() => setModal(false)}>
-          {/* <View style={{borderTopRightRadius: 20}}> */}
-          <View style={{height: 215}}>
-            <Image
-              source={{
-                uri: dish?.imageUrl,
-              }}
-              style={{
-                height: '100%',
-                width: '100%',
-                borderTopLeftRadius: 38,
-                borderTopRightRadius: 38,
-              }}
-            />
-          </View>
-
-          <View style={{backgroundColor: 'white'}}>
-            <View
-              style={{
-                marginTop: 20,
-              }}>
-              <View style={{alignSelf: 'center'}}>
-                <Text
-                  style={{
-                    color: 'black',
-                    fontSize: 23,
-                    fontFamily: 'Fredoka-Medium',
-                    alignSelf: 'center',
-                  }}>
-                  {dish?.name}😋
-                </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-around',
-                marginTop: 18,
-              }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Entypo name="stopwatch" size={23} color={'#f35858'} />
-                <Text
-                  style={{
-                    marginHorizontal: 7,
-                    color: 'black',
-                    fontSize: 14,
-                  }}>
-                  50 mins
-                </Text>
-              </View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <AntDesign name="star" size={23} color={'orange'} />
-                <Text
-                  style={{
-                    marginHorizontal: 7,
-                    color: 'black',
-                    fontSize: 14,
-                  }}>
-                  {rating}
-                </Text>
-              </View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Entypo name="leaf" size={23} color={'green'} />
-                <Text
-                  style={{
-                    marginHorizontal: 7,
-                    color: 'black',
-                    fontSize: 14,
-                    fontFamily: 'Fredoka-Regular',
-                  }}>
-                  Pure Veg.
-                </Text>
-              </View>
-            </View>
-            {/* 
-            <View style={{margin: 15, marginTop: 20}}>
-              <Text
+        <View style={{flex: 1, backgroundColor: '#000000aa'}}>
+          <Pressable
+            style={{height: 175}}
+            onPress={() => setModal(false)}></Pressable>
+          <View
+            style={{
+              backgroundColor: '#ffffff',
+              height: '100%',
+              borderTopLeftRadius: 50,
+              borderTopRightRadius: 50,
+            }}>
+            <View style={{height: 208}}>
+              <Image
+                source={{
+                  uri: dish?.imageUrl,
+                }}
                 style={{
-                  color: 'black',
-                  fontSize: 15,
-                  lineHeight: 20,
-                  fontFamily: 'Fredoka-Regular',
-                }}></Text> */}
-            {/* </View> */}
-            <View
-              style={{
-                marginHorizontal: 120,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-around',
-                // paddingHorizontal: 10,
-              }}>
-              <TouchableOpacity style={{margin: 10}} onPress={onMinus}>
-                <Text style={{color: 'gray', fontSize: 27}}>-</Text>
-              </TouchableOpacity>
+                  height: '100%',
+                  width: '100%',
+                  borderTopLeftRadius: 38,
+                  borderTopRightRadius: 38,
+                }}
+              />
+            </View>
+
+            <View style={{backgroundColor: 'white'}}>
               <View
                 style={{
-                  margin: 10,
-                  borderRadius: 10,
+                  marginTop: 20,
                 }}>
+                <View style={{alignSelf: 'center'}}>
+                  <Text
+                    style={{
+                      color: 'black',
+                      fontSize: 16,
+                      fontFamily: 'Fredoka-Medium',
+                      alignSelf: 'center',
+                    }}>
+                    {dish?.name}😋
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-around',
+                  marginTop: 18,
+                }}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Entypo name="stopwatch" size={18} color={'#f35858'} />
+                  <Text
+                    style={{
+                      marginHorizontal: 7,
+                      color: 'black',
+                      fontSize: 12,
+                    }}>
+                    50 mins
+                  </Text>
+                </View>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <AntDesign name="star" size={18} color={'orange'} />
+                  <Text
+                    style={{
+                      marginHorizontal: 7,
+                      color: 'black',
+                      fontSize: 12,
+                    }}>
+                    {rating}
+                  </Text>
+                  {/* <Text
+                    style={{
+                      fontSize: 10,
+                      color: '#696965',
+                      marginTop: 6,
+                      marginHorizontal: 3,
+                    }}>
+                    {dish?.noOfRating}
+                  </Text> */}
+                </View>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Entypo name="leaf" size={18} color={'green'} />
+                  <Text
+                    style={{
+                      marginHorizontal: 7,
+                      color: 'black',
+                      fontSize: 12,
+                      fontFamily: 'Fredoka-Regular',
+                    }}>
+                    Pure Veg.
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  marginHorizontal: 120,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-around',
+                  marginTop: 10,
+                  // paddingHorizontal: 10,
+                }}>
+                <TouchableOpacity style={{margin: 10}} onPress={onMinus}>
+                  <Text style={{color: 'gray', fontSize: 22}}>-</Text>
+                </TouchableOpacity>
+                <View
+                  style={{
+                    margin: 10,
+                    borderRadius: 10,
+                  }}>
+                  <Text
+                    style={{
+                      color: '#f35858',
+                      fontSize: 17,
+                      fontWeight: 'bold',
+                    }}>
+                    {quantity}
+                  </Text>
+                </View>
+                <TouchableOpacity style={{margin: 10}} onPress={onPlus}>
+                  <Text style={{color: 'gray', fontSize: 22}}>+</Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                style={{
+                  marginHorizontal: 10,
+                  backgroundColor: '#f35858',
+                  borderRadius: 5,
+                  marginTop: 10,
+                  padding: 10,
+                  paddingHorizontal: 25,
+                  alignItems: 'center',
+                }}
+                onPress={onAddToBasket}>
                 <Text
                   style={{
-                    color: '#f35858',
-                    fontSize: 23,
-                    fontWeight: 'bold',
+                    color: 'white',
+                    fontWeight: '500',
+                    fontSize: 16,
+                    fontFamily: 'Fredoka-Regular',
                   }}>
-                  {quantity}
+                  ADD {quantity} item - {'\u20B9'} {getTotal()}
                 </Text>
-              </View>
-              <TouchableOpacity style={{margin: 10}} onPress={onPlus}>
-                <Text style={{color: 'gray', fontSize: 27}}>+</Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              style={{
-                marginHorizontal: 10,
-                backgroundColor: '#f35858',
-                borderRadius: 5,
-                // marginTop: 'auto',
-                padding: 10,
-                paddingHorizontal: 25,
-                alignItems: 'center',
-              }}
-              onPress={onAddToBasket}>
-              <Text
-                style={{
-                  color: 'white',
-                  fontWeight: '500',
-                  fontSize: 19,
-                  fontFamily: 'Fredoka-Regular',
-                }}>
-                ADD {quantity} item - {'\u20B9'} {getTotal()}
-              </Text>
-            </TouchableOpacity>
           </View>
-          {/* </View> */}
-        </Pressable>
+        </View>
       </Modal>
     </>
   );

@@ -203,6 +203,7 @@ const SignInScreen = () => {
     loginPending,
     setLoginPending,
     setName,
+    setUserId,
   } = useAuthContext();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
@@ -230,6 +231,7 @@ const SignInScreen = () => {
       await AsyncStorage.setItem('userDetail', jsonValue);
       setTokens(response.data.token);
       setName(response.data.user.name);
+      setUserId(response.data.user.id);
       // console.log('b', response.data.token);
       await getData();
       setTimeout(() => console.log('a', tokens), 1000);

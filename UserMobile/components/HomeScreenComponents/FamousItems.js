@@ -1,11 +1,6 @@
 import {
-  StyleSheet,
   Text,
   View,
-  Image,
-  Dimensions,
-  Pressable,
-  TextComponent,
   FlatList,
   ScrollView,
   ActivityIndicator,
@@ -28,17 +23,13 @@ const FamousItems = () => {
   let jsonValue;
 
   const getData = async () => {
-    // console.log('inside get data:');
     const value = await AsyncStorage.getItem('userDetail');
     jsonValue = JSON.parse(value);
-    // console.log('user in auth context of famousItem:', jsonValue);
     setUsers(jsonValue.userID);
     setTokens(jsonValue.token);
-    // console.log('get done');
   };
   useEffect(() => {
     getData();
-    // console.log('inside famousItem: ');
     setTimeout(() => fetchDishes(), 100);
   }, []);
 
@@ -73,23 +64,17 @@ const FamousItems = () => {
             Eat What Makes You Happy...
           </Text>
         </View>
-        {/* <Pressable onPress={() => {}}>
-          <Text style={{}}>{tokens}</Text>
-        </Pressable> */}
       </View>
       <View>
         <View style={{height: 260, marginLeft: 13}}>
           <ScrollView
             horizontal
             showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-            // contentContainerStyle={{paddingVertical: 10}}
-          >
+            showsHorizontalScrollIndicator={false}>
             <FlatList
               data={dishes}
               contentContainerStyle={{alignSelf: 'flex-start'}}
               numColumns={Math.ceil(5)}
-              // scrollEnabled={false}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
               style={{marginTop: 10}}

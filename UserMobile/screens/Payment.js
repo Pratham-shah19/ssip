@@ -1,4 +1,12 @@
-import {View, Text, Touchable, Pressable, Image, Button} from 'react-native';
+import {
+  View,
+  Text,
+  Touchable,
+  Pressable,
+  Image,
+  Button,
+  ScrollView,
+} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {useAuthContext} from '../src/Context/AuthContext';
@@ -6,11 +14,12 @@ import {useRoute} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import {StripeProvider, useStripe} from '@stripe/stripe-react-native';
+// import {ScrollView} from 'react-native-gesture-handler';
 
 const Payment = () => {
   const route = useRoute();
   const price = route?.params?.price;
-  const {tokens, users, name} = useAuthContext();
+  const {tokens, users, name, userId} = useAuthContext();
   const [wallet, setWallet] = useState();
   const [visibility, setVisibility] = useState();
   useEffect(() => {
@@ -41,23 +50,16 @@ const Payment = () => {
       {headers: {Authorization: `Bearer ${tokens}`}},
     );
     setVisibility(response.data.data);
-    console.log(visibility);
+    // console.log(visibility);
   };
   const {initPaymentSheet, presentPaymentSheet} = useStripe();
   const [loading, setLoading] = useState(false);
 
   const fetchPaymentSheetParams = async () => {
-    // const response = await fetch(`http://10.0.2.2:6990/payment-sheet`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: {cus_id: ''},
-    // });
-    console.log('hello');
+    console.log('id:', users);
     const response = await axios.post(
-      `http://65.0.156.10:6990/payment-sheet`,
-      {},
+      `http://65.0.156.10:6990/api/v1/payments/payment-sheet`,
+      {userId: users, price: price},
       {
         headers: {
           'Content-Type': 'application/json',
@@ -105,113 +107,124 @@ const Payment = () => {
     }
   };
   return (
-    <StripeProvider
-      publishableKey="pk_test_51KyqwvSFXhJBixXADhCK7QcvopmkFSi5zg7i2wFLoGvFHYXNb2waPBALIHBoj6ONtR9mZMRAYAi5f5wurs14H1cL00mKeQfwrs"
-      // urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
-    >
-      <View style={{backgroundColor: 'white', flex: 1}}>
-        <View
-          style={{alignContent: 'center', alignItems: 'center', marginTop: 20}}>
-          <Text
-            style={{
-              fontSize: 22,
-              color: 'black',
-              fontFamily: 'Fredoka-Regular',
-            }}>
-            Payment Gateway
-          </Text>
-        </View>
-        <View
-          style={{
-            alignContent: 'center',
-            alignItems: 'center',
-            marginTop: 40,
-          }}>
-          <View style={{alignSelf: 'center'}}>
-            <Ionicons
-              name="wallet-outline"
-              size={80}
-              color={visibility ? '#f35858' : 'grey'}
-              style={{alignSelf: 'center'}}
-            />
-            <Text
-              style={{
-                alignSelf: 'center',
-                fontSize: 17,
-                color: 'black',
-                fontFamily: 'Fredoka-Regular',
-              }}>
-              Current Balance: {'\u20B9'}
-              {wallet}
-            </Text>
-          </View>
-          <Pressable
-            onPress={onCreateOrder}
-            disabled={!visibility}
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <StripeProvider
+        publishableKey="pk_test_51KyqwvSFXhJBixXADhCK7QcvopmkFSi5zg7i2wFLoGvFHYXNb2waPBALIHBoj6ONtR9mZMRAYAi5f5wurs14H1cL00mKeQfwrs"
+        // urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
+      >
+        <View style={{backgroundColor: 'white', flex: 1}}>
+          <View
             style={{
               alignContent: 'center',
               alignItems: 'center',
-              alignSelf: 'center',
-              backgroundColor: visibility ? '#f7442d' : 'grey',
-              borderRadius: 8,
-              paddingHorizontal: 15,
-              paddingVertical: 8,
-              marginTop: 10,
+              marginTop: 20,
             }}>
             <Text
               style={{
-                color: 'white',
-                fontFamily: 'Fredoka-Medium',
-                fontSize: 20,
-              }}>
-              Pay from your Wallet
-            </Text>
-          </Pressable>
-          <View
-            style={{
-              alignItems: 'center',
-              alignSelf: 'center',
-              marginTop: 15,
-              opacity: visibility ? 0 : 1,
-            }}>
-            <Text
-              style={{
-                color: 'red',
-                fontSize: 15,
+                fontSize: 22,
+                color: 'black',
                 fontFamily: 'Fredoka-Regular',
               }}>
-              Your Balance is not sufficient
+              Payment Gateway
             </Text>
           </View>
-        </View>
-        <View
-          style={{alignContent: 'center', alignItems: 'center', marginTop: 45}}>
-          <Text style={{color: 'black'}}>----------</Text>
-          <Text
+          <View
             style={{
-              fontFamily: 'Fredoka-Regular',
-              color: 'black',
-              fontSize: 25,
+              alignContent: 'center',
+              alignItems: 'center',
+              marginTop: 30,
             }}>
-            {''}OR{''}
-          </Text>
-          <Text style={{color: 'black'}}>----------</Text>
+            <View style={{alignSelf: 'center'}}>
+              <Ionicons
+                name="wallet-outline"
+                size={60}
+                color={visibility ? '#f35858' : 'grey'}
+                style={{alignSelf: 'center'}}
+              />
+              <Text
+                style={{
+                  alignSelf: 'center',
+                  fontSize: 17,
+                  color: 'black',
+                  fontFamily: 'Fredoka-Regular',
+                }}>
+                Current Balance: {'\u20B9'}
+                {wallet}
+              </Text>
+            </View>
+            <Pressable
+              onPress={onCreateOrder}
+              disabled={!visibility}
+              style={{
+                alignContent: 'center',
+                alignItems: 'center',
+                alignSelf: 'center',
+                backgroundColor: visibility ? '#f7442d' : 'grey',
+                borderRadius: 8,
+                paddingHorizontal: 15,
+                paddingVertical: 8,
+                marginTop: 10,
+              }}>
+              <Text
+                style={{
+                  color: 'white',
+                  fontFamily: 'Fredoka-Medium',
+                  fontSize: 17,
+                }}>
+                Pay from your Wallet
+              </Text>
+            </Pressable>
+            <View
+              style={{
+                alignItems: 'center',
+                alignSelf: 'center',
+                marginTop: 15,
+                opacity: visibility ? 0 : 1,
+              }}>
+              <Text
+                style={{
+                  color: 'red',
+                  fontSize: 15,
+                  fontFamily: 'Fredoka-Regular',
+                }}>
+                Your Balance is not sufficient
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              alignContent: 'center',
+              alignItems: 'center',
+              marginTop: 25,
+            }}>
+            <Text style={{color: 'black'}}>----------</Text>
+            <Text
+              style={{
+                fontFamily: 'Fredoka-Regular',
+                color: 'black',
+                fontSize: 25,
+              }}>
+              {''}OR{''}
+            </Text>
+            <Text style={{color: 'black'}}>----------</Text>
+          </View>
+          {/* )} */}
+          <Image
+            source={require('../data/stripepay.png')}
+            style={{width: 170, height: 80, alignSelf: 'center', marginTop: 10}}
+          />
+          <View
+            style={{paddingHorizontal: 30, marginTop: 15, borderRadius: 10}}>
+            <Button
+              variant="primary"
+              disabled={!loading}
+              title="Checkout"
+              onPress={openPaymentSheet}
+            />
+          </View>
         </View>
-        {/* )} */}
-        <Image
-          source={{
-            uri: 'https://labourlawadvisor.in/blog/wp-content/uploads/2019/07/Horizontal-Thumbnail-7.jpg',
-          }}
-          style={{width: 300, height: 200, alignSelf: 'center'}}
-        />
-        <Button
-          variant="primary"
-          disabled={!loading}
-          title="Checkout"
-          onPress={openPaymentSheet}
-        />
-      </View>
-    </StripeProvider>
+      </StripeProvider>
+    </ScrollView>
   );
 };
 

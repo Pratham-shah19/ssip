@@ -78,7 +78,7 @@ const HistoryDish = ({dish}) => {
       <View style={{flex: 1}}>
         <Image
           source={{uri: dish.dish.imageUrl}}
-          style={{height: 44, width: 44, borderRadius: 22}}
+          style={{height: 40, width: 40, borderRadius: 20}}
         />
       </View>
       <View style={{flex: 5}}>

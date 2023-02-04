@@ -28,7 +28,7 @@ const BasketDishItem = ({basketDish}) => {
           source={{
             uri: basketDish.items.imageUrl,
           }}
-          style={{height: 65, width: 65, borderRadius: 10}}
+          style={{height: 55, width: 55, borderRadius: 8}}
         />
       </View>
       <View style={{flex: 3, marginHorizontal: 8}}>
@@ -42,7 +42,7 @@ const BasketDishItem = ({basketDish}) => {
             <Text
               style={{
                 color: 'black',
-                fontSize: 15,
+                fontSize: 14,
                 fontFamily: 'Fredoka-Regular',
               }}>
               {basketDish.items.name}
@@ -76,8 +76,8 @@ const BasketDishItem = ({basketDish}) => {
           <Text
             numberOfLines={1}
             style={{
-              color: 'black',
-              fontSize: 13,
+              color: 'grey',
+              fontSize: 12,
               fontFamily: 'Fredoka-Regular',
             }}>
             {basketDish.items.category}
@@ -94,7 +94,7 @@ const BasketDishItem = ({basketDish}) => {
         <Text
           style={{
             color: 'black',
-            fontSize: 15,
+            fontSize: 14,
             fontFamily: 'Fredoka-Regular',
           }}>
           {'\u20B9'} {basketDish.items.price}
@@ -108,7 +108,7 @@ const BasketDishItem = ({basketDish}) => {
           alignContent: 'center',
           justifyContent: 'center',
         }}>
-        <MaterialIcons name="delete" color={'black'} size={24} />
+        <MaterialIcons name="delete" color={'black'} size={22} />
       </Pressable>
     </View>
   );

@@ -37,9 +37,9 @@ const BottomTabNav = () => {
         name="Home"
         options={{
           headerShown: false,
-          tabBarLabelStyle: {marginTop: -6, marginBottom: 2},
+          tabBarLabelStyle: {marginTop: -8, marginBottom: 2, fontSize: 9},
           tabBarIcon: ({color}) => (
-            <Entypo name="home" size={23} color={color} />
+            <Entypo name="home" size={20} color={color} />
           ),
         }}
       />
@@ -48,9 +48,9 @@ const BottomTabNav = () => {
         name="Basket"
         options={{
           headerShown: false,
-          tabBarLabelStyle: {marginTop: -6, marginBottom: 2},
+          tabBarLabelStyle: {marginTop: -8, marginBottom: 2, fontSize: 9},
           tabBarIcon: ({color}) => (
-            <Entypo name="shopping-cart" size={23} color={color} />
+            <Entypo name="shopping-cart" size={20} color={color} />
           ),
         }}
       />
@@ -59,9 +59,9 @@ const BottomTabNav = () => {
         name="History"
         options={{
           headerShown: false,
-          tabBarLabelStyle: {marginTop: -6, marginBottom: 2},
+          tabBarLabelStyle: {marginTop: -8, marginBottom: 2, fontSize: 9},
           tabBarIcon: ({color}) => (
-            <Ionicons name="fast-food" size={23} color={color} />
+            <Ionicons name="fast-food" size={20} color={color} />
           ),
         }}
       />
@@ -70,9 +70,9 @@ const BottomTabNav = () => {
         name="Profile"
         options={{
           headerShown: false,
-          tabBarLabelStyle: {marginTop: -6, marginBottom: 2},
+          tabBarLabelStyle: {marginTop: -8, marginBottom: 2, fontSize: 9},
           tabBarIcon: ({color}) => (
-            <FontAwesome5 name="user-alt" size={23} color={color} />
+            <FontAwesome5 name="user-alt" size={20} color={color} />
           ),
         }}
       />

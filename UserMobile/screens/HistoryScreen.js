@@ -34,7 +34,7 @@ const HistoryScreen = () => {
             style={{
               color: 'black',
               fontFamily: 'Fredoka-Regular',
-              fontSize: 19,
+              fontSize: 17,
               alignSelf: 'center',
               textAlign: 'center',
             }}>
