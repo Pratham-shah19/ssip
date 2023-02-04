@@ -256,6 +256,7 @@ const SignUpScreen = () => {
   const pwd = watch('password');
   const navigation = useNavigation();
   const [loadingPending, setLoadingPending] = useState(false);
+  const [check, setCheck] = useState(false);
   const storeData = async value => {
     try {
       const jsonValue = JSON.stringify(value);
@@ -266,41 +267,27 @@ const SignUpScreen = () => {
   };
 
   const onRegisterPressed = async data => {
-    setLoadingPending(true);
-    const {address, password, email, name} = data;
-    const response = await axios.post(
-      'http://3.109.165.137:3000/api/v1/user/register',
-      data,
-    );
-    // const responsedata = await fetch(
-    //   'http://10.0.2.2:3000/api/v1/user/register',
-    //   {
-    //     method: 'POST',
-    //     body: data,
-    //   },
-    // );
-    // const response = await responsedata.json();
-    // console.log(response.data);
-    const obj = {
-      token: response.data.token,
-      userID: response.data.user.id,
-      name: response.data.user.name,
-    };
-    const jsonValue = JSON.stringify(obj);
-    await AsyncStorage.setItem('userDetail', jsonValue);
-    navigation.navigate('SignIn');
-    // try {
-    //   await Auth.signUp({
-    //     address,
-    //     password,
-    //     attributes: {email, name, preferred_username: address},
-    //   });
-
-    //   navigation.navigate('ConfirmEmail', {address});
-    // } catch (e) {
-    //   Alert.alert('Oops', e.message);
-    // }
-    setLoadingPending(false);
+    try {
+      setLoadingPending(true);
+      const {address, password, email, name} = data;
+      const response = await axios.post(
+        'http://3.109.165.137:3000/api/v1/user/register',
+        data,
+      );
+      const obj = {
+        token: response.data.token,
+        userID: response.data.user.id,
+        name: response.data.user.name,
+      };
+      const jsonValue = JSON.stringify(obj);
+      await AsyncStorage.setItem('userDetail', jsonValue);
+      navigation.navigate('SignIn');
+      setLoadingPending(false);
+    } catch (err) {
+      // setCheck(true);
+      setLoadingPending(false);
+      Alert.alert('Already registered.');
+    }
   };
 
   const onSignInPress = () => {
@@ -321,8 +308,6 @@ const SignUpScreen = () => {
         showsVerticalScrollIndicator={false}
         style={{backgroundColor: 'white'}}>
         <View style={styles.root}>
-          {/* <View style={{flexDirection: 'row', alignContent: 'center'}}>
-          <Feather name="chevron-left" size={28} color={'black'} style={{}} /> */}
           <Image
             source={require('../../data/logo.png')}
             style={[styles.logo, {height: height * 0.25}]}
@@ -428,14 +413,13 @@ const SignUpScreen = () => {
 
 const styles = StyleSheet.create({
   root: {
-    alignItems: 'center',
     padding: 20,
   },
   title: {
-    fontSize: 20,
-    fontFamily: 'OpenSans-Medium',
+    fontSize: 18,
     color: 'black',
-    margin: 10,
+    fontFamily: 'Fredoka-Medium',
+    textAlign: 'center',
   },
   text: {
     color: 'gray',
@@ -445,11 +429,10 @@ const styles = StyleSheet.create({
     color: '#FDB075',
   },
   logo: {
-    width: 130,
-    maxWidth: 130,
-    maxHeight: 130,
-    marginBottom: 10,
-    borderRadius: 65,
+    width: 260,
+    maxWidth: 260,
+    maxHeight: 260,
+    alignSelf: 'center',
   },
 });
 

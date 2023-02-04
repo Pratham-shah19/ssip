@@ -108,7 +108,7 @@
 
 // export default ConfirmEmailScreen;
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView, Alert} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Alert, Image} from 'react-native';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import SocialSignInButtons from '../../components/SocialSignInButtons';
@@ -116,6 +116,7 @@ import {useNavigation} from '@react-navigation/core';
 import {useForm} from 'react-hook-form';
 import {useRoute} from '@react-navigation/native';
 import axios from 'axios';
+import AppLoader from '../../components/AppLoader';
 // import {Auth} from 'aws-amplify';
 
 const ConfirmEmailScreen = () => {
@@ -125,20 +126,25 @@ const ConfirmEmailScreen = () => {
   });
   const email = route?.params.email;
   const username = watch('username');
+  const [check, setCheck] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
 
   const onConfirmPressed = async data => {
     try {
       // await Auth.confirmSignUp(data.username, data.code);
-
+      setLoading(true);
       const response = await axios.post(
         `http://65.0.189.107:8000/api/v1/user/${email}/validateOtp`,
         data,
       );
       navigation.navigate('NewPasswordScreen', {email});
+      setLoading(false);
     } catch (e) {
-      Alert.alert('Oops', e.message);
+      // Alert.alert();
+      setCheck(true);
+      setLoading(false);
     }
   };
 
@@ -146,66 +152,74 @@ const ConfirmEmailScreen = () => {
     navigation.navigate('SignIn');
   };
 
-  // const onResendPress = async () => {
-  //   try {
-  //     await Auth.resendSignUp(username);
-  //     Alert.alert('Success', 'Code was resent to your email');
-  //   } catch (e) {
-  //     Alert.alert('Oops', e.message);
-  //   }
-  // };
-
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.root}>
-        <Text style={styles.title}>Confirm your email</Text>
+    <>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{backgroundColor: 'white'}}>
+        <View style={styles.root}>
+          <Image
+            source={require('../../data/email1.jpg')}
+            style={{
+              height: 230,
+              width: 230,
+              borderRadius: 20,
+              marginTop: 30,
+              alignSelf: 'center',
+            }}
+          />
+          <Text style={styles.title}>Confirm your email</Text>
 
-        {/* <CustomInput
-          name="username"
-          control={control}
-          placeholder="Username"
-          rules={{
-            required: 'Username code is required',
-          }}
-        /> */}
+          <CustomInput
+            name="otp"
+            control={control}
+            placeholder="Enter your confirmation code"
+            rules={{
+              required: 'Confirmation code is required',
+            }}
+          />
+          <View style={{alignContent: 'flex-start'}}>
+            <Text
+              style={{
+                color: 'red',
+                fontFamily: 'Fredoka-Regular',
+                fontSize: 12,
+                textAlign: 'left',
+                opacity: check ? 1 : 0,
+              }}>
+              Invalid OTP
+            </Text>
+          </View>
 
-        <CustomInput
-          name="otp"
-          control={control}
-          placeholder="Enter your confirmation code"
-          rules={{
-            required: 'Confirmation code is required',
-          }}
-        />
+          <CustomButton
+            text="Confirm"
+            onPress={handleSubmit(onConfirmPressed)}
+          />
 
-        <CustomButton text="Confirm" onPress={handleSubmit(onConfirmPressed)} />
-        {/* 
-        <CustomButton
-          text="Resend code"
-          onPress={onResendPress}
-          type="SECONDARY"
-        /> */}
-
-        <CustomButton
-          text="Back to Sign in"
-          onPress={onSignInPress}
-          type="TERTIARY"
-        />
-      </View>
-    </ScrollView>
+          <CustomButton
+            text="Back to Sign in"
+            onPress={onSignInPress}
+            type="TERTIARY"
+          />
+        </View>
+      </ScrollView>
+      {loading ? <AppLoader /> : null}
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   root: {
-    alignItems: 'center',
+    // alignItems: 'center',
     padding: 20,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#051C60',
+    fontSize: 18,
+    color: 'black',
     margin: 10,
+    marginTop: 15,
+    fontFamily: 'Fredoka-Medium',
+    textAlign: 'center',
   },
   text: {
     color: 'gray',
