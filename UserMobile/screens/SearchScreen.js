@@ -22,7 +22,7 @@ const SearchScreen = () => {
     // console.log(tokens);
     if (search.length >= 2) {
       const response = await axios.get(
-        `http://10.0.2.2:8000/api/v1/user/dishes/filter?search=${search}`,
+        `http://13.233.214.112:8000/api/v1/user/dishes/filter?search=${search}`,
         {headers: {Authorization: `Bearer ${tokens}`}},
       );
       // console.log(response.data.data);

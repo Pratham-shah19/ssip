@@ -345,6 +345,7 @@ const addRating = async (req, res) => {
 };
 
 const validatePaymentOtp = async (req, res) => {
+  console.log(req.body);
   var { otp } = req.body;
   const { uid } = req.params;
 
