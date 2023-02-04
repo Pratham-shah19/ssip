@@ -13,7 +13,7 @@ router.route('/dishes/category').get(authenticationMiddleware,getDishesCategoriz
 router.route('/dishes/rating').post(authenticationMiddleware,addRating)
 
 router.route('/:uid').get(authenticationMiddleware,getUserDetails).post(authenticationMiddleware,updateUserDetails)
-router.route('/:email/updatePassword').patch(authenticationMiddleware,updatePassword)//update password using email
+router.route('/:email/updatePassword').patch(updatePassword)//update password using email
 router.route('/:uid/wallet').get(authenticationMiddleware,getBalance)
 router.route('/:email/validateOtp').post(validateOTP)
 
