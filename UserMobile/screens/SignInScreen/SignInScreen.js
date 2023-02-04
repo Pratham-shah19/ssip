@@ -180,6 +180,8 @@ import {
   StyleSheet,
   useWindowDimensions,
   ScrollView,
+  Alert,
+  Pressable,
 } from 'react-native';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
@@ -212,30 +214,30 @@ const SignInScreen = () => {
   } = useForm();
 
   const onSignInPressed = async data => {
-    // console.log(data);
-    setLoginPending(true);
-    const response = await axios.post(
-      'http://3.109.165.137:3000/api/v1/user/login',
-      data,
-    );
-    // http://10.0.2.2:3000/api/v1/user/login
-    // http://54.90.48.129:3000/
-    // console.log('hello');
-    // console.log(response.data.token);
+    try {
+      setLoginPending(true);
+      const response = await axios.post(
+        'http://3.109.165.137:3000/api/v1/user/login',
+        data,
+      );
 
-    const obj = {
-      token: response.data.token,
-      userID: response.data.user.id,
-      name: response.data.user.name,
-    };
-    const jsonValue = JSON.stringify(obj);
-    await AsyncStorage.setItem('userDetail', jsonValue);
-    setTokens(response.data.token);
-    setName(response.data.user.name);
-    console.log('b', response.data.token);
-    await getData();
-    setTimeout(() => console.log('a', tokens), 1000);
-    setLoginPending(false);
+      const obj = {
+        token: response.data.token,
+        userID: response.data.user.id,
+        name: response.data.user.name,
+      };
+      const jsonValue = JSON.stringify(obj);
+      await AsyncStorage.setItem('userDetail', jsonValue);
+      setTokens(response.data.token);
+      setName(response.data.user.name);
+      // console.log('b', response.data.token);
+      await getData();
+      setTimeout(() => console.log('a', tokens), 1000);
+      setLoginPending(false);
+    } catch (err) {
+      Alert.alert('Email or password is wrong');
+      setLoginPending(false);
+    }
   };
 
   const onForgotPasswordPressed = () => {
@@ -254,7 +256,7 @@ const SignInScreen = () => {
         <View style={{alignItems: 'center'}}>
           <Image
             source={require('../../data/logo.png')}
-            style={{height: 130, width: 130, borderRadius: 20, marginTop: 30}}
+            style={{height: 200, width: 200, borderRadius: 20, marginTop: 30}}
           />
           <View
             style={{
@@ -293,20 +295,23 @@ const SignInScreen = () => {
             },
           }}
         />
-
         <CustomButton
           text={loading ? 'Loading...' : 'Sign In'}
           onPress={handleSubmit(onSignInPressed)}
         />
-
-        <CustomButton
+        {/* <CustomButton
           text="Forgot password?"
           onPress={onForgotPasswordPressed}
           type="TERTIARY"
-        />
-
+        /> */}
+        <Pressable
+          onPress={onForgotPasswordPressed}
+          style={{alignContent: 'center', alignSelf: 'center', marginTop: 20}}>
+          <Text style={{color: '#735dde', fontFamily: 'Fredoka-Medium'}}>
+            Forgot Password?
+          </Text>
+        </Pressable>
         {/* <SocialSignInButtons /> */}
-
         <CustomButton
           text="Don't have an account? Create one"
           onPress={onSignUpPress}
