@@ -78,7 +78,7 @@ const FamousItems = () => {
         </Pressable> */}
       </View>
       <View>
-        <View style={{height: 290, marginLeft: 13}}>
+        <View style={{height: 260, marginLeft: 13}}>
           <ScrollView
             horizontal
             showsVerticalScrollIndicator={false}
@@ -88,7 +88,7 @@ const FamousItems = () => {
             <FlatList
               data={dishes}
               contentContainerStyle={{alignSelf: 'flex-start'}}
-              numColumns={Math.ceil(4)}
+              numColumns={Math.ceil(5)}
               // scrollEnabled={false}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}

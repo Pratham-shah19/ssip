@@ -115,27 +115,10 @@ const Header = () => {
           size={18}
           color="gray"
         />
-        {/* <TextInput
-          style={styles.input}
-          value={search}
-          onChangeText={setSearch}
-          // onChange={search !== '' ? onPress : () => {}}
-          placeholder="Search dishes..."
-          placeholderTextColor={'grey'}
-          underlineColorAndroid="transparent"
-        /> */}
         <View style={styles.input}>
           <Text>Search dishes...</Text>
         </View>
       </Pressable>
-      {/* <View>
-        <FlatList
-          data={searchResult}
-          renderItem={({item}) => <SearchComponent dish={item} />}
-          keyExtractor={item => item._id}
-          showsVerticalScrollIndicator={false}
-        />
-      </View> */}
     </View>
   );
 };

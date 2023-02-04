@@ -33,7 +33,7 @@ const StarterScreen = () => {
 
   return (
     <>
-      <View>
+      <View style={{backgroundColor: 'white', marginBottom: 30}}>
         <View style={{padding: 10}}>
           <Text
             style={{
@@ -49,8 +49,10 @@ const StarterScreen = () => {
             backgroundColor: 'grey',
             height: 1,
             marginHorizontal: 15,
+            // marginBottom: 5,
           }}></View>
         <FlatList
+          style={{marginBottom: 30, marginTop: 5}}
           data={starter}
           renderItem={({item}) => <ProductScreenComponent dish={item} />}
           keyExtractor={item => item.imageUrl}

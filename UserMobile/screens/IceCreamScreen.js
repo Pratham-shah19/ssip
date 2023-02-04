@@ -34,7 +34,7 @@ const IceCreamScreen = () => {
 
   return (
     <>
-      <View>
+      <View style={{backgroundColor: 'white', marginBottom: 30}}>
         <View style={{padding: 10}}>
           <Text
             style={{
@@ -52,6 +52,7 @@ const IceCreamScreen = () => {
             marginHorizontal: 15,
           }}></View>
         <FlatList
+          style={{marginBottom: 30, marginTop: 5}}
           data={iceCream}
           renderItem={({item}) => <ProductScreenComponent dish={item} />}
           keyExtractor={item => item._id}

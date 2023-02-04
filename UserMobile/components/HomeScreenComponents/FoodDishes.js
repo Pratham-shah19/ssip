@@ -33,11 +33,11 @@ const FoodDishes = () => {
             justifyContent: 'center',
             padding: 3,
           }}>
-          <MaterialIcons name="restaurant" size={18} color="black" />
+          <MaterialIcons name="restaurant" size={16} color="black" />
         </View>
         <Text
           style={{
-            fontSize: 18,
+            fontSize: 16,
             fontFamily: 'Fredoka-Medium',
             marginLeft: 4,
             color: 'black',
@@ -59,15 +59,15 @@ const FoodDishes = () => {
             source={{
               uri: 'https://food-images.files.bbci.co.uk/food/recipes/dirty_veggie_starter_89235_16x9.jpg',
             }}
-            style={{width: 83, height: 83, borderRadius: 15}}
+            style={{width: 70, height: 70, borderRadius: 15}}
           />
         </View>
-        <View style={{flex: 3}}>
+        <View style={{flex: 4}}>
           <Text
             style={{
               color: 'black',
               fontFamily: 'Fredoka-Regular',
-              fontSize: 18,
+              fontSize: 15,
             }}>
             Starter
           </Text>
@@ -87,15 +87,15 @@ const FoodDishes = () => {
             source={{
               uri: 'https://i.pinimg.com/736x/3f/79/da/3f79da595a06fa6f5cfdbb730dde3676.jpg',
             }}
-            style={{width: 83, height: 83, borderRadius: 15}}
+            style={{width: 70, height: 70, borderRadius: 15}}
           />
         </View>
-        <View style={{flex: 3}}>
+        <View style={{flex: 4}}>
           <Text
             style={{
               color: 'black',
               fontFamily: 'Fredoka-Regular',
-              fontSize: 18,
+              fontSize: 15,
             }}>
             Main Course
           </Text>
@@ -115,15 +115,15 @@ const FoodDishes = () => {
             source={{
               uri: 'https://www.ingredion.com/content/dam/ingredion/other/us/colorblock-images/Solids-Replacement-Icecream-720x560.jpg',
             }}
-            style={{width: 83, height: 83, borderRadius: 15}}
+            style={{width: 70, height: 70, borderRadius: 15}}
           />
         </View>
-        <View style={{flex: 3}}>
+        <View style={{flex: 4}}>
           <Text
             style={{
               color: 'black',
               fontFamily: 'Fredoka-Regular',
-              fontSize: 18,
+              fontSize: 15,
             }}>
             Ice Cream
           </Text>

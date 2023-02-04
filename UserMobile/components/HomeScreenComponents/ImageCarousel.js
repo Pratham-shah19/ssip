@@ -45,11 +45,16 @@ const ImageCarousel = props => {
 
   return (
     <View style={{backgroundColor: 'white'}}>
-      <View style={{flexDirection: 'row', alignItems: 'center', padding: 15}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingHorizontal: 15,
+        }}>
         <Text
           style={{
             color: 'black',
-            fontSize: 19,
+            fontSize: 17,
             fontFamily: 'Fredoka-Medium',
           }}>
           Today's Special Deals {} 🎉
@@ -57,7 +62,7 @@ const ImageCarousel = props => {
       </View>
       <View style={styles.container}>
         <ScrollView
-          style={{paddingHorizontal: 7, marginBottom: 8}}
+          style={{marginBottom: 8, paddingHorizontal: 7}}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           pagingEnabled={true}>
@@ -72,39 +77,39 @@ const ImageCarousel = props => {
           /> */}
           <Image
             source={{
+              uri: 'https://www.eatthis.com/wp-content/uploads/sites/4/2021/07/mcdonalds-burgers-fries.jpg?quality=82&strip=1&resize=640%2C360',
+            }}
+            style={{width: 260, height: 160, borderRadius: 10, margin: 10}}
+          />
+          <Image
+            source={{
               uri: 'https://cdn.pixabay.com/photo/2020/05/17/04/22/pizza-5179939_1280.jpg',
             }}
-            style={{width: 300, height: 200, borderRadius: 10, margin: 10}}
+            style={{width: 260, height: 160, borderRadius: 10, margin: 10}}
           />
           <Image
             source={{
               uri: 'https://gumlet.assettype.com/swarajya%2F2016-03%2Fa1431a1b-fd5e-4ec8-ae83-95753bb4c2bd%2Fdosa.jpg?w=1200&auto=format%2Ccompress&ogImage=true',
             }}
-            style={{width: 300, height: 200, borderRadius: 10, margin: 10}}
-          />
-          <Image
-            source={{
-              uri: 'https://www.eatthis.com/wp-content/uploads/sites/4/2021/07/mcdonalds-burgers-fries.jpg?quality=82&strip=1&resize=640%2C360',
-            }}
-            style={{width: 300, height: 200, borderRadius: 10, margin: 10}}
+            style={{width: 260, height: 160, borderRadius: 10, margin: 10}}
           />
           <Image
             source={{
               uri: 'https://www.jagannathskitchen.in/images/placeholder.jpg',
             }}
-            style={{width: 300, height: 200, borderRadius: 10, margin: 10}}
+            style={{width: 260, height: 160, borderRadius: 10, margin: 10}}
           />
           <Image
             source={{
               uri: 'https://cdn.pixabay.com/photo/2020/05/17/04/22/pizza-5179939_1280.jpg',
             }}
-            style={{width: 300, height: 200, borderRadius: 10, margin: 10}}
+            style={{width: 260, height: 160, borderRadius: 10, margin: 10}}
           />
           <Image
             source={{
               uri: 'https://cdn.pixabay.com/photo/2020/05/17/04/22/pizza-5179939_1280.jpg',
             }}
-            style={{width: 300, height: 200, borderRadius: 10, margin: 10}}
+            style={{width: 260, height: 160, borderRadius: 10, margin: 10}}
           />
         </ScrollView>
         {/* <Carousel
