@@ -105,7 +105,7 @@ const NewPasswordScreen = () => {
   const onSubmitPressed = async data => {
     try {
       const response = await axios.patch(
-        `http://13.233.214.112:8000/api/v1/user/${email}/updatePassword`,
+        `http://65.0.189.107:8000/api/v1/user/${email}/updatePassword`,
         data,
       );
       navigation.navigate('SignIn');

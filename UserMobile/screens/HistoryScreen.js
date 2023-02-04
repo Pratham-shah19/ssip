@@ -19,7 +19,7 @@ const HistoryScreen = () => {
   const fetchDetail = async () => {
     setLoadingPending(true);
     const response = await axios.get(
-      `http://13.233.214.112:8000/api/v1/user/${users}/orders?status=COMPLETED`,
+      `http://65.0.189.107:8000/api/v1/user/${users}/orders?status=COMPLETED`,
       {headers: {Authorization: `Bearer ${tokens}`}},
     );
     setOrders(response.data.data);

@@ -92,7 +92,7 @@ const DishDetailScreen = () => {
 
   const fetchDishDetail = async data => {
     const response = await axios.post(
-      `http://35.153.67.221:6000/api/v1/canteen/dish/${id}`,
+      `http://3.216.172.228:6500/api/v1/canteen/dish/${id}`,
       {},
       {headers: {Authorization: `Bearer ${tokens}`}},
     );
@@ -102,7 +102,7 @@ const DishDetailScreen = () => {
 
   const onAddToBasket = async () => {
     const response = await axios.patch(
-      `http://13.233.214.112:8000/api/v1/user/${userID}/cart`,
+      `http://65.0.189.107:8000/api/v1/user/${userID}/cart`,
       {itemId: id, qty: quantity, price: dish?.price * quantity},
       {headers: {Authorization: `Bearer ${dbUser?.token}`}},
     );

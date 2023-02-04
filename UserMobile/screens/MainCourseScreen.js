@@ -23,7 +23,7 @@ const MainCourseScreen = () => {
   const fetchDishess = async () => {
     setLoadingPending(true);
     const response = await axios.post(
-      `http://35.153.67.221:6000/api/v1/canteen/dishes/category`,
+      `http://3.216.172.228:6500/api/v1/canteen/dishes/category`,
       {},
       {headers: {Authorization: `Bearer ${jsonValue.token}`}},
     );

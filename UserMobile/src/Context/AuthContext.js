@@ -47,7 +47,7 @@ const AuthContextProvider = ({children}) => {
   const onCreateOrder = async () => {
     setLoginPending(true);
     const response = await axios.get(
-      `http://13.233.214.112:8000/api/v1/user/${users}/cart`,
+      `http://65.0.189.107:8000/api/v1/user/${users}/cart`,
       {
         headers: {
           Authorization: `Bearer ${tokens}`,

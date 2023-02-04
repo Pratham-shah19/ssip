@@ -44,7 +44,7 @@ const FamousItems = () => {
 
   const fetchDishes = async () => {
     const response = await axios.post(
-      `http://35.153.67.221:6000/api/v1/canteen/dishes/filter?sort=rating`,
+      `http://3.216.172.228:6500/api/v1/canteen/dishes/filter?sort=rating`,
       {},
       {headers: {Authorization: `Bearer ${jsonValue.token}`}},
     );
