@@ -14,12 +14,19 @@ const stripe = require('stripe')('sk_test_51KyqwvSFXhJBixXAbp2HBSBo65HD0T1BqG60A
 const getCurrentOrders = async (req, res) => {
   // console.log('Request Received')
   const order = Order.find({ status: "NEW" });
-  order.sort("_id");
+  order.sort("_id").limit(35);
+  var timeout = 1000;
   const orders = await order;
-  // console.log('Orders: ', orders)
+  if(orders.length >=40 && orders.length <=80)
+  {
+    timeout = 5000;
+  }
+  else{
+    timeout =  2000;
+  }
+  var k = 0;
+  var data = [];
   setTimeout(() => {
-    let k = 0;
-    let data = [];
     orders.forEach(async (order) => {
       let j = 0;
       let arr = [];
@@ -40,9 +47,10 @@ const getCurrentOrders = async (req, res) => {
       //console.log(data)
       k++;
     });
-    setTimeout(() => {
-      res.status(StatusCodes.OK).json({ res: "Success", data: data });
-    }, 1000);
+    setTimeout(()=>{
+      res.status(StatusCodes.OK).json({ res: "Success",length:data.length, data: data });
+
+    },timeout)
   }, 100);
 };
 
