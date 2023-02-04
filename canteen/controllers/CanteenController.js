@@ -14,7 +14,7 @@ const stripe = require('stripe')('sk_test_51KyqwvSFXhJBixXAbp2HBSBo65HD0T1BqG60A
 const getCurrentOrders = async (req, res) => {
   // console.log('Request Received')
   const order = Order.find({ status: "NEW" });
-  order.sort("_id").limit(35);
+  order.sort("-_id");
   var timeout = 1000;
   const orders = await order;
   if(orders.length >=40 && orders.length <=80)
@@ -36,9 +36,9 @@ const getCurrentOrders = async (req, res) => {
         //  console.log(arr)
         j++;
       }
-      let obj = { res: "Success", data: order, items: arr };
-      if (obj.data.button === false) {
-        const user = await User.findOne({ _id: obj.data.userId });
+      let obj = {orderdetail: order, items: arr };
+      if (obj.orderdetail.button === false) {
+        const user = await User.findOne({ _id: obj.orderdetail.userId });
         obj.userdetail = { username: user.name };
       } else {
         obj.userdetail = { username: "Guest" };
