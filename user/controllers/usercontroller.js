@@ -327,19 +327,24 @@ const payCanteen = async (req, res) => {
 };
 
 const addRating = async (req, res) => {
-  console.log(req.body);
   let { dishId, rating } = req.body;
   const dish = await Dish.findOne({ _id: dishId });
   if (!dish) {
     throw new BadRequestError("Invalid dish id");
   }
-  // rating = Number(rating);
-  dish.rating = (dish.rating + rating) / 2;
+  if(dish.noOfRating === 0){
+    dish.rating = rating;
+  }
+  else{
+    dish.noOfRating += 1;
+    dish.rating = (dish.rating*dish.noOfRating+rating)/dish.noOfRating;
+  }
   const Updated = await Dish.findOneAndUpdate({ _id: dishId }, dish, {
     new: true,
     runValidators: true,
     setDefaultsOnInsert: true,
   });
+  
 
   res.status(StatusCodes.OK).json({ res: "success", data: Updated });
 };
