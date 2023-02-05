@@ -3,6 +3,7 @@ import {
   SET_OLDORDERS,
   SET_ORDERID,
   MAKE_OLDORDER,
+  SET_COUNT,
 } from "../actions/Orders";
 
 const initialState = {

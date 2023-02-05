@@ -35,6 +35,7 @@ const HomeOwnerDashboard = ({
 
   useEffect(() => {
     getCurrentOrders();
+    console.log("orderId Intr", orderId);
     if (!loading) {
       alert("Order is Completed!");
     }
