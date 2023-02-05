@@ -334,9 +334,10 @@ const addRating = async (req, res) => {
   }
   if(dish.noOfRating === 0){
     dish.rating = rating;
+    dish.noOfRating += 1;
   }
   else{
-    dish.rating = (dish.rating*dish.noOfRating+rating)/dish.noOfRating+1;
+    dish.rating = ((dish.rating*dish.noOfRating)+rating)/(dish.noOfRating+1);
     dish.noOfRating += 1;
   }
   const Updated = await Dish.findOneAndUpdate({ _id: dishId }, dish, {
