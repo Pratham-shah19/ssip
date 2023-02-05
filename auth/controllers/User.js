@@ -5,8 +5,9 @@ const { BadRequestError, UnauthenticatedError } = require("../errors/index");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 
-const stripe = require('stripe')('sk_test_51KyqwvSFXhJBixXAbp2HBSBo65HD0T1BqG60ABDZrLJnFBWonmCw1KCdHIFVFG7TDYkE0qCZs6BORYhBSQX3be5g00hRtIdRtI');
-
+const stripe = require("stripe")(
+  "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"
+);
 
 const registerUser = async (req, res) => {
   const { name, email, password, address } = req.body;
@@ -15,7 +16,7 @@ const registerUser = async (req, res) => {
   }
   req.body.wallet = 5000;
   const customer = await stripe.customers.create({
-    email:email,name:name,address:address
+    email:email,name:name
   });
   req.body.customerId = customer.id;
   const user = await User.create(req.body);
