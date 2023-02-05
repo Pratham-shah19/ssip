@@ -38,10 +38,13 @@ const OrderSchema = new mongoose.Schema({
     type:String,
     default:'KOT',
     enum:[
-      'KOT',
-      'ONLINE',
-      'CASH'
+      "KOT",
+      "ONLINE",
+      "CASH"
     ]
+  },
+  timestamp:{
+    type:String
   }
 })
 

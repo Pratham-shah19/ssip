@@ -42,6 +42,9 @@ const OrderSchema = new mongoose.Schema({
       "ONLINE",
       "CASH"
     ]
+  },
+  timestamp:{
+    type:String
   }
 })
 

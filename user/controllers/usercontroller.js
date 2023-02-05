@@ -77,7 +77,7 @@ const getOrdersSpecific = async (req, res) => {
 
   if (status === "NEW" || status === "COMPLETED") {
     const orders = await Order.find({ status, userId });
-    // console.log(orders)
+
     for (let i = 0; i < orders.length; i++) {
       var items = orders[i].items;
       var updatedItems = [];
@@ -154,7 +154,6 @@ const addToCart = async (req, res) => {
     }
 
     cartObject.items = arr;
-    console.log(cartObject);
     var dish = await Basket.findOneAndUpdate({ userId }, cartObject, {
       new: true,
       runValidators: true,
@@ -258,7 +257,6 @@ const payCanteen = async (req, res) => {
   //adding coins to canteen's wallet
   const canteen = await Canteen.findOne({ name: canteenName });
   if (!canteen) {
-    console.log("canteen not found");
     throw new BadRequestError("Invalid caneteen name");
     return;
   }
@@ -269,7 +267,6 @@ const payCanteen = async (req, res) => {
   );
   const basket = await Basket.findOne({ userId: uid });
   if (!basket) {
-    console.log("basket not present");
     throw new BadRequestError("Invalid user id, could not find basket");
     return;
   }
@@ -279,7 +276,6 @@ const payCanteen = async (req, res) => {
     let obj = {};
     const dish = await Dish.findOne({ _id: e.dishId, isAvailable: true });
     if (!dish) {
-      console.log("dish not available");
       res
         .status(StatusCodes.OK)
         .json({ res: "fail", data: "dish is not actually available" });
@@ -293,14 +289,12 @@ const payCanteen = async (req, res) => {
             { quantity: obj.qty, isAvailable: false },
             { runValidators: true, new: true }
           );
-          console.log("less quantity", dish);
         } else {
           const dish = await Dish.findOneAndUpdate(
             { _id: obj.dishId },
             { quantity: obj.qty },
             { runValidators: true, new: true }
           );
-          console.log("enough quantity", dish);
         }
       } else {
         res
@@ -353,7 +347,6 @@ const addRating = async (req, res) => {
 };
 
 const validatePaymentOtp = async (req, res) => {
-  console.log(req.body);
   var { otp } = req.body;
   const { uid } = req.params;
 
