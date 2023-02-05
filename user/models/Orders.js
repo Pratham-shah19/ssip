@@ -43,10 +43,7 @@ const OrderSchema = new mongoose.Schema({
       "CASH"
     ]
   },
-  timestamp:{
-    type:String
-  }
-})
+},{timestamps:true})
 
 
 module.exports = mongoose.model('Order',OrderSchema)

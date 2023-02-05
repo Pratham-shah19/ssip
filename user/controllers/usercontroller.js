@@ -15,7 +15,6 @@ const getUserDetails = async (req, res) => {
   if (!user) {
     throw new BadRequestError("Invalid user id");
   }
-  // const de = await Orders.deleteMany({});
   res.status(StatusCodes.OK).json({ res: "success", data: user });
 };
 const validateOTP = async (req, res) => {
