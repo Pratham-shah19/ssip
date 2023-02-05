@@ -14,7 +14,7 @@ import * as CustomerActions from "../../store/actions/Customers";
 import * as WalletActions from "../../store/actions/wallet";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { API } from "../../constants/API";
 const AdminDashboard = () => {
   const [search, setSearch] = useState("");
   const [searchres, setSearchres] = useState([]);
@@ -42,7 +42,7 @@ const AdminDashboard = () => {
     // console.log("token_main", token_main);
 
     const data = await axios.post(
-      `http://127.0.0.1:5000/api/v1/admin/customers?name=${e.target.value}`,
+      `${API.admin_server}/api/v1/admin/customers?name=${e.target.value}`,
       {},
       {
         headers: {

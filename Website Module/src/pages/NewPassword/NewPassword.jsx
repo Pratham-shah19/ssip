@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 // import './OTP.css'
-
+import { API } from "../../constants/API";
 const NewPassword = () => {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -27,10 +27,7 @@ const NewPassword = () => {
       //le.log("vivek");
       //le.log(email);
       axios
-        .patch(
-          `http://127.0.0.1:5000/api/v1/admin/${email}/updatePassword`,
-          obj
-        )
+        .patch(`${API.admin_server}/api/v1/admin/${email}/updatePassword`, obj)
         .then((res) => {
           const data = res;
           if (data.data.res === "success") {

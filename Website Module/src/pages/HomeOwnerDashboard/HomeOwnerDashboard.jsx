@@ -11,6 +11,7 @@ import * as OrdersActions from "../../store/actions/Orders";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
+import { API } from "../../constants/API";
 const HomeOwnerDashboard = ({ newOrder, token, orderId, getCurrentOrders }) => {
   let [newOrders, setNewOrders] = useState(newOrder);
   let [first_id, setFirst_id] = useState(0);
@@ -34,17 +35,20 @@ const HomeOwnerDashboard = ({ newOrder, token, orderId, getCurrentOrders }) => {
       navigate("/");
     }
   }, []);
+  if (newOrder) {
+    console.log("neORde", newOrder);
+  }
   useEffect(() => {
-    const interval = setInterval(() => {
-      getCurrentOrders();
-      setloading(false);
-      setTime(Date.now());
-    }, 5000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  });
+    // const interval = setInterval(() => {
+    //   setloading(false);
+    //   setTime(Date.now());
+    // }, 5000);
+    getCurrentOrders();
+    setloading(false);
+    // return () => {
+    //   clearInterval(interval);
+    // };
+  }, []);
   return (
     <>
       {loading === false ? (
@@ -72,10 +76,10 @@ const HomeOwnerDashboard = ({ newOrder, token, orderId, getCurrentOrders }) => {
                   newOrder.map((item) => {
                     return (
                       <CollapsibleBox
-                        _button={item.data.button}
-                        orderId={item.data._id}
+                        _button={item.orderdetail.button}
+                        orderId={item.orderdetail._id}
                         item_arr={item.items}
-                        otp={item.data.otp}
+                        otp={item.orderdetail.otp}
                         cust_name={item.userdetail.username}
                       />
                     );

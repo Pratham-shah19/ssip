@@ -4,6 +4,7 @@ import HotBeverages from "../../DummyData/HotBeverages";
 import Starters from "../../DummyData/Starters";
 import Dessert from "../../DummyData/Dessert";
 import axios from "axios";
+import { API } from "../../constants/API";
 import { useSelector, useDispatch } from "react-redux";
 
 export const DELETE_PRODUCT = "DELETE_PRODUCT";
@@ -36,7 +37,7 @@ export const deleteProduct = (del_itemid) => {
     try {
       const token_main = getState().auth.token;
       await axios.get(
-        `http://127.0.0.1:4000/api/v1/canteen/deletebtn/${del_itemid}`,
+        `${API.canteen_server}/api/v1/canteen/deletebtn/${del_itemid}`,
         {
           headers: {
             Authorization: `Bearer ${token_main}`,
@@ -58,7 +59,7 @@ export const setAllProducts = () => {
     try {
       const token = getState().auth.token;
       const data = await axios.get(
-        "http://127.0.0.1:4000/api/v1/canteen/dish",
+        `${API.canteen_server}/api/v1/canteen/dish`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -80,7 +81,7 @@ export const setDummyHot = () => {
     try {
       const token_main = getState().auth.token;
       const data = await axios.post(
-        "http://127.0.0.1:4000/api/v1/canteen/dishes/category",
+        `${API.canteen_server}/api/v1/canteen/dishes/category`,
         {},
         {
           headers: {

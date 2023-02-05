@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API } from "../../constants/API";
 export const SET_WALLET_PRICE = "SET_WALLET_PRICE";
 export const SET_ORDER_HISTORY = "SET_ORDER_HISTORY";
 
@@ -19,7 +20,7 @@ export const setWalletPrice = () => {
 
       // );
 
-      await fetch("http://127.0.0.1:5000/api/v1/admin/Sachivalaya/details", {
+      await fetch(`${API.admin_server}/api/v1/admin/Sachivalaya/details`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token_main}`,
@@ -74,7 +75,7 @@ export const setOrderHistory = () => {
       //   console.log("called_fetchhistoy");
       // console.log("token_main succeed");
       const data = await axios.get(
-        "http://127.0.0.1:4000/api/v1/canteen/order/history",
+        `${API.canteen_server}/api/v1/canteen/order/history`,
 
         {
           headers: {
