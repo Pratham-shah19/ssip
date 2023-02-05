@@ -106,7 +106,7 @@ const getFilteredDishes = async (req, res) => {
   const skip = (page - 1) * limit;
   //search dishes by name
   if (search) {
-    var resp = await Dish.find({ name: { $regex: search, $options: "i" } });
+    var resp = await Dish.find({ name: { $regex: search, $options: "i" },isAvailable:true });
   }
   //sort
   if (sort) {
