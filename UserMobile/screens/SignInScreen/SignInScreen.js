@@ -182,6 +182,7 @@ import {
   ScrollView,
   Alert,
   Pressable,
+  TextInput,
 } from 'react-native';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
@@ -207,6 +208,8 @@ const SignInScreen = () => {
   } = useAuthContext();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
+  const [changeText, setChangeText] = useState('');
+  const [password, setPassword] = useState('');
 
   const {
     control,
@@ -219,7 +222,7 @@ const SignInScreen = () => {
       setLoginPending(true);
       const response = await axios.post(
         'http://3.109.165.137:3000/api/v1/user/login',
-        data,
+        {email: changeText, password: password},
       );
 
       const obj = {
@@ -232,7 +235,6 @@ const SignInScreen = () => {
       setTokens(response.data.token);
       setName(response.data.user.name);
       setUserId(response.data.user.id);
-      // console.log('b', response.data.token);
       await getData();
       setTimeout(() => console.log('a', tokens), 1000);
       setLoginPending(false);
@@ -278,13 +280,45 @@ const SignInScreen = () => {
             </Text>
           </View>
         </View>
-        <CustomInput
+        <Text
+          style={{
+            color: 'black',
+            fontSize: 14,
+            fontFamily: 'Fredoka-Regular',
+          }}>
+          Email:
+        </Text>
+        <TextInput
+          onChangeText={setChangeText}
+          value={changeText}
+          style={{
+            height: 36,
+            borderWidth: 0.5,
+            borderColor: '#d1cfcf',
+            marginTop: 5,
+            borderRadius: 8,
+            paddingHorizontal: 10,
+            fontSize: 13,
+            fontFamily: 'Fredoka-Regular',
+            color: 'black',
+          }}
+        />
+        {/* <CustomInput
           name="email"
           placeholder="Email"
           control={control}
           rules={{required: 'Email is required'}}
-        />
-        <CustomInput
+        /> */}
+        <Text
+          style={{
+            color: 'black',
+            fontSize: 14,
+            fontFamily: 'Fredoka-Regular',
+            marginTop: 10,
+          }}>
+          Password:
+        </Text>
+        {/* <CustomInput
           name="password"
           placeholder="Password"
           secureTextEntry
@@ -296,11 +330,46 @@ const SignInScreen = () => {
               message: 'Password should be minimum 3 characters long',
             },
           }}
+        /> */}
+        <TextInput
+          onChangeText={password}
+          value={setPassword}
+          style={{
+            height: 36,
+            borderWidth: 0.5,
+            borderColor: '#d1cfcf',
+            marginVertical: 7,
+            borderRadius: 8,
+            paddingHorizontal: 10,
+            fontSize: 13,
+            fontFamily: 'Fredoka-Regular',
+            color: 'black',
+          }}
         />
-        <CustomButton
+        {/* <CustomButton
           text={loading ? 'Loading...' : 'Sign In'}
-          onPress={handleSubmit(onSignInPressed)}
-        />
+          onPress={onSignInPressed}
+        /> */}
+        <Pressable
+          onPress={onSignInPressed}
+          style={{
+            alignContent: 'center',
+            alignSelf: 'center',
+            marginTop: 20,
+            backgroundColor: '#f35858',
+            paddingVertical: 12,
+            borderRadius: 9,
+          }}>
+          <Text
+            style={{
+              color: 'white',
+              fontFamily: 'Fredoka-Medium',
+              paddingHorizontal: 127,
+              fontSize: 15,
+            }}>
+            Sign In
+          </Text>
+        </Pressable>
         {/* <CustomButton
           text="Forgot password?"
           onPress={onForgotPasswordPressed}
@@ -314,11 +383,18 @@ const SignInScreen = () => {
           </Text>
         </Pressable>
         {/* <SocialSignInButtons /> */}
-        <CustomButton
+        {/* <CustomButton
           text="Don't have an account? Create one"
           onPress={onSignUpPress}
           type="TERTIARY"
-        />
+        /> */}
+        <Pressable
+          onPress={onSignUpPress}
+          style={{alignContent: 'center', alignSelf: 'center', marginTop: 20}}>
+          <Text style={{color: 'black', fontFamily: 'Fredoka-Regular'}}>
+            Don't have an account? Create one
+          </Text>
+        </Pressable>
       </ScrollView>
       {loginPending ? <AppLoader /> : null}
     </>

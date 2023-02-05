@@ -1,4 +1,4 @@
-package com.usermobile.newarchitecture.components;
+package com.ssip.governmentsachivalay.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

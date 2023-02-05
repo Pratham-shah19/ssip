@@ -85,7 +85,16 @@
 
 // export default NewPasswordScreen;
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView, Alert, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  Image,
+  TextInput,
+  Pressable,
+} from 'react-native';
 import CustomInput from '../../components/CustomInput';
 // import CustomInput from '../../component'
 import CustomButton from '../../components/CustomButton';
@@ -100,21 +109,27 @@ import AppLoader from '../../components/AppLoader';
 const NewPasswordScreen = () => {
   const {control, handleSubmit} = useForm();
   const [loading, setLoading] = useState(false);
+  const [password, setPassword] = useState('');
+  const [passwordWrong, setPasswordWrong] = useState(false);
   const navigation = useNavigation();
   const route = useRoute();
   const email = route?.params.email;
   const onSubmitPressed = async data => {
-    try {
-      setLoading(true);
-      const response = await axios.patch(
-        `http://65.0.189.107:8000/api/v1/user/${email}/updatePassword`,
-        data,
-      );
-      navigation.navigate('SignIn');
-      setLoading(false);
-    } catch (e) {
-      setLoading(false);
-      Alert.alert('Oops', e.message);
+    if (password.length >= 8) {
+      try {
+        setLoading(true);
+        const response = await axios.patch(
+          `http://65.0.189.107:8000/api/v1/user/${email}/updatePassword`,
+          {password: password},
+        );
+        navigation.navigate('SignIn');
+        setLoading(false);
+      } catch (e) {
+        setLoading(false);
+        Alert.alert('Oops', e.message);
+      }
+    } else {
+      setPasswordWrong(true);
     }
   };
 
@@ -140,7 +155,40 @@ const NewPasswordScreen = () => {
           />
           <Text style={styles.title}>Reset your password</Text>
 
-          <CustomInput
+          <Text
+            style={{
+              color: 'black',
+              fontSize: 14,
+              fontFamily: 'Fredoka-Regular',
+            }}>
+            Password:
+          </Text>
+          <TextInput
+            onChangeText={setPassword}
+            secureTextEntry={true}
+            value={password}
+            style={{
+              height: 36,
+              borderWidth: 0.5,
+              borderColor: '#d1cfcf',
+              marginTop: 5,
+              borderRadius: 8,
+              paddingHorizontal: 10,
+              fontSize: 13,
+              fontFamily: 'Fredoka-Regular',
+              color: 'black',
+            }}
+          />
+          <Text
+            style={{
+              color: 'red',
+              fontSize: 12,
+              fontFamily: 'Fredoka-Regular',
+              opacity: passwordWrong ? 1 : 0,
+            }}>
+            Password should be minimum of 8 characters
+          </Text>
+          {/* <CustomInput
             placeholder="Enter your new password"
             name="password"
             control={control}
@@ -152,15 +200,40 @@ const NewPasswordScreen = () => {
                 message: 'Password should be at least 8 characters long',
               },
             }}
-          />
+          /> */}
 
-          <CustomButton text="Submit" onPress={handleSubmit(onSubmitPressed)} />
-
-          <CustomButton
-            text="Back to Sign in"
+          {/* <CustomButton text="Submit" onPress={handleSubmit(onSubmitPressed)} /> */}
+          <Pressable
+            onPress={onSubmitPressed}
+            style={{
+              alignContent: 'center',
+              alignSelf: 'center',
+              marginTop: 5,
+              backgroundColor: '#f35858',
+              paddingVertical: 12,
+              borderRadius: 9,
+            }}>
+            <Text
+              style={{
+                color: 'white',
+                fontFamily: 'Fredoka-Medium',
+                paddingHorizontal: 127,
+                fontSize: 15,
+              }}>
+              Submit
+            </Text>
+          </Pressable>
+          <Pressable
             onPress={onSignInPress}
-            type="TERTIARY"
-          />
+            style={{
+              alignContent: 'center',
+              alignSelf: 'center',
+              marginTop: 20,
+            }}>
+            <Text style={{color: 'black', fontFamily: 'Fredoka-Regular'}}>
+              Back to Sign in
+            </Text>
+          </Pressable>
         </View>
       </ScrollView>
       {loading ? <AppLoader /> : null}

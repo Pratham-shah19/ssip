@@ -81,7 +81,16 @@
 
 // export default ForgotPasswordScreen;
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView, Alert, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  Image,
+  TextInput,
+  Pressable,
+} from 'react-native';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import SocialSignInButtons from '../../components/SocialSignInButtons';
@@ -96,17 +105,19 @@ const ForgotPasswordScreen = () => {
   const navigation = useNavigation();
   const [check, setCheck] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('');
   const onSendPressed = async data => {
+    setCheck(false);
     try {
       setLoading(true);
       const response = await axios.patch(
         'http://3.109.165.137:3000/api/v1/user/forgotpassword',
-        data,
+        {email: email},
       );
       // console.log(response.data);
-      if (response.data.otpsent) {
-        navigation.navigate('ConfirmEmail', {email: data.email});
-      }
+      // if (response.data.otpsent) {
+      navigation.navigate('ConfirmEmail', {email: email});
+      // }
       setLoading(false);
     } catch (err) {
       setCheck(true);
@@ -136,12 +147,35 @@ const ForgotPasswordScreen = () => {
           />
           <Text style={styles.title}>Reset your password</Text>
 
-          <CustomInput
+          {/* <CustomInput
             name="email"
             control={control}
             placeholder="Email"
             rules={{
               required: 'Email is required',
+            }}
+          /> */}
+          <Text
+            style={{
+              color: 'black',
+              fontSize: 14,
+              fontFamily: 'Fredoka-Regular',
+            }}>
+            Email:
+          </Text>
+          <TextInput
+            onChangeText={setEmail}
+            value={email}
+            style={{
+              height: 36,
+              borderWidth: 0.5,
+              borderColor: '#d1cfcf',
+              marginTop: 5,
+              borderRadius: 8,
+              paddingHorizontal: 10,
+              fontSize: 13,
+              fontFamily: 'Fredoka-Regular',
+              color: 'black',
             }}
           />
           <View style={{alignContent: 'flex-start'}}>
@@ -157,13 +191,43 @@ const ForgotPasswordScreen = () => {
             </Text>
           </View>
 
-          <CustomButton text="Send" onPress={handleSubmit(onSendPressed)} />
-
-          <CustomButton
+          {/* <CustomButton text="Send" onPress={handleSubmit(onSendPressed)} /> */}
+          <Pressable
+            onPress={onSendPressed}
+            style={{
+              alignContent: 'center',
+              alignSelf: 'center',
+              marginTop: 20,
+              backgroundColor: '#f35858',
+              paddingVertical: 12,
+              borderRadius: 9,
+            }}>
+            <Text
+              style={{
+                color: 'white',
+                fontFamily: 'Fredoka-Medium',
+                paddingHorizontal: 127,
+                fontSize: 15,
+              }}>
+              Send
+            </Text>
+          </Pressable>
+          {/* <CustomButton
             text="Back to Sign in"
             onPress={onSignInPress}
             type="TERTIARY"
-          />
+          /> */}
+          <Pressable
+            onPress={onSignInPress}
+            style={{
+              alignContent: 'center',
+              alignSelf: 'center',
+              marginTop: 20,
+            }}>
+            <Text style={{color: 'black', fontFamily: 'Fredoka-Regular'}}>
+              Back to Sign in
+            </Text>
+          </Pressable>
         </View>
       </ScrollView>
       {/* {AppLoader ? loading : null} */}

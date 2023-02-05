@@ -1,4 +1,4 @@
-package com.usermobile;
+package com.ssip.governmentsachivalay;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
@@ -15,7 +15,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "UserMobile";
+    return "Government Sachivalay";
   }
 
   /**

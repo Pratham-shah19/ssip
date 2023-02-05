@@ -108,7 +108,16 @@
 
 // export default ConfirmEmailScreen;
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView, Alert, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  Image,
+  TextInput,
+  Pressable,
+} from 'react-native';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import SocialSignInButtons from '../../components/SocialSignInButtons';
@@ -128,17 +137,20 @@ const ConfirmEmailScreen = () => {
   const username = watch('username');
   const [check, setCheck] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [otp, setOtp] = useState('');
 
   const navigation = useNavigation();
 
   const onConfirmPressed = async data => {
     try {
       // await Auth.confirmSignUp(data.username, data.code);
+      console.log('email', email);
       setLoading(true);
       const response = await axios.post(
         `http://65.0.189.107:8000/api/v1/user/${email}/validateOtp`,
-        data,
+        {otp: otp},
       );
+      console.log(response);
       navigation.navigate('NewPasswordScreen', {email});
       setLoading(false);
     } catch (e) {
@@ -170,12 +182,36 @@ const ConfirmEmailScreen = () => {
           />
           <Text style={styles.title}>Confirm your email</Text>
 
-          <CustomInput
+          {/* <CustomInput
             name="otp"
             control={control}
             placeholder="Enter your confirmation code"
             rules={{
               required: 'Confirmation code is required',
+            }}
+          /> */}
+          <Text
+            style={{
+              color: 'black',
+              fontSize: 14,
+              fontFamily: 'Fredoka-Regular',
+            }}>
+            OTP:
+          </Text>
+          <TextInput
+            onChangeText={setOtp}
+            value={otp}
+            keyboardType={'numeric'}
+            style={{
+              height: 36,
+              borderWidth: 0.5,
+              borderColor: '#d1cfcf',
+              marginTop: 5,
+              borderRadius: 8,
+              paddingHorizontal: 10,
+              fontSize: 13,
+              fontFamily: 'Fredoka-Regular',
+              color: 'black',
             }}
           />
           <View style={{alignContent: 'flex-start'}}>
@@ -191,16 +227,47 @@ const ConfirmEmailScreen = () => {
             </Text>
           </View>
 
-          <CustomButton
+          {/* <CustomButton
             text="Confirm"
             onPress={handleSubmit(onConfirmPressed)}
-          />
+          /> */}
+          <Pressable
+            onPress={onConfirmPressed}
+            style={{
+              alignContent: 'center',
+              alignSelf: 'center',
+              marginTop: 8,
+              backgroundColor: '#f35858',
+              paddingVertical: 12,
+              borderRadius: 9,
+            }}>
+            <Text
+              style={{
+                color: 'white',
+                fontFamily: 'Fredoka-Medium',
+                paddingHorizontal: 127,
+                fontSize: 15,
+              }}>
+              Confirm
+            </Text>
+          </Pressable>
 
-          <CustomButton
+          {/* <CustomButton
             text="Back to Sign in"
             onPress={onSignInPress}
             type="TERTIARY"
-          />
+          /> */}
+          <Pressable
+            onPress={onSignInPress}
+            style={{
+              alignContent: 'center',
+              alignSelf: 'center',
+              marginTop: 20,
+            }}>
+            <Text style={{color: 'black', fontFamily: 'Fredoka-Regular'}}>
+              Back to Sign in
+            </Text>
+          </Pressable>
         </View>
       </ScrollView>
       {loading ? <AppLoader /> : null}

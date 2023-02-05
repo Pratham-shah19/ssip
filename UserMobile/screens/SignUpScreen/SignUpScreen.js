@@ -235,6 +235,8 @@ import {
   Alert,
   Image,
   useWindowDimensions,
+  TextInput,
+  Pressable,
 } from 'react-native';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
@@ -256,7 +258,16 @@ const SignUpScreen = () => {
   const pwd = watch('password');
   const navigation = useNavigation();
   const [loadingPending, setLoadingPending] = useState(false);
+  const [onChangeText, setOnChangeText] = useState('');
   const [check, setCheck] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [address, setAddress] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordRepeat, setPasswordRepeat] = useState('');
+  const [passwordWrong, setPasswordWrong] = useState(false);
+  const [emailWrong, setEmailWrong] = useState(false);
+  const [passwordMin, setPasswordMin] = useState(false);
   const storeData = async value => {
     try {
       const jsonValue = JSON.stringify(value);
@@ -267,26 +278,50 @@ const SignUpScreen = () => {
   };
 
   const onRegisterPressed = async data => {
-    try {
-      setLoadingPending(true);
-      const {address, password, email, name} = data;
-      const response = await axios.post(
-        'http://3.109.165.137:3000/api/v1/user/register',
-        data,
-      );
-      const obj = {
-        token: response.data.token,
-        userID: response.data.user.id,
-        name: response.data.user.name,
-      };
-      const jsonValue = JSON.stringify(obj);
-      await AsyncStorage.setItem('userDetail', jsonValue);
-      navigation.navigate('SignIn');
-      setLoadingPending(false);
-    } catch (err) {
-      // setCheck(true);
-      setLoadingPending(false);
-      Alert.alert('Already registered.');
+    setEmailWrong(false);
+    setPasswordWrong(false);
+    if (!name || !address || !email || !password) {
+      Alert.alert('Enter all required details.');
+    } else {
+      let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+      if (reg.test(email) === false) {
+        setEmailWrong(true);
+      } else {
+        if (password.length >= 8) {
+          if (password == passwordRepeat) {
+            try {
+              setLoadingPending(true);
+              // const {address, password, email, name} = data;
+              const response = await axios.post(
+                'http://3.109.165.137:3000/api/v1/user/register',
+                {
+                  name: name,
+                  email: email,
+                  address: address,
+                  password: password,
+                },
+              );
+              const obj = {
+                token: response.data.token,
+                userID: response.data.user.id,
+                name: response.data.user.name,
+              };
+              const jsonValue = JSON.stringify(obj);
+              await AsyncStorage.setItem('userDetail', jsonValue);
+              navigation.navigate('SignIn');
+              setLoadingPending(false);
+            } catch (err) {
+              // setCheck(true);
+              setLoadingPending(false);
+              Alert.alert('Already registered.');
+            }
+          } else {
+            setPasswordWrong(true);
+          }
+        } else {
+          setPasswordMin(true);
+        }
+      }
     }
   };
 
@@ -316,7 +351,176 @@ const SignUpScreen = () => {
           {/* </View> */}
           <Text style={styles.title}>Create an account</Text>
 
-          <CustomInput
+          <Text
+            style={{
+              color: 'black',
+              fontSize: 14,
+              fontFamily: 'Fredoka-Regular',
+            }}>
+            Name:
+          </Text>
+          <TextInput
+            onChangeText={setName}
+            value={name}
+            style={{
+              height: 36,
+              borderWidth: 0.5,
+              borderColor: '#d1cfcf',
+              marginTop: 5,
+              borderRadius: 8,
+              paddingHorizontal: 10,
+              fontSize: 13,
+              fontFamily: 'Fredoka-Regular',
+              color: 'black',
+              marginBottom: 10,
+            }}
+          />
+          <Text
+            style={{
+              color: 'black',
+              fontSize: 14,
+              fontFamily: 'Fredoka-Regular',
+            }}>
+            Email:
+          </Text>
+          <TextInput
+            onChangeText={setEmail}
+            value={email}
+            style={{
+              height: 36,
+              borderWidth: 0.5,
+              borderColor: '#d1cfcf',
+              marginTop: 5,
+              borderRadius: 8,
+              paddingHorizontal: 10,
+              fontSize: 13,
+              fontFamily: 'Fredoka-Regular',
+              color: 'black',
+            }}
+          />
+          <Text
+            style={{
+              color: 'red',
+              fontFamily: 'Fredoka-Regular',
+              fontSize: 10,
+              opacity: emailWrong ? 1 : 0,
+            }}>
+            Email is invalid
+          </Text>
+          <Text
+            style={{
+              color: 'black',
+              fontSize: 14,
+              fontFamily: 'Fredoka-Regular',
+            }}>
+            Address:
+          </Text>
+          <TextInput
+            onChangeText={setAddress}
+            value={address}
+            style={{
+              height: 36,
+              borderWidth: 0.5,
+              borderColor: '#d1cfcf',
+              marginTop: 5,
+              borderRadius: 8,
+              paddingHorizontal: 10,
+              fontSize: 13,
+              fontFamily: 'Fredoka-Regular',
+              color: 'black',
+              marginBottom: 10,
+            }}
+          />
+          <Text
+            style={{
+              color: 'black',
+              fontSize: 14,
+              fontFamily: 'Fredoka-Regular',
+            }}>
+            Password:
+          </Text>
+          <TextInput
+            onChangeText={setPassword}
+            value={password}
+            secureTextEntry={true}
+            style={{
+              height: 36,
+              borderWidth: 0.5,
+              borderColor: '#d1cfcf',
+              marginTop: 5,
+              borderRadius: 8,
+              paddingHorizontal: 10,
+              fontSize: 13,
+              fontFamily: 'Fredoka-Regular',
+              color: 'black',
+              marginBottom: 10,
+            }}
+          />
+          <Text
+            style={{
+              color: 'red',
+              fontSize: 10,
+              fontFamily: 'Fredoka-Regular',
+              opacity: passwordMin ? 1 : 0,
+            }}>
+            Password should be of minimum 8 characters
+          </Text>
+          <Text
+            style={{
+              color: 'black',
+              fontSize: 14,
+              fontFamily: 'Fredoka-Regular',
+            }}>
+            Repeat Password:
+          </Text>
+          <TextInput
+            onChangeText={setPasswordRepeat}
+            value={passwordRepeat}
+            secureTextEntry={true}
+            style={{
+              height: 36,
+              borderWidth: 0.5,
+              borderColor: '#d1cfcf',
+              marginTop: 5,
+              borderRadius: 8,
+              paddingHorizontal: 10,
+              fontSize: 13,
+              fontFamily: 'Fredoka-Regular',
+              color: 'black',
+              marginBottom: 10,
+            }}
+          />
+          <Text
+            style={{
+              color: 'red',
+              fontSize: 10,
+              fontFamily: 'Fredoka-Regular',
+              opacity: passwordWrong ? 1 : 0,
+            }}>
+            Password not matched
+          </Text>
+          <Pressable
+            onPress={onRegisterPressed}
+            style={{
+              alignContent: 'center',
+              alignSelf: 'center',
+              marginTop: 10,
+              backgroundColor: '#f35858',
+              // paddingHorizontal: 135,
+              paddingVertical: 12,
+              borderRadius: 9,
+            }}>
+            <Text
+              style={{
+                color: 'white',
+                fontFamily: 'Fredoka-Medium',
+                marginHorizontal: 120,
+                fontSize: 15,
+              }}>
+              Register
+            </Text>
+          </Pressable>
+          {/* <CustomInput
             name="name"
             control={control}
             placeholder="Name"
@@ -331,9 +535,9 @@ const SignUpScreen = () => {
                 message: 'Name should be max 24 characters long',
               },
             }}
-          />
+          /> */}
 
-          <CustomInput
+          {/* <CustomInput
             name="address"
             control={control}
             placeholder="Address"
@@ -348,8 +552,8 @@ const SignUpScreen = () => {
                 message: 'Address should be max 24 characters long',
               },
             }}
-          />
-          <CustomInput
+          /> */}
+          {/* <CustomInput
             name="email"
             control={control}
             placeholder="Email"
@@ -357,8 +561,8 @@ const SignUpScreen = () => {
               required: 'Email is required',
               pattern: {value: EMAIL_REGEX, message: 'Email is invalid'},
             }}
-          />
-          <CustomInput
+          /> */}
+          {/* <CustomInput
             name="password"
             control={control}
             placeholder="Password"
@@ -370,8 +574,8 @@ const SignUpScreen = () => {
                 message: 'Password should be at least 8 characters long',
               },
             }}
-          />
-          <CustomInput
+          /> */}
+          {/* <CustomInput
             name="password-repeat"
             control={control}
             placeholder="Repeat Password"
@@ -379,12 +583,12 @@ const SignUpScreen = () => {
             rules={{
               validate: value => value === pwd || 'Password do not match',
             }}
-          />
+          /> */}
 
-          <CustomButton
+          {/* <CustomButton
             text="Register"
             onPress={handleSubmit(onRegisterPressed)}
-          />
+          /> */}
 
           <Text style={styles.text}>
             By registering, you confirm that you accept our{' '}
@@ -399,11 +603,22 @@ const SignUpScreen = () => {
 
           {/* <SocialSignInButtons /> */}
 
-          <CustomButton
+          {/* <CustomButton
             text="Have an account? Sign in"
             onPress={onSignInPress}
             type="TERTIARY"
-          />
+          /> */}
+          <Pressable
+            onPress={onSignInPress}
+            style={{
+              alignContent: 'center',
+              alignSelf: 'center',
+              marginTop: 20,
+            }}>
+            <Text style={{color: 'black', fontFamily: 'Fredoka-Regular'}}>
+              Have an account? Sign in
+            </Text>
+          </Pressable>
         </View>
       </ScrollView>
       {loadingPending ? <AppLoader /> : null}
@@ -420,10 +635,13 @@ const styles = StyleSheet.create({
     color: 'black',
     fontFamily: 'Fredoka-Medium',
     textAlign: 'center',
+    marginBottom: 10,
   },
   text: {
     color: 'gray',
     marginTop: 10,
+    fontFamily: 'Fredoka-Regular',
+    fontSize: 12,
   },
   link: {
     color: '#FDB075',
