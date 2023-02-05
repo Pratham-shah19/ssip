@@ -35,20 +35,17 @@ const HomeOwnerDashboard = ({ newOrder, token, orderId, getCurrentOrders }) => {
       navigate("/");
     }
   }, []);
-  if (newOrder) {
-    console.log("neORde", newOrder);
-  }
   useEffect(() => {
-    // const interval = setInterval(() => {
-    //   setloading(false);
-    //   setTime(Date.now());
-    // }, 5000);
-    getCurrentOrders();
-    setloading(false);
-    // return () => {
-    //   clearInterval(interval);
-    // };
-  }, []);
+    const interval = setInterval(() => {
+      getCurrentOrders();
+      setloading(false);
+      setTime(Date.now());
+    }, 5000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  });
   return (
     <>
       {loading === false ? (

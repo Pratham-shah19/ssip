@@ -3,7 +3,6 @@ import "./Unknown.css";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import * as itemsActions from "../../store/actions/items";
-import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import { API } from "../../constants/API";
 const Unknown = ({ id, name, url, quantity }) => {
@@ -26,11 +25,15 @@ const Unknown = ({ id, name, url, quantity }) => {
     } else {
       await axios
         .post(
-          `${API.canteen_server}0/api/v1/canteen/modifyquantity/${id}`,
+          `${API.canteen_server}/api/v1/canteen/modifyquantity/${id}`,
           out,
           {
+            withCredentials: false,
             headers: {
               Authorization: `Bearer ${token_main}`,
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods":
+                "GET,PUT,POST,DELETE,PATCH,OPTIONS",
             },
           }
         )

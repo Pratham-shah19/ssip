@@ -11,8 +11,11 @@ export const setNewOrders = (newOrders) => {
       const data = await axios.get(
         `${API.canteen_server}/api/v1/canteen/order/current`,
         {
+          withCredentials: false,
           headers: {
             Authorization: `Bearer ${token_main}`,
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
           },
         }
       );
@@ -33,8 +36,16 @@ export const setOldOrders = () => {
         `${API.canteen_server}/api/v1/canteen/order/history`,
         {},
         {
+          // withCredentials: false,
           headers: {
             Authorization: `Bearer ${token_main}`,
+            // "Access-Control-Allow-Origin": "*",
+            // "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+            // "Access-Control-Expose-Headers": "Access-Control-*",
+            // "Access-Control-Allow-Headers":
+            //   "Access-Control-*, Origin, X-Requested-With, Content-Type, Accept, Authorization",
+
+            // "Access-Control-Allow-Credentials": "true",
           },
         }
       );
