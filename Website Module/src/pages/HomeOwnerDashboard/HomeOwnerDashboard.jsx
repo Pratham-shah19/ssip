@@ -8,11 +8,19 @@ import "./HomeOwnerDashboard.css";
 import Header from "../../components/Header_Home/Header";
 import CollapsibleBox from "../../components/Collapsible/CollapsibleBox";
 import * as OrdersActions from "../../store/actions/Orders";
+import * as AuthActions from "../../store/actions/auth";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import { API } from "../../constants/API";
-const HomeOwnerDashboard = ({ newOrder, token, orderId, getCurrentOrders }) => {
+const HomeOwnerDashboard = ({
+  newOrder,
+  token,
+  orderId,
+  getCurrentOrders,
+  Flag,
+  setloaded,
+}) => {
   let [newOrders, setNewOrders] = useState(newOrder);
   let [first_id, setFirst_id] = useState(0);
   let [time, setTime] = useState(Date.now());
@@ -24,6 +32,7 @@ const HomeOwnerDashboard = ({ newOrder, token, orderId, getCurrentOrders }) => {
   const btn2_handle = () => {
     navigate("/owner-dashboard/profileScreen");
   };
+
   useEffect(() => {
     getCurrentOrders();
     if (!loading) {
@@ -34,11 +43,15 @@ const HomeOwnerDashboard = ({ newOrder, token, orderId, getCurrentOrders }) => {
     if (!token) {
       navigate("/");
     }
+    setloaded(true);
   }, []);
   useEffect(() => {
+    if (Flag) {
+      setloading(false);
+    }
     const interval = setInterval(() => {
       getCurrentOrders();
-      setloading(false);
+
       setTime(Date.now());
     }, 5000);
 
@@ -97,12 +110,16 @@ function mapStateToProps(state) {
     newOrder: state.Orders.newOrders,
     token: state.auth.token,
     orderId: state.Orders.orderId,
+    Flag: state.auth.flag,
   };
 }
 function mapStateToDispatch(dispatch) {
   return {
     getCurrentOrders: () => {
       return dispatch(OrdersActions.setNewOrders());
+    },
+    setloaded: (flag) => {
+      return dispatch(AuthActions.setloaded(flag));
     },
   };
 }
