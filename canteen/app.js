@@ -96,7 +96,7 @@ const errorHandlerMiddleware = require("./middleware/error-handler");
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-const port = process.env.PORT || 6500;
+const port = 6500 || process.env.PORT;
 
 const start = async () => {
   try {

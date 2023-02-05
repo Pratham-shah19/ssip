@@ -24,8 +24,6 @@ const NewPassword = () => {
       const obj = {
         password: password,
       };
-      //le.log("vivek");
-      //le.log(email);
       axios
         .patch(`${API.admin_server}/api/v1/admin/${email}/updatePassword`, obj)
         .then((res) => {
