@@ -2,7 +2,8 @@ import { API } from "../../constants/API";
 import axios from "axios";
 export const SET_NEWORDERS = "SET_NEWORDERS";
 export const SET_OLDORDERS = "SET_OLDORDERS";
-export const SET_ORDERID = "SET_ORDERID";
+export const SET_ORDERID = "SET_ORDERID"; //for interuupt on completion of order
+
 export const setNewOrders = (newOrders) => {
   return async (dispatch, getState) => {
     try {
@@ -32,9 +33,8 @@ export const setOldOrders = () => {
   return async (dispatch, getState) => {
     try {
       const token_main = getState().auth.token;
-      const data = await axios.post(
+      const data = await axios.get(
         `${API.canteen_server}/api/v1/canteen/order/history`,
-        {},
         {
           // withCredentials: false,
           headers: {
