@@ -4,6 +4,7 @@ import "./AdminRegister.css";
 import Axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { API } from "../../constants/API";
 const AdminRegister = () => {
   const clickHandler = async (e) => {
     const obj = {
@@ -14,7 +15,7 @@ const AdminRegister = () => {
     };
     //le.log(obj);
     const data = await Axios.post(
-      "http://127.0.0.1:2000/api/v1/user/register",
+      `${API.auth_server}/api/v1/user/register`,
       obj
     );
     //le.log("add_data", data);

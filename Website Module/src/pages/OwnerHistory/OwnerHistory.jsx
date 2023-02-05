@@ -26,6 +26,9 @@ const OwnerHistory = ({
       navigate("/");
     }
   }, []);
+  if (orderHistory) {
+    console.log("Order history", orderHistory);
+  }
   useEffect(() => {
     if (Histflag == true) {
       const interval = setInterval(() => {

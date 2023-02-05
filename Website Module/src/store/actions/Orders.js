@@ -1,15 +1,15 @@
+import { API } from "../../constants/API";
 import axios from "axios";
 export const SET_NEWORDERS = "SET_NEWORDERS";
 export const SET_OLDORDERS = "SET_OLDORDERS";
 export const SET_ORDERID = "SET_ORDERID";
-
 export const setNewOrders = (newOrders) => {
   return async (dispatch, getState) => {
     try {
       const token_main = getState().auth.token;
       console.log("token_blbalalala", token_main);
       const data = await axios.get(
-        "http://127.0.0.1:4000/api/v1/canteen/order/current",
+        `${API.canteen_server}/api/v1/canteen/order/current`,
         {
           headers: {
             Authorization: `Bearer ${token_main}`,
@@ -30,7 +30,7 @@ export const setOldOrders = () => {
     try {
       const token_main = getState().auth.token;
       const data = await axios.post(
-        "http://127.0.0.1:4000/api/v1/canteen/order/history",
+        `${API.canteen_server}/api/v1/canteen/order/history`,
         {},
         {
           headers: {
