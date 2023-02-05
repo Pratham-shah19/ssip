@@ -7,6 +7,7 @@ const { BadRequestError, NotFoundError } = require("../errors");
 const Basket = require("../models/Basket");
 const Orders = require("../models/Orders");
 const bcrypt = require("bcryptjs");
+const { json } = require("express");
 
 const getUserDetails = async (req, res) => {
   var { uid } = req.params;
@@ -76,12 +77,13 @@ const getOrdersSpecific = async (req, res) => {
 
   if (status === "NEW" || status === "COMPLETED") {
     const orders = await Order.find({ status, userId });
+    // console.log(orders)
     for (let i = 0; i < orders.length; i++) {
       var items = orders[i].items;
       var updatedItems = [];
       for (let j = 0; j < items.length; j++) {
         const dish = await Dish.findOne({ _id: items[j].dishId });
-        const obj = { qty: items[i].qty, dish };
+        const obj = { qty: items[j].qty, dish };
         updatedItems.push(obj);
       }
       orders[i].items = updatedItems;
