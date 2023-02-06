@@ -38,12 +38,12 @@ const OrderSchema = new mongoose.Schema({
     type:String,
     default:'KOT',
     enum:[
-      'KOT',
-      'ONLINE',
-      'CASH'
+      "KOT",
+      "ONLINE",
+      "CASH"
     ]
-  }
-})
+  },
+},{timestamps:true})
 
 
 module.exports = mongoose.model('Order',OrderSchema)
