@@ -17,6 +17,15 @@ const app = express();
 const connectDB = require("./db/connect");
 
 //middleware
+app.use((
+  cors({
+    origin: "*",
+  })
+));
+app.use(function(req,res,next) {
+  res.header("Access-Control-Allow-Origin","*");
+  next();
+});
 app.use(express.static(`${__dirname}/public`));
 
 // routers
@@ -87,7 +96,7 @@ const errorHandlerMiddleware = require("./middleware/error-handler");
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-const port = process.env.PORT || 6500;
+const port = 6500 || process.env.PORT;
 
 const start = async () => {
   try {

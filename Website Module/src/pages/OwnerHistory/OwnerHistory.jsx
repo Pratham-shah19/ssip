@@ -3,6 +3,7 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import "./OwnerHistory.css";
 import Header from "../../components/Header_Home/Header";
 import * as WalletActions from "../../store/actions/wallet";
+import * as OrdersActions from "../../store/actions/Orders";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import CollapsibleGen from "../../components/CollapsibleGen/CollapsibleGen";
@@ -25,31 +26,20 @@ const OwnerHistory = ({
     if (!token) {
       navigate("/");
     }
+    setHistloaded(true);
   }, []);
-  if (orderHistory) {
-    console.log("Order history", orderHistory);
-  }
   useEffect(() => {
-    if (Histflag == true) {
-      const interval = setInterval(() => {
-        getOrderHistory();
-      }, 15000);
-
-      return () => {
-        clearInterval(interval);
-      };
+    if (Histflag) {
+      setloading(false);
     }
-  });
-  useEffect(() => {
-    if (Histflag == false) {
+    const interval = setInterval(() => {
       getOrderHistory();
-      setloading(false);
-      setHistloaded(true);
-    }
-    if (Histflag == true) {
-      setloading(false);
-    }
-  }, []);
+    }, 5000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  });
 
   return (
     <>
@@ -97,7 +87,7 @@ const OwnerHistory = ({
 
 function mapStateToProps(state) {
   return {
-    orderHistory: state.wallet.orderHistory,
+    orderHistory: state.Orders.oldOrders,
     token: state.auth.token,
     Histflag: state.auth.Histflag,
   };
@@ -105,7 +95,7 @@ function mapStateToProps(state) {
 function mapStateToDispatch(dispatch) {
   return {
     getOrderHistory: () => {
-      return dispatch(WalletActions.setOrderHistory());
+      return dispatch(OrdersActions.setOldOrders());
     },
     setHistloaded: (Histflag) => {
       return dispatch(AuthActions.setHistloaded(Histflag));

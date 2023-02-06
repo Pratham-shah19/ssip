@@ -42,8 +42,8 @@ const OrderSchema = new mongoose.Schema({
       "ONLINE",
       "CASH"
     ]
-  }
-})
+  },
+},{timestamps:true})
 
 
 module.exports = mongoose.model('Order',OrderSchema)

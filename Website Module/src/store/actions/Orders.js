@@ -2,7 +2,8 @@ import { API } from "../../constants/API";
 import axios from "axios";
 export const SET_NEWORDERS = "SET_NEWORDERS";
 export const SET_OLDORDERS = "SET_OLDORDERS";
-export const SET_ORDERID = "SET_ORDERID";
+export const SET_ORDERID = "SET_ORDERID"; //for interuupt on completion of order
+
 export const setNewOrders = (newOrders) => {
   return async (dispatch, getState) => {
     try {
@@ -11,8 +12,11 @@ export const setNewOrders = (newOrders) => {
       const data = await axios.get(
         `${API.canteen_server}/api/v1/canteen/order/current`,
         {
+          withCredentials: false,
           headers: {
             Authorization: `Bearer ${token_main}`,
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
           },
         }
       );
@@ -29,12 +33,19 @@ export const setOldOrders = () => {
   return async (dispatch, getState) => {
     try {
       const token_main = getState().auth.token;
-      const data = await axios.post(
+      const data = await axios.get(
         `${API.canteen_server}/api/v1/canteen/order/history`,
-        {},
         {
+          // withCredentials: false,
           headers: {
             Authorization: `Bearer ${token_main}`,
+            // "Access-Control-Allow-Origin": "*",
+            // "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+            // "Access-Control-Expose-Headers": "Access-Control-*",
+            // "Access-Control-Allow-Headers":
+            //   "Access-Control-*, Origin, X-Requested-With, Content-Type, Accept, Authorization",
+
+            // "Access-Control-Allow-Credentials": "true",
           },
         }
       );
