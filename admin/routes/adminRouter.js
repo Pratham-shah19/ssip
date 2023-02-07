@@ -15,7 +15,9 @@ const {
 const router = express.Router();
 const authenticationMiddleware = require("../middleware/authentication");
 
-router.route("/customers").get(authenticationMiddleware, getSpecificCustomers);
+router.route("/thismonthreport").get(thisReportGeneration)
+router.route("/lastmonthreport").get(lastReportGeneration)
+router.route("/customers").get( authenticationMiddleware,getSpecificCustomers);
 router.route("/totalcustomers").get(authenticationMiddleware, getCustomersLength);
 
 router.route("/orders").get(authenticationMiddleware, getSpecificOrders);
@@ -27,7 +29,5 @@ router.route("/:email/updatePassword").patch(updatePassword);
 router.route("/payCanteen").post(authenticationMiddleware, payCanteen);
 router.route("/validateCashotp").post(authenticationMiddleware, validateCashotp);
 
-router.route("/thismonthreport").get(thisReportGeneration)
-router.route("/lastmonthreport").get(lastReportGeneration)
 
 module.exports = router;

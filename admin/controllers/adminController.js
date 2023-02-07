@@ -3,6 +3,9 @@ const Admin = require("../models/Admin");
 const User = require("../models/User");
 const Dish = require("../models/Dish");
 const Canteen = require("../models/Canteen");
+const mime = require('mime')
+const xl = require('excel4node')
+const path = require('path')
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
@@ -194,13 +197,13 @@ const thisReportGeneration = async (req,res) => {
     const d = new Date(ord._id.getTimestamp());
     const dMonth = d.getMonth() + 1;
     const dYear = d.getFullYear();
-    console.log(dMonth)
+    // console.log(dMonth)
     if(currentYear == dYear && currentMonth-dMonth==0){
       let obj = {};
 
-      console.log(ord)
+      // console.log(ord)
       let user = await User.findOne({_id:ord.userId})
-      console.log(user)
+      // console.log(user)
       obj.orderid = ord._id;
       obj.username = user?.name;
       obj.price = ord.price;
