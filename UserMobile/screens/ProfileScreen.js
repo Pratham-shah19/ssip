@@ -48,7 +48,7 @@ export default function ProfileScreen() {
 
   const walletDetail = async () => {
     const response = await axios.get(
-      `http://65.0.189.107:8000/api/v1/user/${users}/wallet`,
+      `http://10.0.2.2:8000/api/v1/user/${users}/wallet`,
       {headers: {Authorization: `Bearer ${tokens}`}},
     );
     // navigation.navigate('OtpScreen');
@@ -68,7 +68,7 @@ export default function ProfileScreen() {
             <View>
               <Text
                 style={{
-                  fontSize: 26,
+                  fontSize: 30,
                   fontFamily: 'Fredoka-Medium',
                   color: 'black',
                 }}>
@@ -77,7 +77,7 @@ export default function ProfileScreen() {
               <Text
                 style={{
                   marginRight: 10,
-                  fontSize: 13,
+                  fontSize: 16,
                   fontFamily: 'Fredoka-Regular',
                   color: 'grey',
                 }}>
@@ -90,7 +90,7 @@ export default function ProfileScreen() {
               style={{
                 fontFamily: 'Fredoka-Regular',
                 color: 'black',
-                fontSize: 17,
+                fontSize: 20,
               }}>
               Current Balance: {'\u20B9'}
               {wallet}
@@ -101,14 +101,14 @@ export default function ProfileScreen() {
               flexDirection: 'row',
               justifyContent: 'space-evenly',
               marginBottom: 10,
-              marginTop: 10,
+              marginTop: 20,
               alignItems: 'center',
             }}>
             <View>
               <Pressable style={{flex: 1}}>
                 <Ionicons
                   name="heart-outline"
-                  size={22}
+                  size={25}
                   color="#f35858"
                   style={{alignSelf: 'center'}}
                 />
@@ -119,7 +119,7 @@ export default function ProfileScreen() {
               <Pressable style={{flex: 1}}>
                 <Ionicons
                   name="notifications-outline"
-                  size={22}
+                  size={25}
                   color="#f35858"
                   style={{alignSelf: 'center'}}
                 />
@@ -130,7 +130,7 @@ export default function ProfileScreen() {
               <Pressable style={{flex: 1}}>
                 <Ionicons
                   name="settings-outline"
-                  size={22}
+                  size={25}
                   color="#f35858"
                   style={{alignSelf: 'center'}}
                 />
@@ -141,7 +141,7 @@ export default function ProfileScreen() {
               <Pressable style={{flex: 1}}>
                 <Ionicons
                   name="wallet-outline"
-                  size={22}
+                  size={25}
                   color="#f35858"
                   style={{alignSelf: 'center'}}
                 />
@@ -154,11 +154,11 @@ export default function ProfileScreen() {
 
           {/* <Text style={styles.textcolour}>Your Rating</Text> */}
 
-          <View style={{marginHorizontal: 18, marginTop: 5}}>
+          <View style={{marginHorizontal: 18, marginTop: 10}}>
             <Text
               style={{
                 fontFamily: 'Fredoka-Medium',
-                fontSize: 17,
+                fontSize: 19,
                 marginBottom: 8,
                 color: 'black',
               }}>
@@ -168,12 +168,12 @@ export default function ProfileScreen() {
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                marginTop: 1,
+                marginTop: 10,
               }}
               onPress={() => navigation.navigate('HistoryScreen')}>
               <Ionicons
                 name="ios-fast-food-outline"
-                size={21}
+                size={25}
                 color="#f35858"
               />
               <Text style={styles.textcolour}>Your Orders</Text>
@@ -187,7 +187,7 @@ export default function ProfileScreen() {
               onPress={() => navigation.navigate('FavouriteScreen')}>
               <MaterialIcons
                 name="favorite-outline"
-                size={21}
+                size={25}
                 color="#f35858"
               />
               <Text style={styles.textcolour}>Favorite Orders</Text>
@@ -201,7 +201,7 @@ export default function ProfileScreen() {
               onPress={() => navigation.navigate('UpdateProfile')}>
               <MaterialCommunityIcons
                 name="home-city-outline"
-                size={21}
+                size={25}
                 color="#f35858"
               />
               <Text style={styles.textcolour}>Update Profile</Text>
@@ -212,7 +212,7 @@ export default function ProfileScreen() {
                 alignItems: 'center',
                 marginTop: 10,
               }}>
-              <MaterialIcons name="book-online" size={21} color="#f35858" />
+              <MaterialIcons name="book-online" size={25} color="#f35858" />
               <Text style={styles.textcolour}>Online Ordering App</Text>
             </Pressable>
             <Pressable
@@ -223,7 +223,7 @@ export default function ProfileScreen() {
               }}>
               <Ionicons
                 name="information-circle-outline"
-                size={21}
+                size={25}
                 color="#f35858"
               />
               <Text style={styles.textcolour}>About</Text>
@@ -251,7 +251,7 @@ export default function ProfileScreen() {
                 style={{
                   color: 'white',
                   fontWeight: '500',
-                  fontSize: 17,
+                  fontSize: 20,
                   fontFamily: 'Fredoka-Medium',
                 }}>
                 Logout
@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   title: {
-    fontSize: 12,
+    fontSize: 15,
     fontWeight: 'bold',
   },
   separator: {
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   textcolour: {
-    fontSize: 15,
+    fontSize: 17,
     color: '#4d4d4d',
     marginBottom: 7,
     marginTop: 5,
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
   },
   like: {
     alignSelf: 'center',
-    fontSize: 13,
+    fontSize: 15,
     color: 'black',
     fontFamily: 'Fredoka-Regular',
   },

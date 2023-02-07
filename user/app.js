@@ -1,7 +1,6 @@
 require('dotenv').config();
 require('express-async-errors');
 require('path')
-const cors = require('cors')
 
 const express = require('express');
 const app = express();
@@ -16,15 +15,6 @@ const connectDB = require('./db/connect')
 // routers
 const userRouter = require('./routes/userRouter')
 
-app.use((
-  cors({
-    origin: "*",
-  })
-));
-app.use(function(req,res,next) {
-  res.header("Access-Control-Allow-Origin","*");
-  next();
-});
 app.use(express.json());
 //routes
 app.use('/api/v1/user',userRouter)

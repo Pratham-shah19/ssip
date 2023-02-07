@@ -65,8 +65,7 @@ const loginAdmin = async (req,res) => {
   if(!admin){
     throw new UnauthenticatedError('Invalid Credentials')
   }
-  const isPasswordCorrect = await admin.comparePassword(password)
-  if (!isPasswordCorrect) {
+  if(password!==admin.password){
     throw new UnauthenticatedError('Invalid Credentials')
   }
   const token = admin.createJWT()

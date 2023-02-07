@@ -10,6 +10,34 @@ const stripe = require("stripe")(
 const endpointSecret = "whsec_fb5686e7f586c42bd82e5e7a0839f44d5dd6c582ee7cf1fcce0f7be84d306fa1";
 const pubkey = "pk_live_51KyqwvSFXhJBixXAkcyirlXABSuwuQoC9a6daIFPkc7mrRotk18Xe1eISkB7tFR1krgUbuw8FY6SQxvmTx9ZZ89100S4jkwTWc";
 
+
+const createcheckoutsession = async(req, res) => {
+  const product = await stripe.products.create({
+    name:req.body.date, 
+  })
+  const price = await stripe.prices.create({
+    unit_amount:req.body.amount * 100,
+    currency:'inr',
+    product:product.id
+  })
+  
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+        price: price.id,
+        quantity: 1,
+      },
+      
+    ],
+    mode: "payment",
+    success_url: `${YOUR_DOMAIN}/success.html`,
+    cancel_url: `${YOUR_DOMAIN}/cancel.html`,
+  });
+  
+  res.redirect(303, session.url);
+};
+//mobile pg integration
 const paymentsheet = async (req, res) => {
   // Use an existing Customer ID if this is a returning customer.
   var { price, userId } = req.body;
@@ -157,4 +185,4 @@ const webhook = async (req, res) => {
   res.status(200).send("order placed");
 };
 
-module.exports = {paymentsheet,webhook}
+module.exports = {paymentsheet,webhook,createcheckoutsession}

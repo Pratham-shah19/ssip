@@ -12,7 +12,7 @@ import Payment_Mode from "../../components/Payment_Mode/Payment_Mode";
 import Payment_inputs from "../../components/Payment_Inputs/Payment_Inputs";
 import * as CartAction from "../../store/actions/Cart";
 import { useNavigate } from "react-router-dom";
-import { API } from "../../constants/API";
+
 const ConfirmOrder = () => {
   const [lastvalues, setLastValues] = useState();
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ const ConfirmOrder = () => {
     };
     //le.log("obj_last", obj);
     const data = await Axios.post(
-      `${API.canteen_server}/api/v1/canteen/addorder`,
+      "http://127.0.0.1:4000/api/v1/canteen/addorder",
       obj,
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -59,7 +59,7 @@ const ConfirmOrder = () => {
       const toatl = 0;
       dispatch(CartAction.setlastvalue(obj, toatl));
       // window.location.reload();
-      navigate("/owner-dashboard/");
+      navigate("/owner-dashboard/confirmOrder");
     }
     //le.log("items_last", items);
   };

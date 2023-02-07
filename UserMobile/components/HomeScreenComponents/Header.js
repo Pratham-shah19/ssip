@@ -45,7 +45,7 @@ const Header = () => {
           alignItems: 'center',
         }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <MaterialIcons name="location-pin" size={22} color={'#927ff0'} />
+          <MaterialIcons name="location-pin" size={24} color={'#f35858'} />
           <View style={{marginHorizontal: 5}}>
             <TouchableOpacity
               style={{
@@ -55,8 +55,8 @@ const Header = () => {
               }}>
               <Text
                 style={{
-                  color: '#927ff0',
-                  fontSize: 15,
+                  color: '#f35858',
+                  fontSize: 18,
                   fontFamily: 'Fredoka-SemiBold',
                 }}>
                 Sachivalay
@@ -64,15 +64,15 @@ const Header = () => {
 
               <AntDesign
                 name="caretdown"
-                size={15}
+                size={16}
                 style={{marginHorizontal: 4}}
-                color={'#927ff0'}
+                color={'#f35858'}
               />
             </TouchableOpacity>
             <Text
               style={{
                 color: 'black',
-                fontSize: 11,
+                fontSize: 13,
                 fontFamily: 'Fredoka-Regular',
               }}>
               Gandhinagar
@@ -91,7 +91,7 @@ const Header = () => {
         <Text
           style={{
             color: 'black',
-            fontSize: 15,
+            fontSize: 17,
             fontFamily: 'Fredoka-Regular',
           }}>
           Hey {dbUser?.name},
@@ -99,8 +99,8 @@ const Header = () => {
         <Text
           style={{
             color: 'black',
-            fontSize: 15,
-            fontFamily: 'Fredoka-Medium',
+            fontSize: 17,
+            fontFamily: 'Fredoka-SemiBold',
           }}>
           {greeting()}
         </Text>
@@ -112,13 +112,30 @@ const Header = () => {
         <Ionicons
           style={styles.searchIcon}
           name="ios-search"
-          size={18}
+          size={20}
           color="gray"
         />
+        {/* <TextInput
+          style={styles.input}
+          value={search}
+          onChangeText={setSearch}
+          // onChange={search !== '' ? onPress : () => {}}
+          placeholder="Search dishes..."
+          placeholderTextColor={'grey'}
+          underlineColorAndroid="transparent"
+        /> */}
         <View style={styles.input}>
           <Text>Search dishes...</Text>
         </View>
       </Pressable>
+      {/* <View>
+        <FlatList
+          data={searchResult}
+          renderItem={({item}) => <SearchComponent dish={item} />}
+          keyExtractor={item => item._id}
+          showsVerticalScrollIndicator={false}
+        />
+      </View> */}
     </View>
   );
 };

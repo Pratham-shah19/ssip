@@ -19,8 +19,6 @@ import IceCreamScreen from '../screens/IceCreamScreen';
 import MainCourseScreen from '../screens/MainCourseScreen';
 import SearchScreen from '../screens/SearchScreen';
 import HistoryDetailScreen from '../screens/HistoryDetailScreen';
-import StripeScreen from '../screens/StripeScreen';
-import {StripeProvider} from '@stripe/stripe-react-native';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -37,9 +35,9 @@ const BottomTabNav = () => {
         name="Home"
         options={{
           headerShown: false,
-          tabBarLabelStyle: {marginTop: -8, marginBottom: 2, fontSize: 9},
+          tabBarLabelStyle: {marginTop: -6, marginBottom: 2},
           tabBarIcon: ({color}) => (
-            <Entypo name="home" size={20} color={color} />
+            <Entypo name="home" size={23} color={color} />
           ),
         }}
       />
@@ -48,9 +46,9 @@ const BottomTabNav = () => {
         name="Basket"
         options={{
           headerShown: false,
-          tabBarLabelStyle: {marginTop: -8, marginBottom: 2, fontSize: 9},
+          tabBarLabelStyle: {marginTop: -6, marginBottom: 2},
           tabBarIcon: ({color}) => (
-            <Entypo name="shopping-cart" size={20} color={color} />
+            <Entypo name="shopping-cart" size={23} color={color} />
           ),
         }}
       />
@@ -59,9 +57,9 @@ const BottomTabNav = () => {
         name="History"
         options={{
           headerShown: false,
-          tabBarLabelStyle: {marginTop: -8, marginBottom: 2, fontSize: 9},
+          tabBarLabelStyle: {marginTop: -6, marginBottom: 2},
           tabBarIcon: ({color}) => (
-            <Ionicons name="fast-food" size={20} color={color} />
+            <Ionicons name="fast-food" size={23} color={color} />
           ),
         }}
       />
@@ -70,9 +68,9 @@ const BottomTabNav = () => {
         name="Profile"
         options={{
           headerShown: false,
-          tabBarLabelStyle: {marginTop: -8, marginBottom: 2, fontSize: 9},
+          tabBarLabelStyle: {marginTop: -6, marginBottom: 2},
           tabBarIcon: ({color}) => (
-            <FontAwesome5 name="user-alt" size={20} color={color} />
+            <FontAwesome5 name="user-alt" size={23} color={color} />
           ),
         }}
       />
@@ -100,7 +98,6 @@ const BasketStack = () => {
       <Stack.Screen component={BasketScreen} name="BasketScreen" />
       <Stack.Screen component={Payment} name="Payment" />
       <Stack.Screen component={OtpScreen} name="OtpScreen" />
-      <Stack.Screen component={StripeScreen} name="StripeScreen" />
     </Stack.Navigator>
   );
 };

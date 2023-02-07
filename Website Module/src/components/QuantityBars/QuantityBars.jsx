@@ -3,7 +3,6 @@ import "./QuantityBars.css";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import * as itemsActions from "../../store/actions/items";
-import { API } from "../../constants/API";
 const DetailBar = ({ id, url, name, quantity }) => {
   const [qty, setqty] = React.useState(0);
   const token_main = useSelector((state) => state.auth.token);
@@ -14,7 +13,7 @@ const DetailBar = ({ id, url, name, quantity }) => {
       quantity: parseInt(qty),
     };
     const data = await axios.post(
-      `${API.canteen_server}/api/v1/canteen/modifyquantity/${id}`,
+      `http://127.0.0.1:4000/api/v1/canteen/modifyquantity/${id}`,
       out,
       {
         headers: {

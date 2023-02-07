@@ -7,26 +7,16 @@ const xl = require('excel4node')
 const path = require('path')
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
-const stripe = require('stripe')('sk_test_51KyqwvSFXhJBixXAbp2HBSBo65HD0T1BqG60ABDZrLJnFBWonmCw1KCdHIFVFG7TDYkE0qCZs6BORYhBSQX3be5g00hRtIdRtI');
-
-
 
 const getCurrentOrders = async (req, res) => {
   // console.log('Request Received')
   const order = Order.find({ status: "NEW" });
-  order.sort("-_id");
-  var timeout = 1000;
+  order.sort("_id");
   const orders = await order;
-  if(orders.length >=40 && orders.length <=80)
-  {
-    timeout = 5000;
-  }
-  else{
-    timeout =  2000;
-  }
-  var k = 0;
-  var data = [];
+  // console.log('Orders: ', orders)
   setTimeout(() => {
+    let k = 0;
+    let data = [];
     orders.forEach(async (order) => {
       let j = 0;
       let arr = [];
@@ -36,9 +26,9 @@ const getCurrentOrders = async (req, res) => {
         //  console.log(arr)
         j++;
       }
-      let obj = {orderdetail: order, items: arr };
-      if (obj.orderdetail.button === false) {
-        const user = await User.findOne({ _id: obj.orderdetail.userId });
+      let obj = { res: "Success", data: order, items: arr };
+      if (obj.data.button === false) {
+        const user = await User.findOne({ _id: obj.data.userId });
         obj.userdetail = { username: user.name };
       } else {
         obj.userdetail = { username: "Guest" };
@@ -47,10 +37,9 @@ const getCurrentOrders = async (req, res) => {
       //console.log(data)
       k++;
     });
-    setTimeout(()=>{
-      res.status(StatusCodes.OK).json({ res: "Success",length:data.length, data: data });
-
-    },timeout)
+    setTimeout(() => {
+      res.status(StatusCodes.OK).json({ res: "Success", data: data });
+    }, 1000);
   }, 100);
 };
 
@@ -245,18 +234,6 @@ const addDish = async (req, res) => {
   if (!name || !imageUrl || !category || !price) {
     throw new BadRequestError("Please Provide valid credentials");
   }
-  const product = await stripe.products.create({
-    name: name,
-    images:[imageUrl],
-    description:category
-  });
-  const priceid  = await stripe.prices.create({
-    unit_amount: price*100,
-    currency: 'inr',
-    product: product.id,
-  })
-  req.body.priceId = priceid.id
-  req.body.prodId = product.id;
   const dish = await Dish.create(req.body);
   res.status(StatusCodes.OK).json({ res: "Success", data: dish });
 };

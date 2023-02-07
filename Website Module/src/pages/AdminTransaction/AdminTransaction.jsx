@@ -10,9 +10,15 @@ import TransactionBar from "../../components/TransactionBar/TransactionBar";
 import "./AdminTransaction.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import { API } from "../../constants/API";
 import * as WalletActions from "../../store/actions/wallet";
 const AdminTransaction = ({ totalCustomers, token_main, wallet }) => {
+=======
+const AdminTransaction = () => {
+  const [id, setid] = useState("");
+  const [price, setPrice] = useState(0);
+>>>>>>> upstream/main
   const [_orders, setOrders] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
@@ -22,7 +28,7 @@ const AdminTransaction = ({ totalCustomers, token_main, wallet }) => {
   }, []);
   const fetchHistory = async () => {
     const data = await axios.get(
-      `${API.admin_server}/api/v1/admin/orders?status=COMPLETED`,
+      `http://127.0.0.1:5000/api/v1/admin/orders?status=COMPLETED`,
       {
         headers: {
           Authorization: `Bearer ${token_main}`,

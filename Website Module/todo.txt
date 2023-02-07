@@ -1,0 +1,22 @@
+//1) Copy the copy cold beverages to all
+2) making name & logo dynamic 
+   (i.e. if selected tab/catogary is selected then somehthing should name and img)
+3)make all tab indicated i.e.: isopen or not by highlighting
+4)Mange the screeb size problem ,, it works differently with different size
+5)Manage style of Add item button atright top corner in 2nd screen
+6)refine 2nd screen , add to cart component in good manner
+7)Cards looks
+8)making cart scrollable with 2 fixed component(label,add to cart button)
+9)
+
+
+9)make add to cart button disabled when cart is empty
+
+
+
+**Remaining
+1) Item out of stock glitch
+2)Draw a line in add to cart Component after labels
+3)Adjust tabs of menu screen 
+4)Add modifyy item screen
+5)add dummy data for current orders and past orders

@@ -8,19 +8,10 @@ import "./HomeOwnerDashboard.css";
 import Header from "../../components/Header_Home/Header";
 import CollapsibleBox from "../../components/Collapsible/CollapsibleBox";
 import * as OrdersActions from "../../store/actions/Orders";
-import * as AuthActions from "../../store/actions/auth";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
-import { API } from "../../constants/API";
-const HomeOwnerDashboard = ({
-  newOrder,
-  token,
-  orderId,
-  getCurrentOrders,
-  Flag,
-  setloaded,
-}) => {
+const HomeOwnerDashboard = ({ newOrder, token, orderId, getCurrentOrders }) => {
   let [newOrders, setNewOrders] = useState(newOrder);
   let [first_id, setFirst_id] = useState(0);
   let [time, setTime] = useState(Date.now());
@@ -32,10 +23,8 @@ const HomeOwnerDashboard = ({
   const btn2_handle = () => {
     navigate("/owner-dashboard/profileScreen");
   };
-
   useEffect(() => {
     getCurrentOrders();
-    console.log("orderId Intr", orderId);
     if (!loading) {
       alert("Order is Completed!");
     }
@@ -44,15 +33,11 @@ const HomeOwnerDashboard = ({
     if (!token) {
       navigate("/");
     }
-    setloaded(true);
   }, []);
   useEffect(() => {
-    if (Flag) {
-      setloading(false);
-    }
     const interval = setInterval(() => {
       getCurrentOrders();
-
+      setloading(false);
       setTime(Date.now());
     }, 5000);
 
@@ -87,10 +72,10 @@ const HomeOwnerDashboard = ({
                   newOrder.map((item) => {
                     return (
                       <CollapsibleBox
-                        _button={item.orderdetail.button}
-                        orderId={item.orderdetail._id}
+                        _button={item.data.button}
+                        orderId={item.data._id}
                         item_arr={item.items}
-                        otp={item.orderdetail.otp}
+                        otp={item.data.otp}
                         cust_name={item.userdetail.username}
                       />
                     );
@@ -111,16 +96,12 @@ function mapStateToProps(state) {
     newOrder: state.Orders.newOrders,
     token: state.auth.token,
     orderId: state.Orders.orderId,
-    Flag: state.auth.flag,
   };
 }
 function mapStateToDispatch(dispatch) {
   return {
     getCurrentOrders: () => {
       return dispatch(OrdersActions.setNewOrders());
-    },
-    setloaded: (flag) => {
-      return dispatch(AuthActions.setloaded(flag));
     },
   };
 }

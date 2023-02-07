@@ -7,8 +7,13 @@ import * as OrderAction from "../../store/actions/Orders";
 import { useSelector, useDispatch, connect } from "react-redux";
 import axios from "axios";
 import ReactDOM from "react-dom";
+<<<<<<< HEAD
 import { API } from "../../constants/API";
 
+=======
+
+import * as WalletActions from "../../store/actions/wallet";
+>>>>>>> upstream/main
 const CollapsibleBox = ({
   orderId,
   otp,
@@ -40,7 +45,7 @@ const CollapsibleBox = ({
   const completedHandler = () => {
     async function completedButton_action() {
       await axios.post(
-        `${API.canteen_server}/api/v1/canteen/guestcompletedbutton/${orderId}`,
+        `http://127.0.0.1:4000/api/v1/canteen/guestcompletedbutton/${orderId}`,
         {},
         {
           headers: { Authorization: `Bearer ${token_main}` },

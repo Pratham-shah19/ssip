@@ -23,7 +23,7 @@ const MainCourseScreen = () => {
   const fetchDishess = async () => {
     setLoadingPending(true);
     const response = await axios.post(
-      `http://3.216.172.228:6500/api/v1/canteen/dishes/category`,
+      `http://10.0.2.2:6000/api/v1/canteen/dishes/category`,
       {},
       {headers: {Authorization: `Bearer ${jsonValue.token}`}},
     );
@@ -34,7 +34,7 @@ const MainCourseScreen = () => {
 
   return (
     <>
-      <View style={{backgroundColor: 'white', marginBottom: 30}}>
+      <View>
         <View style={{padding: 10}}>
           <Text
             style={{
@@ -52,7 +52,6 @@ const MainCourseScreen = () => {
             marginHorizontal: 15,
           }}></View>
         <FlatList
-          style={{marginBottom: 30, marginTop: 5}}
           data={mainCourse}
           renderItem={({item}) => <ProductScreenComponent dish={item} />}
           keyExtractor={item => item._id}

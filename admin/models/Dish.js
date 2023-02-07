@@ -14,10 +14,6 @@ const DishSchema = new mongoose.Schema({
     type:mongoose.Decimal128,
     default:1
   },
-  noOfRating:{
-    type:Number,
-    default:0
-  },
   category:{
     type:String,
     required:[true,'Please provide category'],
@@ -33,14 +29,6 @@ const DishSchema = new mongoose.Schema({
   isAvailable:{
     type:Boolean,
     default:false
-  },
-  prodId:{
-    type:String,
-    required:[true,'Please provide product id']
-  },
-  priceId:{
-    type:String,
-    required:[true,'Please provide price id']
   }
 })
 

@@ -47,16 +47,16 @@ const billController = async (req,res) => {
     
           console.log('File Generated')
           const transporter = nodemailer.createTransport({
-            host: "smtp.gmail.com", // hostname
+            host: "smtp-mail.outlook.com", // hostname
             secureConnection: false, // TLS requires secureConnection to be false
             port: 587, // port for secure SMTP
             tls: {
-              ciphers: "SSLv3",
+               ciphers:'SSLv3'
             },
             auth: {
-              user: "hetpatel5542@gmail.com",
-              pass: "xivslyvrfcrgewtb",
-            },
+                user: 'ssip109@outlook.com',
+                pass: 'Password@69'
+            }
           });
           const mailOptions = {
             from: '"Sachivalaya " <ssip109@outlook.com>', // sender address (who sends)
