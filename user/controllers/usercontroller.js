@@ -109,6 +109,7 @@ const getFilteredDishes = async (req, res) => {
   }
   //sort
   if (sort) {
+    resp = await Dish.find({isAvailable:true})
     const sortLIST = sort.split(",").join(" ");
     resp = resp.sort(sortLIST).skip(skip).limit(limit);
   }
