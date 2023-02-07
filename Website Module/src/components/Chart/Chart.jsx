@@ -8,6 +8,8 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { API } from "../../constants/API";
+import axios from "axios";
 
 const Chart = () => {
   const data = [
@@ -40,6 +42,26 @@ const Chart = () => {
       uv: 3490,
     },
   ];
+  const handle_data = async () => {
+    console.log("Hello");
+    // const data = await axios.post(
+    //   `${API.canteen_server}/api/v1/canteen/dishes/category`,
+    //   {},
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${token_main}`,
+    //     },
+    //   }
+    // );
+    const data = await axios.get(`${API.django_server}`);
+    console.log("data", data);
+  };
+
+  React.useEffect(() => {
+    // console.log("Hello");
+    handle_data();
+    console.log("Chart");
+  }, []);
 
   return (
     <ResponsiveContainer width="100%" height="85%">
