@@ -1,4 +1,3 @@
-// <<<<<<< HEAD
 require("dotenv").config();
 require("express-async-errors");
 const { StatusCodes } = require("http-status-codes");
@@ -22,7 +21,6 @@ app.use(express.static(`${__dirname}/public`));
 // routers
 const AdminForgotPasswordRouter = require("./routes/AdminForgotPasswordRouter");
 const AdminLoginRouter = require("./routes/AdminLoginRouter");
-// const deliveryRegisterRouter = require('./routes/deliveryRegisterRouter')
 const UserForgotPasswordRouter = require("./routes/UserForgotPasswordRouter");
 const UserLoginRouter = require("./routes/UserLoginRouter");
 const UserRegisterRouter = require("./routes/UserRegisterRouter");
