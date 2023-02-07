@@ -9,6 +9,8 @@ var options = {
   key: fs.readFileSync("privatekey.pem"),
   cert: fs.readFileSync("server.crt"),
 };
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 //connectDB
 const connectDB = require("./db/connect");
 
@@ -28,6 +30,9 @@ app.use(function (req, res, next) {
 });
 app.use(express.json());
 //routes
+app.get("/",(req,res)=>{
+  res.send("hello");
+})
 app.use("/api/v1/payments", paymentRouter);
 
 // error handler
