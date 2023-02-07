@@ -290,7 +290,7 @@ const resetWallet = async (req, res) => {
 
 const lastReportGeneration = async (req,res) => {
   let i=0;
-  const order = await Order.find({});
+  const order = await Order.find({status:"COMPLETED"});
   let currentMonth = new Date().getMonth();
   currentMonth++;
   let currentYear = new Date().getFullYear();
@@ -353,7 +353,7 @@ const lastReportGeneration = async (req,res) => {
 }
 const thisReportGeneration = async (req,res) => {
   let i=0;
-  const order = await Order.find({});
+  const order = await Order.find({status:"COMPLETED"});
   let currentMonth = new Date().getMonth();
   currentMonth++;
   let currentYear = new Date().getFullYear();
