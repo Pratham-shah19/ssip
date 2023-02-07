@@ -10,7 +10,7 @@ const OtpScreen = () => {
   const [status, setStatus] = useState(null);
   const onPress = async () => {
     const response = await axios.post(
-      `http://10.0.2.2:8000/api/v1/user/${users}/validatePaymentOtp`,
+      `http://65.0.189.107:8000/api/v1/user/${users}/validatePaymentOtp`,
       {otp: text},
       {headers: {Authorization: `Bearer ${tokens}`}},
     );

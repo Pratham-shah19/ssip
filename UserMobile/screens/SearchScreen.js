@@ -22,11 +22,11 @@ const SearchScreen = () => {
     // console.log(tokens);
     if (search.length >= 2) {
       const response = await axios.get(
-        `http://10.0.2.2:8000/api/v1/user/dishes/filter?search=${search}`,
+        `http://65.0.189.107:8000/api/v1/user/dishes/filter?search=${search}`,
         {headers: {Authorization: `Bearer ${tokens}`}},
       );
       // console.log(response.data.data);
-      console.log(search);
+      // console.log(search);
       setSearchResult(response.data.data);
     } else {
       setSearchResult(null);
@@ -53,7 +53,7 @@ const SearchScreen = () => {
           alignItems: 'center',
         }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <MaterialIcons name="location-pin" size={24} color={'#f35858'} />
+          <MaterialIcons name="location-pin" size={22} color={'#927ff0'} />
           <View style={{marginHorizontal: 5}}>
             <TouchableOpacity
               style={{
@@ -63,8 +63,8 @@ const SearchScreen = () => {
               }}>
               <Text
                 style={{
-                  color: '#f35858',
-                  fontSize: 18,
+                  color: '#927ff0',
+                  fontSize: 15,
                   fontFamily: 'Fredoka-SemiBold',
                 }}>
                 Sachivalay
@@ -72,15 +72,15 @@ const SearchScreen = () => {
 
               <AntDesign
                 name="caretdown"
-                size={16}
+                size={15}
                 style={{marginHorizontal: 4}}
-                color={'#f35858'}
+                color={'#927ff0'}
               />
             </TouchableOpacity>
             <Text
               style={{
                 color: 'black',
-                fontSize: 13,
+                fontSize: 11,
                 fontFamily: 'Fredoka-Regular',
               }}>
               Gandhinagar
@@ -99,7 +99,7 @@ const SearchScreen = () => {
         <Text
           style={{
             color: 'black',
-            fontSize: 17,
+            fontSize: 15,
             fontFamily: 'Fredoka-Regular',
           }}>
           Hey {dbUser?.name},
@@ -107,8 +107,8 @@ const SearchScreen = () => {
         <Text
           style={{
             color: 'black',
-            fontSize: 17,
-            fontFamily: 'Fredoka-SemiBold',
+            fontSize: 15,
+            fontFamily: 'Fredoka-Medium',
           }}>
           {greeting()}
         </Text>

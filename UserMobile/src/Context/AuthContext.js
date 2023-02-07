@@ -14,6 +14,8 @@ const AuthContextProvider = ({children}) => {
   const [dish, setDish] = useState([]);
   const [price, setPrice] = useState(null);
   const [items, setItems] = useState([]);
+  const [name, setName] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [loginPending, setLoginPending] = useState(false);
   let jsonValue;
   let favourite;
@@ -46,7 +48,7 @@ const AuthContextProvider = ({children}) => {
   const onCreateOrder = async () => {
     setLoginPending(true);
     const response = await axios.get(
-      `http://10.0.2.2:8000/api/v1/user/${users}/cart`,
+      `http://65.0.189.107:8000/api/v1/user/${users}/cart`,
       {
         headers: {
           Authorization: `Bearer ${tokens}`,
@@ -78,6 +80,10 @@ const AuthContextProvider = ({children}) => {
         // setItem,
         loginPending,
         setLoginPending,
+        name,
+        setName,
+        setUserId,
+        userId,
       }}>
       {children}
       {loginPending ? <AppLoader /> : null}

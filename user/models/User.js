@@ -34,6 +34,11 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  customerId:{
+    type:String,
+    default:null,
+    required:false
+  }
 });
 
 UserSchema.pre("save", async function () {

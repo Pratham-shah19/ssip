@@ -14,7 +14,7 @@ const HistoryDetailScreen = () => {
           fontFamily: 'Fredoka-Regular',
           alignSelf: 'center',
           marginVertical: 10,
-          fontSize: 18,
+          fontSize: 16,
         }}>
         Order Details:
       </Text>

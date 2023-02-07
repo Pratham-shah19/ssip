@@ -5,7 +5,7 @@ import axios from "axios";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import "./ForgetEmail.css";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-
+import { API } from "../../constants/API";
 import OTW_Ow from "../OTP/OTP_Ow";
 const ForgetEmail = () => {
   const [Error, setError] = useState("");
@@ -23,7 +23,7 @@ const ForgetEmail = () => {
     };
     //le.log("vivek");
     axios
-      .patch("http://127.0.0.1:2000/api/v1/canteen/forgotpassword", obj)
+      .patch(`${API.auth_server}/api/v1/canteen/forgotpassword`, obj)
       .then((res) => {
         const data = res;
         if (data.data.res === "Success") {

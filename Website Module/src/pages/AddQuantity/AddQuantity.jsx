@@ -41,16 +41,17 @@ const AddQuantity = ({
       setqtyError("");
       handlePopup();
     } else {
-      const interval = setInterval(() => {
-        setAllProducts();
-        setloading(false);
-        setTime(Date.now());
-      }, 5000);
-      return () => {
-        clearInterval(interval);
-      };
+      // const interval = setInterval(() => {
+
+      //   setTime(Date.now());
+      // }, 5000);
+      // return () => {
+      //   clearInterval(interval);
+      // };
+      setAllProducts();
+      setloading(false);
     }
-  });
+  }, []);
 
   return (
     <>
