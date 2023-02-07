@@ -22,6 +22,8 @@ import OwnerHistory from "./pages/OwnerHistory/OwnerHistory";
 import Owner_ProfileScreen from "./pages/Owner_ProfileScreen/Owner_ProfileScreen";
 import PaymentScreen from "./pages/Payment/Payment";
 import UnknownScreen from "./pages/UnknownScreen/UnknownScreen";
+import Payment_Failure from "./pages/Payment_Failure/Payment_Failure";
+import Payment_Success from "./pages/Payment_Success/Payment_Success";
 function App() {
   // const _Login = lazy(() => import("./pages/Login/Login"));
   // const _HomeOwnerDashboard = lazy(() =>
@@ -136,6 +138,14 @@ function App() {
               <Route
                 path="admin-dashboard/Payment"
                 element={<PaymentScreen />}
+              />
+              <Route
+                path="admin-dashboard/success"
+                element={<Payment_Success />}
+              />
+              <Route
+                path="admin-dashboard/cancel"
+                element={<Payment_Failure />}
               />
             </Route>
           </Routes>
