@@ -66,11 +66,11 @@ const Wallet = () => {
       </div>
 
       <div className="bottom-components">
-        <div className="bottom-left">
+        {/* <div className="bottom-left">
           <div className="revenue-box">
             <RevenueBox />
           </div>
-        </div>
+        </div> */}
         <div className="bottom-right">
           <p className="box-title">Last 7 Months (income)</p>
           <Chart />

@@ -38,6 +38,7 @@ const AddItem = () => {
               type="text"
               name="name"
               id="item-name"
+              maxLength={18}
               placeholder="Enter name of the item"
               required
             />

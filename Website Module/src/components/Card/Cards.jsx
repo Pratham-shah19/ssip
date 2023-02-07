@@ -66,9 +66,20 @@ const Cards = ({ id, url, name, price, category, rating, available }) => {
             <p className="price" style={{ textDecoration: "line-through" }}>
               ₹{price}
             </p>
-            <div className="buy-btn" style={{ textDecoration: "line-through" }}>
+            <div
+              className="buy-btn"
+              style={{
+                textDecoration: "line-through",
+                marginTop: "-15px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               Buy
             </div>
+            {/* margin-top: -15px; display: flex; align-items: center;
+            justify-content: center; */}
           </div>
         ) : (
           <div className="buy-box">

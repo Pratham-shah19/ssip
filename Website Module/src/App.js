@@ -20,6 +20,7 @@ import NewPassword_Ow from "./pages/NewPassword/NewPassword_Ow";
 import AddQuantity from "./pages/AddQuantity/AddQuantity";
 import OwnerHistory from "./pages/OwnerHistory/OwnerHistory";
 import Owner_ProfileScreen from "./pages/Owner_ProfileScreen/Owner_ProfileScreen";
+import PaymentScreen from "./pages/Payment/Payment";
 import UnknownScreen from "./pages/UnknownScreen/UnknownScreen";
 function App() {
   // const _Login = lazy(() => import("./pages/Login/Login"));
@@ -132,6 +133,10 @@ function App() {
               {/* Annonymus */}
               {/*Menu Screen 2nd*/}
               {/* Adding New Item */}
+              <Route
+                path="admin-dashboard/Payment"
+                element={<PaymentScreen />}
+              />
             </Route>
           </Routes>
         </Suspense>

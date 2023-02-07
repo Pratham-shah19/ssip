@@ -28,11 +28,7 @@ const Owner_ProfileScreen = ({ token, logout }) => {
               />
             </div>
             <div className="profile-btns">
-              <input
-                type="button"
-                value="CHANGE PHOTO"
-                className="profile-btn"
-              />
+              <input type="file" name="CHANGE PHOTO" className="profile-btn" />
               <input
                 type="button"
                 onClick={_logout}

@@ -1,150 +1,148 @@
-.home-container{
-    max-height: 100%;
-    width: 100%;
-    overflow-y: scroll;
+.home-container {
+  max-height: 100%;
+  width: 100%;
+  overflow-y: scroll;
 }
 
-.top-components{
-    height: fit-content;
-    width: 98%;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    margin-top: 20px;
+.top-components {
+  height: fit-content;
+  width: 98%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 20px;
 }
 
-.wallet-box{
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    width: 26%;
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25),
-    0 10px 10px rgba(0,0,0,0.22);
-    padding: 10px 16px 3px;
-    border-radius: 20px;
+.wallet-box {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 26%;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  padding: 10px 16px 3px;
+  border-radius: 20px;
 }
 
-.box-right{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    height: 98%;
+.box-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  height: 98%;
 }
 
-.box-right-top{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.box-right-top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.box-right-top p{
-    position: relative;
-    top: 4px;
+.box-right-top p {
+  position: relative;
+  top: 4px;
 }
 
-.box-title{
-    color: gray;
-    font-weight: bolder;
-    font-size: 0.9rem;
+.box-title {
+  color: gray;
+  font-weight: bolder;
+  font-size: 0.9rem;
 }
 
-.box-value{
-    font-size: 2.1rem;
-    font-weight: 500;
+.box-value {
+  font-size: 2.1rem;
+  font-weight: 500;
 }
 
-.box-desc{
-    text-decoration: dotted;
-    cursor: pointer;
+.box-desc {
+  text-decoration: dotted;
+  cursor: pointer;
 }
 
-.green{
-    color: green;
+.green {
+  color: green;
 }
 
-.red{
-    color: red;
+.red {
+  color: red;
 }
 
-.yellow{
-    color: rgb(235, 235, 5);
+.yellow {
+  color: rgb(235, 235, 5);
 }
 
-.bottom-components{
-    width: 98%;
-    display: flex;
-    margin-top: 30px;
-    padding: 20px;
-    gap: 25px;
+.bottom-components {
+  width: 98%;
+  display: flex;
+  margin-top: 30px;
+  padding: 20px;
+  gap: 25px;
 }
 
-.bottom-left{
-    flex: 2;
+.bottom-left {
+  flex: 2;
 }
 
-.revenue-box{
-    box-shadow: 0 10px 20px rgba(0,0,0,0.25),
-    0 5px 5px rgba(0,0,0,0.22);
-    padding: 5px 10px;
-    border-radius: 20px;
+.revenue-box {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
+  padding: 5px 10px;
+  border-radius: 20px;
 }
 
-.revenue-box-bottom{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 10px;
+.revenue-box-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
 }
 
-.center{
-    text-align: center;
+.center {
+  text-align: center;
 }
 
-.revenue-data{
-    height: 100px;
+.revenue-data {
+  height: 100px;
 }
 
-.values{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: -30px;
+.values {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -30px;
 }
 
-.values p{
-    position: relative;
-    top: 4px;
+.values p {
+  position: relative;
+  top: 4px;
 }
 
-.para{
-    font-size: 1.1rem;
+.para {
+  font-size: 1.1rem;
 }
 
-.amount{
-    font-size: 2.4rem;
+.amount {
+  font-size: 2.4rem;
 }
 
-.desc{
-    font-size: 0.8rem;
-    color: gray;
+.desc {
+  font-size: 0.8rem;
+  color: gray;
 }
 
-.bottom-right{
-    flex: 4;
-    max-height: 460px;
-    object-fit: contain;
-    overflow: hidden;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.25),
-    0 5px 5px rgba(0,0,0,0.22);
-    padding: 5px 10px;
-    border-radius: 20px;
+.bottom-right {
+  /* flex: 4 1; */
+  height: 420px;
+  width: 100%;
+  object-fit: cover;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgb(0 0 0 / 25%), 0 5px 5px rgb(0 0 0 / 22%);
+  padding: 5px 10px;
+  border-radius: 20px;
 }
 
-@media only screen and (min-width: 1330px){
-    .box-value{
-        font-size: 1.8rem;
-        margin-top: -10px;
-    }
+@media only screen and (min-width: 1330px) {
+  .box-value {
+    font-size: 1.8rem;
+    margin-top: -10px;
+  }
 }

@@ -1,8 +1,8 @@
 .menu_card_container {
   width: 80%;
   height: 80%;
-  margin: auto;
-  border: 1px solid black;
+  /* margin: auto; */
+  /* border: 1px solid black; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,7 +22,7 @@
 
 .menu_item {
   display: flex;
-  border: 1px solid black;
+  border: 3px solid lightgrey;
   width: 500px;
   align-items: center;
   border-radius: 10px;
@@ -33,33 +33,54 @@
   height: 135px;
   width: 135px;
   object-fit: cover;
-  margin-bottom: -4px;
+  margin-bottom: -7px;
 }
 
 .left {
-  flex: 1;
+  /* flex: 1; */
 }
 
 .right {
-  display: flex;
+  /* display: flex;
   align-items: center;
   justify-content: space-between;
-  flex: 4;
-  padding: 6px 30px;
+  flex-direction: column;
+  flex: 4; */
+  /* padding: 6px 30px; */
   margin-top: -10px;
+  position: relative;
+  left: 15px;
 }
 
 input[type="number"] {
-  width: 90px;
-  padding: 10px 10px;
+  width: 58px;
+  padding: 2px 6px;
+  border: 3px solid lightgray;
 }
 
 .menu_card_btn {
-  padding: 7px 15px;
+  /* padding: 7px 15px;
   cursor: pointer;
   font-weight: bolder;
   margin-top: 19px;
   background-color: gray;
   border: none;
-  border-radius: 10px;
+  border-radius: 10px; */
+  padding: 7px 20px;
+  margin: -6px;
+  position: relative;
+  bottom: 8px;
+}
+
+.avail {
+  line-height: 5px;
+}
+
+.new {
+  position: relative;
+  bottom: 17px;
+}
+
+.info {
+  margin-top: 10px;
 }

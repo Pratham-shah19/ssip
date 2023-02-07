@@ -2,10 +2,10 @@
   background: #fff;
   height: 80%;
   width: 70%;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   overflow: auto;
-  box-shadow: 0 1rem 1.8rem rgba(0,0,0,0.25),
-  0 .8rem .8rem rgba(0,0,0,0.22);
+  box-shadow: 0 1rem 1.8rem rgba(0, 0, 0, 0.25),
+    0 0.8rem 0.8rem rgba(0, 0, 0, 0.22);
   margin: 4rem auto;
   padding: 1rem;
 }
@@ -20,17 +20,17 @@
   width: 95%;
   padding: 2rem;
   height: 80%;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   background: rgb(251, 92, 92);
   background: rgba(252, 249, 249, 0.336);
 }
 
-form{
-    background: transparent;
+form {
+  background: transparent;
 }
 
 .form-item {
-  margin: .8rem;
+  margin: 0.8rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,25 +41,26 @@ form{
   text-align: right;
 }
 
-.form-item input,select {
+.form-item input,
+select {
   width: 15rem;
 }
 
 .form-item select {
-  border-radius: .3rem;
+  border-radius: 0.3rem;
   background: rgb(241, 240, 240);
   color: gray;
-  padding: .7rem;
+  padding: 0.7rem;
   cursor: pointer;
   border: none;
 }
 
-.form-item select option{
+.form-item select option {
   color: black;
 }
 .form-item ::-webkit-file-upload-button {
-  padding: .2rem;
-  border-radius: .4rem;
+  padding: 0.2rem;
+  border-radius: 0.4rem;
   border: none;
   color: whitesmoke;
   background-color: rgb(245, 52, 52);
@@ -75,16 +76,23 @@ form{
   background: linear-gradient(to left, #ff4b28, #ff228c);
   font-size: 1.5rem;
   margin-left: 5.5rem;
-  padding: .2rem;
-  font-weight: bold;;
+  padding: 0.2rem;
+  font-weight: bold;
   color: whitesmoke;
   width: 15rem;
   height: 3rem;
   cursor: pointer;
   transition: 0.2s;
   border-radius: 1rem;
+  border: none;
 }
 
 .add-btn:hover {
   transform: scale(0.9);
+}
+
+#price {
+  width: 240px;
+  padding: 11px 16px;
+  border: 3px solid lightgray;
 }

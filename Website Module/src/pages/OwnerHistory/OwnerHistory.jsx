@@ -26,6 +26,7 @@ const OwnerHistory = ({
     if (!token) {
       navigate("/");
     }
+    getOrderHistory();
     setHistloaded(true);
   }, []);
   useEffect(() => {

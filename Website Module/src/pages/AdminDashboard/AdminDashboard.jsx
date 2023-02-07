@@ -3,41 +3,39 @@ import { Link } from "react-router-dom";
 import "./AdminDashboard.css";
 import AdminNavbar from "../../components/AdminNavbar/AdminNavbar";
 import AccountBoxRoundedIcon from "@mui/icons-material/AccountBoxRounded";
-import TokenIcon from "@mui/icons-material/Token";
 import CurrencyRupeeSharpIcon from "@mui/icons-material/CurrencyRupeeSharp";
 import KeyboardArrowUpSharpIcon from "@mui/icons-material/KeyboardArrowUpSharp";
 import KeyboardArrowDownSharpIcon from "@mui/icons-material/KeyboardArrowDownSharp";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import DetailBar from "../../components/DetailBar/DetailBar";
 import { useSelector, useDispatch } from "react-redux";
-import * as CustomerActions from "../../store/actions/Customers";
 import * as WalletActions from "../../store/actions/wallet";
 import axios from "axios";
+import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { API } from "../../constants/API";
-const AdminDashboard = () => {
+const AdminDashboard = ({
+  setOrderHistory,
+  token_main,
+  setWalletPrice,
+  wallet,
+  totalCustomers,
+}) => {
   const [search, setSearch] = useState("");
   const [searchres, setSearchres] = useState([]);
   const navigate = useNavigate();
-  const token_main = useSelector((state) => state.auth.token_admin);
-  // console.log("token_main", token_main);
   useEffect(() => {
     if (!token_main) {
       navigate("/");
     }
+    setOrderHistory();
+    setWalletPrice();
   }, []);
-
-  const dispatch = useDispatch();
-  dispatch(WalletActions.setWalletPrice());
-  dispatch(WalletActions.setOrderHistory());
-  const wallet = useSelector((state) => state.wallet.Wallet);
-
   async function handleChange(e) {
     console.log("e.target.value", e.target.value);
     setSearch(e.target.value);
-    const data = await axios.post(
+    const data = await axios.get(
       `${API.admin_server}/api/v1/admin/customers?name=${e.target.value}`,
-      {},
       {
         headers: {
           Authorization: `Bearer ${token_main}`,
@@ -58,7 +56,7 @@ const AdminDashboard = () => {
           <div className="admin-box">
             <div className="box-left">
               <p className="box-title">USERS</p>
-              <p className="box-value">458</p>
+              <p className="box-value">{totalCustomers ? totalCustomers : 0}</p>
               <Link
                 to="/admin-dashboard"
                 style={{ textDecoration: "none", color: "black" }}
@@ -97,6 +95,17 @@ const AdminDashboard = () => {
               </div>
             </div>
           </div>
+          <div className="admin-box box-report">
+            <div className="box-left">
+              <p className="box-title">MONTHLY REPORT</p>
+              {/* <p className="box-value">Month</p> */}
+              <select name="month" id="month" style={{ padding: "5px" }}>
+                <option value="current">Current</option>
+                <option value="prev">Previous</option>
+              </select>
+              <button className="gen">Generate</button>
+            </div>
+          </div>
         </div>
         <div className="admin-search">
           <div className="admin-search-inner">
@@ -127,4 +136,22 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+function mapStateToProps(state) {
+  return {
+    token_main: state.auth.token_admin,
+    wallet: state.wallet.Wallet,
+    totalCustomers: state.wallet.totalCustomers,
+  };
+}
+function mapStateToDispatch(dispatch) {
+  return {
+    setWalletPrice: () => {
+      return dispatch(WalletActions.setWalletPrice());
+    },
+    setOrderHistory: () => {
+      return dispatch(WalletActions.setOrderHistory());
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapStateToDispatch)(AdminDashboard);

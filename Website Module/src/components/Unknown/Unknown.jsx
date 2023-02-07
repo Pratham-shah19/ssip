@@ -59,19 +59,20 @@ const Unknown = ({ id, name, url, quantity }) => {
           <div className="right">
             <div className="info">
               <h3>{name}</h3>
-              <p>Available: {updatedqty}</p>
-              New:{" "}
-              <input
-                type="number"
-                value={qty}
-                name="qty"
-                id="qty"
-                onChange={(e) => setqty(e.target.value)}
-                placeholder="Enter the quantity"
-                min={0}
-              />
+              <p className="avail">Available: {updatedqty}</p>
+              <div className="new">
+                New:{" "}
+                <input
+                  type="number"
+                  value={qty}
+                  name="qty"
+                  id="qty"
+                  onChange={(e) => setqty(e.target.value)}
+                  placeholder="Enter the quantity"
+                  min={0}
+                />
+              </div>
             </div>
-
             <button onClick={handlechange} className="menu_card_btn">
               Add
             </button>
