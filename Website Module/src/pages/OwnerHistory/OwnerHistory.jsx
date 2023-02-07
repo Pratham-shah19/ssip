@@ -3,7 +3,6 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import "./OwnerHistory.css";
 import Header from "../../components/Header_Home/Header";
 import * as WalletActions from "../../store/actions/wallet";
-import * as OrdersActions from "../../store/actions/Orders";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import CollapsibleGen from "../../components/CollapsibleGen/CollapsibleGen";
@@ -26,20 +25,28 @@ const OwnerHistory = ({
     if (!token) {
       navigate("/");
     }
-    setHistloaded(true);
   }, []);
   useEffect(() => {
-    if (Histflag) {
+    if (Histflag == true) {
+      const interval = setInterval(() => {
+        getOrderHistory();
+      }, 15000);
+
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  });
+  useEffect(() => {
+    if (Histflag == false) {
+      getOrderHistory();
+      setloading(false);
+      setHistloaded(true);
+    }
+    if (Histflag == true) {
       setloading(false);
     }
-    const interval = setInterval(() => {
-      getOrderHistory();
-    }, 5000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  });
+  }, []);
 
   return (
     <>
@@ -87,7 +94,7 @@ const OwnerHistory = ({
 
 function mapStateToProps(state) {
   return {
-    orderHistory: state.Orders.oldOrders,
+    orderHistory: state.wallet.orderHistory,
     token: state.auth.token,
     Histflag: state.auth.Histflag,
   };
@@ -95,7 +102,7 @@ function mapStateToProps(state) {
 function mapStateToDispatch(dispatch) {
   return {
     getOrderHistory: () => {
-      return dispatch(OrdersActions.setOldOrders());
+      return dispatch(WalletActions.setOrderHistory());
     },
     setHistloaded: (Histflag) => {
       return dispatch(AuthActions.setHistloaded(Histflag));

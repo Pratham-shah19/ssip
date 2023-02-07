@@ -3,9 +3,6 @@ const Admin = require("../models/Admin");
 const User = require("../models/User");
 const Dish = require("../models/Dish");
 const Canteen = require("../models/Canteen");
-const mime = require('mime')
-const xl = require('excel4node')
-const path = require('path')
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
@@ -121,133 +118,6 @@ const getCustomersLength = async(req,res)=>{
   const customers = await User.find({});
   res.status(StatusCodes.OK).json({res:"success",data:customers.length})
 }
-
-const lastReportGeneration = async (req,res) => {
-  let i=0;
-  const order = await Order.find({paymentmode:"KOT",status:"COMPLETED"});
-  let currentMonth = new Date().getMonth();
-  currentMonth++;
-  let currentYear = new Date().getFullYear();
-  if(currentMonth == 1){
-    currentMonth=13;
-    currentYear-=1;
-  } 
-  let arr= [];
-  let headerColumns = ['Order ID','Customer\'s Name','Total Price','Quantity','Payment Mode']
-  order.forEach(async (ord)=>{
-    const d = new Date(ord._id.getTimestamp());
-    const dMonth = d.getMonth() + 1;
-    const dYear = d.getFullYear();
-    if(currentYear == dYear && currentMonth-dMonth==1){
-      let obj = {};
-      let user = await User.findOne({_id:ord.userId})
-      obj.orderid = ord._id;
-      obj.username = user.name;
-      obj.price = ord.price;
-      let qty=0;
-      ord.items.forEach((item)=>{
-        qty+=item.qty;
-      })
-      obj.qty = qty;
-      obj.paymentmode = ord.paymentmode;
-      
-      arr[i] = obj;
-      i++;
-    }
-    
-  })
-  setTimeout(()=>{
-    
-  const wb = new xl.Workbook()
-    const ws = wb.addWorksheet("REPORT")
-    let colIndex = 1
-    headerColumns.forEach((item) => {
-        ws.cell(1, colIndex++).string(item)
-    })
-    let rowIndex = 2;
-    arr.forEach((item) => {
-        let columnIndex = 1;
-        Object.keys(item).forEach((colName) => {
-            ws.cell(rowIndex, columnIndex++).string(item[colName].toString())
-        })
-        rowIndex++;
-    })
-    wb.write(`./controllers/lastMonthReport.xlsx`)
-    const file = __dirname + "/lastMonthReport.xlsx"
-    const fileName = path.basename(file)
-    const mimeType = mime.getType(file)
-    res.setHeader("Content-Disposition", "attachment;filename=" + fileName)
-    res.setHeader("Content-Type", mimeType)
-    setTimeout(() => {
-        res.download(file)
-    }, 2000);
-  },1000)
-  
-  
-}
-const thisReportGeneration = async (req,res) => {
-  let i=0;
-  const order = await Order.find({paymentmode:"KOT",status:"COMPLETED"});
-  let currentMonth = new Date().getMonth();
-  currentMonth++;
-  let currentYear = new Date().getFullYear();
-  let arr= [];
-  let headerColumns = ['Order ID','Customer\'s Name','Total Price','Quantity','Payment Mode']
-  order.forEach(async (ord)=>{
-    const d = new Date(ord._id.getTimestamp());
-    const dMonth = d.getMonth() + 1;
-    const dYear = d.getFullYear();
-    // console.log(dMonth)
-    if(currentYear == dYear && currentMonth-dMonth==0){
-      let obj = {};
-
-      // console.log(ord)
-      let user = await User.findOne({_id:ord.userId})
-      // console.log(user)
-      obj.orderid = ord._id;
-      obj.username = user?.name;
-      obj.price = ord.price;
-      let qty=0;
-      ord.items.forEach((item)=>{
-        qty+=item.qty;
-      })
-      obj.qty = qty;
-      obj.paymentmode = ord.paymentmode;
-      
-      arr[i] = obj;
-      i++;
-    }
-    
-  })
-  setTimeout(()=>{
-    
-  const wb = new xl.Workbook()
-    const ws = wb.addWorksheet("REPORT")
-    let colIndex = 1
-    headerColumns.forEach((item) => {
-        ws.cell(1, colIndex++).string(item)
-    })
-    let rowIndex = 2;
-    arr.forEach((item) => {
-        let columnIndex = 1;
-        Object.keys(item).forEach((colName) => {
-            ws.cell(rowIndex, columnIndex++).string(item[colName]?.toString())
-        })
-        rowIndex++;
-    })
-    wb.write(`./controllers/thisMonthReport.xlsx`)
-    const file = __dirname + "/thisMonthReport.xlsx"
-    const fileName = path.basename(file)
-    const mimeType = mime.getType(file)
-    res.setHeader("Content-Disposition", "attachment;filename=" + fileName)
-    res.setHeader("Content-Type", mimeType)
-    setTimeout(() => {
-        res.download(file)
-    }, 2000);
-  },1000)
-  
-  
-}
 module.exports = {
   validateOTP,
   updatePassword,
@@ -257,7 +127,5 @@ module.exports = {
   getSpecificOrders,
   payCanteen,
   validateCashotp,
-  getCustomersLength,
-  thisReportGeneration,
-  lastReportGeneration
+  getCustomersLength
 };

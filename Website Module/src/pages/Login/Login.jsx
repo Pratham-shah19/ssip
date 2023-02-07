@@ -5,7 +5,7 @@ import "./Login.css";
 import axios from "axios";
 import * as AuthActions from "../../store/actions/auth";
 import { useSelector, useDispatch } from "react-redux";
-import { API } from "../../constants/API";
+
 const Login = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [adminEmail, setadminEmail] = useState("");
@@ -67,12 +67,13 @@ const Login = () => {
   };
 
   const handle_login_admin = () => {
+    let data;
     const obj = {
       email: adminEmail,
       password: adminPassword,
     };
     axios
-      .post(`${API.auth_server}/api/v1/admin/login`, obj)
+      .post("http://127.0.0.1:2000/api/v1/admin/login", obj)
       .then((res) => {
         const data = res;
         //le.log('data.dat.token',data.data.token);
@@ -99,7 +100,7 @@ const Login = () => {
       password: ownerPassword,
     };
     axios
-      .post(`${API.auth_server}/api/v1/canteen/login`, obj)
+      .post("http://127.0.0.1:2000/api/v1/canteen/login", obj)
       .then((res) => {
         const data = res;
         //le.log('data_own',data.data.token);
@@ -118,7 +119,6 @@ const Login = () => {
         console.log(err);
         Owner_issetError(true);
         Owner_setError(err.response.data.msg);
-        console.log(obj.email, obj.password);
         throw err.response.data.msg;
       });
   };

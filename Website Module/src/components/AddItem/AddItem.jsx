@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./AddItem.css";
 import Axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { API } from "../../constants/API";
+
 const AddItem = () => {
   const token = useSelector((state) => state.auth.token);
   // const [name,setName] = useState('');
@@ -18,7 +18,7 @@ const AddItem = () => {
     };
     console.log(obj);
     const data = await Axios.post(
-      `${API.canteen_server}/api/v1/canteen/dish/adddish`,
+      "http://127.0.0.1:4000/api/v1/canteen/dish/adddish",
       obj,
       {
         headers: { Authorization: `Bearer ${token}` },

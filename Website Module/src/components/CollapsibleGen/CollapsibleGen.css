@@ -69,7 +69,7 @@
   font-size: 1.7rem;
 }
 .qty {
-  /* padding-left: 1340px; */
+  padding-left: 1340px;
   font-size: 1.7rem;
 }
 
@@ -141,7 +141,7 @@
 
   .dropped {
     width: 97%;
-    height: 100%;
+    height: 180px;
   }
 
   .orders {
@@ -150,8 +150,6 @@
 
   .data_text {
     font-size: 1.2rem;
-    border-bottom: 1px dotted lightgray;
-    padding: 5px;
   }
 
   .data {

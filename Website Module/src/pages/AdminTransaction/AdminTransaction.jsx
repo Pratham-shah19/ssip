@@ -11,7 +11,6 @@ import { useSelector } from "react-redux";
 import "./AdminTransaction.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { API } from "../../constants/API";
 const AdminTransaction = () => {
   const [id, setid] = useState("");
   const [price, setPrice] = useState(0);
@@ -26,7 +25,7 @@ const AdminTransaction = () => {
   const fetchHistory = async () => {
     //le.log("called_fetchhistoy");
     const data = await axios.get(
-      `${API.admin_server}/api/v1/admin/orders?status=COMPLETED`,
+      `http://127.0.0.1:5000/api/v1/admin/orders?status=COMPLETED`,
       {
         headers: {
           Authorization: `Bearer ${token_main}`,

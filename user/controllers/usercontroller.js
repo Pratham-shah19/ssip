@@ -7,7 +7,6 @@ const { BadRequestError, NotFoundError } = require("../errors");
 const Basket = require("../models/Basket");
 const Orders = require("../models/Orders");
 const bcrypt = require("bcryptjs");
-const { json } = require("express");
 
 const getUserDetails = async (req, res) => {
   var { uid } = req.params;
@@ -15,10 +14,11 @@ const getUserDetails = async (req, res) => {
   if (!user) {
     throw new BadRequestError("Invalid user id");
   }
+  // const de = await Orders.deleteMany({});
   res.status(StatusCodes.OK).json({ res: "success", data: user });
 };
 const validateOTP = async (req, res) => {
-  var { otp } = req.body;
+  const { otp } = req.body;
   const { email } = req.params;
   otp = parseInt(otp);
   if (!otp) {
@@ -76,13 +76,12 @@ const getOrdersSpecific = async (req, res) => {
 
   if (status === "NEW" || status === "COMPLETED") {
     const orders = await Order.find({ status, userId });
-
     for (let i = 0; i < orders.length; i++) {
       var items = orders[i].items;
       var updatedItems = [];
       for (let j = 0; j < items.length; j++) {
         const dish = await Dish.findOne({ _id: items[j].dishId });
-        const obj = { qty: items[j].qty, dish };
+        const obj = { qty: items[i].qty, dish };
         updatedItems.push(obj);
       }
       orders[i].items = updatedItems;
@@ -106,7 +105,7 @@ const getFilteredDishes = async (req, res) => {
   const skip = (page - 1) * limit;
   //search dishes by name
   if (search) {
-    var resp = await Dish.find({ name: { $regex: search, $options: "i" },isAvailable:true });
+    var resp = await Dish.find({ name: { $regex: search, $options: "i" } });
   }
   //sort
   if (sort) {
@@ -153,6 +152,7 @@ const addToCart = async (req, res) => {
     }
 
     cartObject.items = arr;
+    console.log(cartObject);
     var dish = await Basket.findOneAndUpdate({ userId }, cartObject, {
       new: true,
       runValidators: true,
@@ -256,6 +256,7 @@ const payCanteen = async (req, res) => {
   //adding coins to canteen's wallet
   const canteen = await Canteen.findOne({ name: canteenName });
   if (!canteen) {
+    console.log("canteen not found");
     throw new BadRequestError("Invalid caneteen name");
     return;
   }
@@ -266,6 +267,7 @@ const payCanteen = async (req, res) => {
   );
   const basket = await Basket.findOne({ userId: uid });
   if (!basket) {
+    console.log("basket not present");
     throw new BadRequestError("Invalid user id, could not find basket");
     return;
   }
@@ -275,6 +277,7 @@ const payCanteen = async (req, res) => {
     let obj = {};
     const dish = await Dish.findOne({ _id: e.dishId, isAvailable: true });
     if (!dish) {
+      console.log("dish not available");
       res
         .status(StatusCodes.OK)
         .json({ res: "fail", data: "dish is not actually available" });
@@ -288,12 +291,14 @@ const payCanteen = async (req, res) => {
             { quantity: obj.qty, isAvailable: false },
             { runValidators: true, new: true }
           );
+          console.log("less quantity", dish);
         } else {
           const dish = await Dish.findOneAndUpdate(
             { _id: obj.dishId },
             { quantity: obj.qty },
             { runValidators: true, new: true }
           );
+          console.log("enough quantity", dish);
         }
       } else {
         res
@@ -322,25 +327,19 @@ const payCanteen = async (req, res) => {
 };
 
 const addRating = async (req, res) => {
+  console.log(req.body);
   let { dishId, rating } = req.body;
   const dish = await Dish.findOne({ _id: dishId });
   if (!dish) {
     throw new BadRequestError("Invalid dish id");
   }
-  if(dish.noOfRating === 0){
-    dish.rating = rating;
-    dish.noOfRating += 1;
-  }
-  else{
-    dish.rating = ((dish.rating*dish.noOfRating)+rating)/(dish.noOfRating+1);
-    dish.noOfRating += 1;
-  }
+  // rating = Number(rating);
+  dish.rating = (dish.rating + rating) / 2;
   const Updated = await Dish.findOneAndUpdate({ _id: dishId }, dish, {
     new: true,
     runValidators: true,
     setDefaultsOnInsert: true,
   });
-  
 
   res.status(StatusCodes.OK).json({ res: "success", data: Updated });
 };

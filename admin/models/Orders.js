@@ -36,14 +36,10 @@ const OrderSchema = new mongoose.Schema({
   },
   paymentmode:{
     type:String,
-    default:'KOT',
-    enum:[
-      "KOT",
-      "ONLINE",
-      "CASH"
-    ]
-  },
-},{timestamps:true})
+    default:'KOT'
+  }
+})
+//kahdkwh
 
 
 module.exports = mongoose.model('Order',OrderSchema)

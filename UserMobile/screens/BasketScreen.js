@@ -12,7 +12,7 @@ import BasketDishItem from '../components/BasketDishItem';
 import axios from 'axios';
 import {useAuthContext} from '../src/Context/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import AppLoader from '../components/AppLoader';
+import CartLoader from '../components/CartLoader';
 
 const BasketScreen = () => {
   // const [dish, setDish] = useState([]);
@@ -77,7 +77,7 @@ const BasketScreen = () => {
             style={{
               color: 'white',
               fontWeight: '500',
-              fontSize: 15,
+              fontSize: 17,
               fontFamily: 'Fredoka-Regular',
             }}>
             Create Order &#8226; Rs.
@@ -92,7 +92,7 @@ const BasketScreen = () => {
           </Text>
         </TouchableOpacity>
       </ScrollView>
-      {loginPending ? <AppLoader /> : null}
+      {loginPending ? <CartLoader /> : null}
     </>
   );
 };

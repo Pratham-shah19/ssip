@@ -62,7 +62,7 @@ const HistoryDish = ({dish}) => {
       star = 1;
     }
     const response = await axios.post(
-      'http://65.0.189.107:8000/api/v1/user/dishes/rating',
+      'http://10.0.2.2:8000/api/v1/user/dishes/rating',
       {dishId: dish.dish._id, rating: star},
       {headers: {Authorization: `Bearer ${tokens}`}},
     );
@@ -78,7 +78,7 @@ const HistoryDish = ({dish}) => {
       <View style={{flex: 1}}>
         <Image
           source={{uri: dish.dish.imageUrl}}
-          style={{height: 40, width: 40, borderRadius: 20}}
+          style={{height: 44, width: 44, borderRadius: 22}}
         />
       </View>
       <View style={{flex: 5}}>

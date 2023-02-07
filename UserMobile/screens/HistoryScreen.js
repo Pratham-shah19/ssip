@@ -19,7 +19,7 @@ const HistoryScreen = () => {
   const fetchDetail = async () => {
     setLoadingPending(true);
     const response = await axios.get(
-      `http://65.0.189.107:8000/api/v1/user/${users}/orders?status=COMPLETED`,
+      `http://10.0.2.2:8000/api/v1/user/${users}/orders?status=COMPLETED`,
       {headers: {Authorization: `Bearer ${tokens}`}},
     );
     setOrders(response.data.data);
@@ -34,7 +34,7 @@ const HistoryScreen = () => {
             style={{
               color: 'black',
               fontFamily: 'Fredoka-Regular',
-              fontSize: 17,
+              fontSize: 19,
               alignSelf: 'center',
               textAlign: 'center',
             }}>

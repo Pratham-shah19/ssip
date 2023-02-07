@@ -41,7 +41,7 @@ const HistoryScreenComponent = ({favourite}) => {
           style={{
             color: 'black',
             fontFamily: 'Fredoka-Regular',
-            fontSize: 12,
+            fontSize: 14,
             marginBottom: 5,
           }}>
           Order Id: {favourite._id}
@@ -50,7 +50,7 @@ const HistoryScreenComponent = ({favourite}) => {
           style={{
             color: 'black',
             fontFamily: 'Fredoka-Regular',
-            fontSize: 13,
+            fontSize: 14,
             marginBottom: 5,
           }}>
           Total Price: Rs.{favourite.price}
@@ -59,7 +59,7 @@ const HistoryScreenComponent = ({favourite}) => {
           style={{
             color: 'black',
             fontFamily: 'Fredoka-Regular',
-            fontSize: 13,
+            fontSize: 14,
           }}>
           Date:
         </Text>
@@ -67,7 +67,7 @@ const HistoryScreenComponent = ({favourite}) => {
           style={{
             color: 'black',
             fontFamily: 'Fredoka-Regular',
-            fontSize: 13,
+            fontSize: 14,
           }}>
           Paid through:
         </Text>

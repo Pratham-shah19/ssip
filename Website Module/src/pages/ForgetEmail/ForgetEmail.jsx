@@ -6,7 +6,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import OTP from "../OTP/OTP";
 import "./ForgetEmail.css";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-import { API } from "../../constants/API";
+
 const ForgetEmail = () => {
   const [email, setEmail] = useState("");
   const [Error, setError] = useState("");
@@ -24,7 +24,7 @@ const ForgetEmail = () => {
     //le.log("vivek");
     console.log(obj);
     axios
-      .patch(`${API.auth_server}/api/v1/admin/forgotpassword`, obj)
+      .patch("http://127.0.0.1:2000/api/v1/admin/forgotpassword", obj)
       .then((res) => {
         const data = res;
         if (data.data.res === "Success") {

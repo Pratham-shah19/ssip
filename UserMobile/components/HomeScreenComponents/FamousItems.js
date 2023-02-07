@@ -1,6 +1,11 @@
 import {
+  StyleSheet,
   Text,
   View,
+  Image,
+  Dimensions,
+  Pressable,
+  TextComponent,
   FlatList,
   ScrollView,
   ActivityIndicator,
@@ -23,19 +28,23 @@ const FamousItems = () => {
   let jsonValue;
 
   const getData = async () => {
+    // console.log('inside get data:');
     const value = await AsyncStorage.getItem('userDetail');
     jsonValue = JSON.parse(value);
+    // console.log('user in auth context of famousItem:', jsonValue);
     setUsers(jsonValue.userID);
     setTokens(jsonValue.token);
+    // console.log('get done');
   };
   useEffect(() => {
     getData();
-    setTimeout(() => fetchDishes(), 100);
+    // console.log('inside famousItem: ');
+    setTimeout(() => fetchDishes(), 500);
   }, []);
 
   const fetchDishes = async () => {
     const response = await axios.post(
-      `http://3.216.172.228:6500/api/v1/canteen/dishes/filter?sort=rating`,
+      `http://10.0.2.2:6000/api/v1/canteen/dishes/filter?sort=rating`,
       {},
       {headers: {Authorization: `Bearer ${jsonValue.token}`}},
     );
@@ -50,13 +59,15 @@ const FamousItems = () => {
           flexDirection: 'row',
           marginLeft: 15,
           alignItems: 'center',
-          marginTop: 3,
+          marginTop: 10,
         }}>
-        <View style={{}}></View>
+        <View style={{}}>
+          <Entypo name="emoji-happy" size={23} color="#f35858" />
+        </View>
         <View style={{marginHorizontal: 3}}>
           <Text
             style={{
-              fontSize: 16,
+              fontSize: 19,
               marginLeft: 4,
               color: 'black',
               fontFamily: 'Fredoka-Medium',
@@ -64,21 +75,32 @@ const FamousItems = () => {
             Eat What Makes You Happy...
           </Text>
         </View>
+        {/* <Pressable onPress={() => {}}>
+          <Text style={{}}>{tokens}</Text>
+        </Pressable> */}
       </View>
       <View>
-        <View style={{height: 260, marginLeft: 13}}>
+        <View style={{height: 290, marginLeft: 13}}>
           <ScrollView
             horizontal
             showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}>
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{paddingVertical: 10}}>
             <FlatList
               data={dishes}
               contentContainerStyle={{alignSelf: 'flex-start'}}
-              numColumns={Math.ceil(5)}
+              numColumns={Math.ceil(4)}
+              scrollEnabled={false}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
               style={{marginTop: 10}}
-              renderItem={({item}) => <FamousItemComponent food={item} />}
+              renderItem={({item}) => (
+                <FamousItemComponent
+                  // famousFood={item.famousFood}
+                  // restaurantImage={item.restaurantImage}
+                  food={item}
+                />
+              )}
               keyExtractor={item => item.name}
             />
           </ScrollView>

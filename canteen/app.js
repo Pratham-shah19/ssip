@@ -17,15 +17,6 @@ const app = express();
 const connectDB = require("./db/connect");
 
 //middleware
-app.use((
-  cors({
-    origin: "*",
-  })
-));
-app.use(function(req,res,next) {
-  res.header("Access-Control-Allow-Origin","*");
-  next();
-});
 app.use(express.static(`${__dirname}/public`));
 
 // routers
@@ -64,6 +55,8 @@ app.use("/api/v1/canteen", authenticationMiddleware, CanteenRoute);
 
 app.use("/api/v1/bill", authenticationMiddleware, billRoute);
 
+
+
 //routes adddish
 app.use("/api/v1/adddish", upload.single("imageUri"), async (req, res) => {
   const obj = {
@@ -96,7 +89,7 @@ const errorHandlerMiddleware = require("./middleware/error-handler");
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-const port = 6500 || process.env.PORT;
+const port = process.env.PORT || 6000;
 
 const start = async () => {
   try {

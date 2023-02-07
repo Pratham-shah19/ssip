@@ -34,11 +34,11 @@ const styles = StyleSheet.create({
   },
 
   container_PRIMARY: {
-    backgroundColor: '#f35858',
+    backgroundColor: '#3B71F3',
   },
 
   container_SECONDARY: {
-    borderColor: '#f35858',
+    borderColor: '#3B71F3',
     borderWidth: 2,
   },
 
