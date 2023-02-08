@@ -9,7 +9,7 @@ var options = {
   key: fs.readFileSync("privatekey.pem"),
   cert: fs.readFileSync("server.crt"),
 };
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 
 //connectDB
 const connectDB = require("./db/connect");

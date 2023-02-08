@@ -10,13 +10,20 @@ const stripe = require("stripe")(
 const endpointSecret = "whsec_fb5686e7f586c42bd82e5e7a0839f44d5dd6c582ee7cf1fcce0f7be84d306fa1";
 const pubkey = "pk_live_51KyqwvSFXhJBixXAkcyirlXABSuwuQoC9a6daIFPkc7mrRotk18Xe1eISkB7tFR1krgUbuw8FY6SQxvmTx9ZZ89100S4jkwTWc";
 
-
+const YOUR_DOMAIN = "http://localhost:4242"
 const createcheckoutsession = async(req, res) => {
+  const canteen = await Canteen.find({})
+  const wallet = canteen[0].wallet;
+  var date = new Date();
+  const day = date.getDate();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+  date = day+'/'+month+'/'+year;
   const product = await stripe.products.create({
-    name:req.body.date, 
+    name:date, 
   })
   const price = await stripe.prices.create({
-    unit_amount:req.body.amount * 100,
+    unit_amount:wallet * 100,
     currency:'inr',
     product:product.id
   })
@@ -31,8 +38,8 @@ const createcheckoutsession = async(req, res) => {
       
     ],
     mode: "payment",
-    success_url: `${YOUR_DOMAIN}/success.html`,
-    cancel_url: `${YOUR_DOMAIN}/cancel.html`,
+    success_url: `${YOUR_DOMAIN}?success=true`,
+    cancel_url: `${YOUR_DOMAIN}?canceled=true`,
   });
   
   res.redirect(303, session.url);
