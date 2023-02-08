@@ -53,7 +53,7 @@ const updateUserDetails = async (req, res) => {
   const { uid } = req.params;
   const user = await User.findOneAndUpdate({ _id: uid }, req.body, {
     new: true,
-    runValidators,
+    runValidators:true,
     setDefaultsOnInsert: true,
   });
   if (!user) {
