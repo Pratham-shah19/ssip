@@ -106,12 +106,16 @@ const getFilteredDishes = async (req, res) => {
   const skip = (page - 1) * limit;
   //search dishes by name
   if (search) {
-    var resp = await Dish.find({ name: { $regex: search, $options: "i" },isAvailable:true });
+    var resp = await Dish.find({
+      name: { $regex: search, $options: "i" },
+      isAvailable: true,
+    });
   }
   //sort
   if (sort) {
     const sortLIST = sort.split(",").join(" ");
-    resp = resp.sort(sortLIST).skip(skip).limit(limit);
+    resp = await Dish.find({isAvailable:true}).sort('-'+sortLIST).limit(limit)
+    // resp = resp.sort(sortLIST).skip(skip).limit(limit);
   }
 
   res.status(StatusCodes.OK).json({ res: "success", data: resp });
