@@ -6,6 +6,6 @@ const {paymentsheet,webhook,createcheckoutsession} = require('../controllers/pay
 
 router.route('/payment-sheet').post(paymentsheet)
 router.route('/webhook').post(express.raw({type:application/json}),webhook)
-router.route('create-checkout-session').post(createcheckoutsession);
+router.route('/create-checkout-session').post(createcheckoutsession);
 
 module.exports = router

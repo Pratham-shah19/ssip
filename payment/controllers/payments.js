@@ -10,7 +10,8 @@ const stripe = require("stripe")(
 const endpointSecret = "whsec_fb5686e7f586c42bd82e5e7a0839f44d5dd6c582ee7cf1fcce0f7be84d306fa1";
 const pubkey = "pk_live_51KyqwvSFXhJBixXAkcyirlXABSuwuQoC9a6daIFPkc7mrRotk18Xe1eISkB7tFR1krgUbuw8FY6SQxvmTx9ZZ89100S4jkwTWc";
 
-const YOUR_DOMAIN = "http://localhost:4242"
+const YOUR_DOMAIN = "http://localhost:6990"
+
 const createcheckoutsession = async(req, res) => {
   const canteen = await Canteen.find({})
   const wallet = canteen[0].wallet;
@@ -41,7 +42,6 @@ const createcheckoutsession = async(req, res) => {
     success_url: `${YOUR_DOMAIN}?success=true`,
     cancel_url: `${YOUR_DOMAIN}?canceled=true`,
   });
-  
   res.redirect(303, session.url);
 };
 //mobile pg integration

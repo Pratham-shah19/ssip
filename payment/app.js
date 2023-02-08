@@ -1,15 +1,8 @@
 require("dotenv").config();
 require("express-async-errors");
 const cors = require("cors");
-const https = require("https");
 const express = require("express");
 const app = express();
-const fs = require("fs");
-var options = {
-  key: fs.readFileSync("privatekey.pem"),
-  cert: fs.readFileSync("server.crt"),
-};
-
 
 //connectDB
 const connectDB = require("./db/connect");
@@ -47,12 +40,9 @@ const port = process.env.PORT || 6990;
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URI);
-    // app.listen(port, () =>
-    //   console.log(`Server is listening on port ${port}...`)
-    // );
-    https
-      .createServer(options, app)
-      .listen(port, () => console.log(`server is listening on port: ${port}`));
+    app.listen(port, () =>
+      console.log(`Server is listening on port ${port}...`)
+    );
   } catch (error) {
     console.log(error);
   }
