@@ -282,6 +282,7 @@ const payCanteen = async (req, res) => {
       res
         .status(StatusCodes.OK)
         .json({ res: "fail", data: "dish is not actually available" });
+      return;
     } else {
       if (dish?.quantity >= e.qty) {
         obj.dishId = e.dishId;
@@ -303,6 +304,7 @@ const payCanteen = async (req, res) => {
         res
           .status(StatusCodes.OK)
           .json({ res: "fail", data: "not enough quantity" });
+        return;
       }
     }
   });
