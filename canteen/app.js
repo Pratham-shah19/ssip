@@ -17,13 +17,13 @@ const app = express();
 const connectDB = require("./db/connect");
 
 //middleware
-app.use((
+app.use(
   cors({
     origin: "*",
   })
-));
-app.use(function(req,res,next) {
-  res.header("Access-Control-Allow-Origin","*");
+);
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
   next();
 });
 app.use(express.static(`${__dirname}/public`));
@@ -60,7 +60,7 @@ const multerStorage = multer.diskStorage({
 const upload = multer({ storage: multerStorage });
 
 //routes canteen
-app.use("/api/v1/canteen", authenticationMiddleware, CanteenRoute);
+app.use("/api/v1/canteen", CanteenRoute);
 
 app.use("/api/v1/bill", authenticationMiddleware, billRoute);
 
