@@ -14,7 +14,7 @@ const stripe = require('stripe')('sk_test_51KyqwvSFXhJBixXAbp2HBSBo65HD0T1BqG60A
 const getCurrentOrders = async (req, res) => {
   // console.log('Request Received')
   const order = Order.find({ status: "NEW" });
-  order.sort("-_id");
+  order.sort({createdAt:-1});
   var timeout = 1000;
   const orders = await order;
   if(orders.length >=40 && orders.length <=80)
