@@ -16,7 +16,7 @@ const router = express.Router();
 const authenticationMiddleware = require("../middleware/authentication");
 
 router.route("/thismonthreport").get(authenticationMiddleware,thisReportGeneration)
-router.route("/lastmonthreport").get(authenticationMiddleware,lastReportGeneration)
+router.route("/lastmonthreport").get(lastReportGeneration)
 router.route("/customers").get( authenticationMiddleware,getSpecificCustomers);
 router.route("/totalcustomers").get(authenticationMiddleware, getCustomersLength);
 

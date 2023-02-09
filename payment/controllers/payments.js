@@ -94,6 +94,7 @@ const payCanteen = async (req, res) => {
   orderObj.userId = basket.userId;
   orderObj.price = price;
   orderObj.otp = otp;
+  orderObj.paymentmode = "ONLINE";
   //creating order
   const order = await Orders.create(orderObj);
   //deleting basket
