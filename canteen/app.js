@@ -1,6 +1,7 @@
 require("dotenv").config();
 require("express-async-errors");
 const { StatusCodes } = require("http-status-codes");
+const CashPaymentRoute = require('./routes/CashPaymentRoute')
 
 // extra security packages
 const helmet = require("helmet");
@@ -75,7 +76,8 @@ app.use("/api/v1/adddish", upload.single("imageUri"), async (req, res) => {
   const dish = await Dish.create(obj);
   res.status(StatusCodes.CREATED).json({ res: "Success", data: dish });
 });
-
+//cash payment route
+app.use("/api/v1/cashpayment",CashPaymentRoute);
 //routes otpvalidation
 app.use("/api/v1/canteenotpvalidate", OTPValidateRoute);
 
@@ -88,6 +90,7 @@ app.get("/image/files/:filename", (req, res) => {
   const fullfilepath = path.join(dirname, "public/files/" + filename);
   return res.sendFile(fullfilepath);
 });
+
 
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");

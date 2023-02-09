@@ -3,7 +3,6 @@ const authenticationMiddleware = require("../middleware/authentication");
 const router = express.Router();
 
 const {
-  getCashOTP,
   lastReportGeneration,
   thisReportGeneration,
   deletebtn,
@@ -23,6 +22,7 @@ const {
   guestCompletedButton,
   dishFilter,
   dishCategory,
+
 } = require("../controllers/CanteenController");
 
 router.route("/order/current").get(authenticationMiddleware, getCurrentOrders);
@@ -52,6 +52,5 @@ router.route("/deletebtn/:did").get(authenticationMiddleware, deletebtn);
 router.route("/resetwallet").get(authenticationMiddleware, resetWallet);
 router.route("/lastMonthReport").get(lastReportGeneration);
 router.route("/thisMonthReport").get(thisReportGeneration);
-router.route("/getcashotp").get(authenticationMiddleware, getCashOTP);
 
 module.exports = router;
