@@ -94,6 +94,7 @@ const payCanteen = async (req, res) => {
   orderObj.userId = basket.userId;
   orderObj.price = price;
   orderObj.otp = otp;
+  orderObj.paymentmode = "ONLINE";
   //creating order
   const order = await Orders.create(orderObj);
   //deleting basket
@@ -109,9 +110,15 @@ const completeOnlinePayment = async(req,res)=>{
   const {uid} = req.params;
   const customer = await Users.findOne({_id:uid})
   var payment_intent = await stripe.paymentIntents.list({customer:customer.customerId})
-  while(payment_intent.data[0].status !=='succeeded' || payment_intent.data[0].status!=='canceled')
+  while(payment_intent.data[0].status !='succeeded' || payment_intent.data[0].status!='canceled')
   {
     payment_intent = await stripe.paymentIntents.list({customer:customer.customerId})
+    if(payment_intent.data[0].status === 'succeeded')
+    {
+      console.log("done")
+      break;
+    }
+    console.log(payment_intent.data[0].status)
 
   }
   if(payment_intent.data[0].status === 'succeeded')
