@@ -17,7 +17,7 @@ const createcheckoutsession = async(req, res) => {
   const wallet = canteen[0].wallet;
   var date = new Date();
   const day = date.getDate();
-  const month = date.getMonth();
+  const month = date.getMonth()+1;
   const year = date.getFullYear();
   date = day+'/'+month+'/'+year;
   const product = await stripe.products.create({
