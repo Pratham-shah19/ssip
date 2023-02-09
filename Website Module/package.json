@@ -19,8 +19,10 @@
     "axios": "^1.0.0",
     "babel-plugin-macros": "^3.1.0",
     "crypto-js": "3.1.9-1",
+    "install": "^0.13.0",
     "material-ui": "^0.20.2",
     "mui-one-time-password-input": "^1.0.3",
+    "npm": "^9.4.2",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-circular-progressbar": "^2.1.0",
@@ -37,6 +39,7 @@
     "redux-thunk": "^2.4.1",
     "web-vitals": "^2.1.4"
   },
+  "proxy": "http://127.0.0.1:6990/api/v1/payments",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

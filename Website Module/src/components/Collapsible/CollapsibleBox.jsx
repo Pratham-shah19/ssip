@@ -7,8 +7,8 @@ import * as OrderAction from "../../store/actions/Orders";
 import { useSelector, useDispatch, connect } from "react-redux";
 import axios from "axios";
 import ReactDOM from "react-dom";
+import { API } from "../../constants/API";
 
-import * as WalletActions from "../../store/actions/wallet";
 const CollapsibleBox = ({
   orderId,
   otp,
@@ -17,9 +17,9 @@ const CollapsibleBox = ({
   _button,
   token_main,
   setOrderID,
+  getOrderHistory,
 }) => {
   const [open, setOpen] = useState(false);
-  const dispatch = useDispatch();
 
   const toggle = () => {
     setOpen(!open);
@@ -40,7 +40,7 @@ const CollapsibleBox = ({
   const completedHandler = () => {
     async function completedButton_action() {
       await axios.post(
-        `http://127.0.0.1:4000/api/v1/canteen/guestcompletedbutton/${orderId}`,
+        `${API.canteen_server}/api/v1/canteen/guestcompletedbutton/${orderId}`,
         {},
         {
           headers: { Authorization: `Bearer ${token_main}` },
@@ -51,6 +51,7 @@ const CollapsibleBox = ({
       completedButton_action();
       console.log("completed");
       setOrderID(orderId);
+      getOrderHistory();
     }
     const conditional_render = () => {
       if (cust_name !== "Guest") {
@@ -58,10 +59,12 @@ const CollapsibleBox = ({
           <div className="competed">
             <div
               type="button"
-              className="completed1"
+              className="completed3"
               onClick={completedHandler}
             >
-              <p className="completed_text">OTP: {otp}</p>
+              <p className="completed_text" style={{ color: "green" }}>
+                OTP: {otp}
+              </p>
             </div>
           </div>
         );
@@ -92,15 +95,24 @@ const CollapsibleBox = ({
 
         {_button != true ? (
           <div className="competed">
-            <div type="button" className="completed1">
-              <p className="completed_text">OTP: {otp}</p>
+            <div type="button" className="completed3">
+              <button
+                type="button"
+                className="completed2"
+                onClick={completedHandler}
+              >
+                <p className="completed_text">Completed</p>
+              </button>
+              <p className="completed_text" style={{ display: "flex" }}>
+                OTP: {otp}
+              </p>
             </div>
           </div>
         ) : (
           <div className="competed">
             <button
               type="button"
-              className="completed1"
+              className="completed2"
               onClick={completedHandler}
             >
               <p className="completed_text">Completed</p>
@@ -142,6 +154,9 @@ function mapStateToDispatch(dispatch) {
   return {
     setOrderID: (orderId) => {
       return dispatch(OrderAction.setOrderId(orderId));
+    },
+    getOrderHistory: () => {
+      return dispatch(OrderAction.setOldOrders());
     },
   };
 }

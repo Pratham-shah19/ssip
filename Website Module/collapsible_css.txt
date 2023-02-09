@@ -1,0 +1,1 @@
+collapsibleGen is used for csss

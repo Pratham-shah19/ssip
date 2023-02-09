@@ -2,13 +2,9 @@ import React, { useState, useEffect } from "react";
 import "./AddItem.css";
 import Axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-
+import { API } from "../../constants/API";
 const AddItem = () => {
   const token = useSelector((state) => state.auth.token);
-  // const [name,setName] = useState('');
-  // const [price,setPrice] = useState(0);
-  // const [name,setName] = useState('');
-  // const [name,setName] = useState('');
   const submitHandler = async (event) => {
     const obj = {
       name: document.f1.name.value,
@@ -18,7 +14,7 @@ const AddItem = () => {
     };
     console.log(obj);
     const data = await Axios.post(
-      "http://127.0.0.1:4000/api/v1/canteen/dish/adddish",
+      `${API.canteen_server}/api/v1/canteen/dish/adddish`,
       obj,
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -38,6 +34,7 @@ const AddItem = () => {
               type="text"
               name="name"
               id="item-name"
+              maxLength={18}
               placeholder="Enter name of the item"
               required
             />
