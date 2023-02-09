@@ -80,7 +80,7 @@ const payCanteen = async (req, res) => {
   const canteen = await Canteen.findOne({ name: "Sachivalaya" });
   //user basket
   const basket = await Basket.findOne({ userId: uid });
-  const price = basket.price;
+  const price = basket?.price;
   //adding coins to canteen's wallet
   const pay = await Canteen.findOneAndUpdate(
     { name: "Sachivalaya" },
