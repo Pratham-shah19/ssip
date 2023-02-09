@@ -11,6 +11,7 @@ const {
   getCanteenDetails,
   thisReportGeneration,
   lastReportGeneration,
+  fullfillAdminPayment
 } = require("../controllers/adminController");
 const router = express.Router();
 const authenticationMiddleware = require("../middleware/authentication");
@@ -28,8 +29,10 @@ router
   .route("/:canteen/details")
   .get(authenticationMiddleware, getCanteenDetails);
 
+
 router.route("/:email/validateOTP").post(validateOTP);
 router.route("/:email/updatePassword").patch(updatePassword);
+router.route("/fullfillpayment").post(authenticationMiddleware,fullfillAdminPayment)
 router.route("/payCanteen").post(authenticationMiddleware, payCanteen);
 router
   .route("/validateCashotp")
