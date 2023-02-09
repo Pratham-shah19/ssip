@@ -99,7 +99,7 @@ const payCanteen = async (req, res) => {
   const order = await Orders.create(orderObj);
   //deleting basket
   const emptyBasket = await Basket.findOneAndDelete({ userId: uid });
-
+    console.log(otp)
   res.status(StatusCodes.CREATED).json({
     res: "success",
     data: { orderOtp: otp }
