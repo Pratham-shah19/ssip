@@ -75,7 +75,7 @@ const getOrdersSpecific = async (req, res) => {
   const userId = req.params.uid;
 
   if (status === "NEW" || status === "COMPLETED") {
-    const orders = await Order.find({ status, userId });
+    const orders = await Order.find({ status, userId }).sort({createdAt:-1});
 
     for (let i = 0; i < orders.length; i++) {
       var items = orders[i].items;
