@@ -244,7 +244,7 @@ const canPayWallet = async (req, res) => {
 };
 
 const createOrder = async (req, res) => {
-  const { uid } = req.query;
+  const { uid } = req.params;
   const user = await User.findOne({ _id: uid });
   if (!user) {
     throw new BadRequestError("Invalid userid");

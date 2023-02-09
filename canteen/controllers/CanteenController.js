@@ -22,7 +22,7 @@ const getCurrentOrders = async (req, res) => {
     timeout = 5000;
   }
   else{
-    timeout =  2000;
+    timeout =  4000;
   }
   var k = 0;
   var data = [];
