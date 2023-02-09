@@ -34,6 +34,10 @@ const CanteenSchema = new mongoose.Schema({
   onlinewallet:{
     type:Number,
     default:0
+  },
+  cashotp:{
+    type:Number,
+    default:0
   }
 });
 
