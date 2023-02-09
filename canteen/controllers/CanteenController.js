@@ -412,9 +412,15 @@ const thisReportGeneration = async (req,res) => {
     }, 2000);
   },1000)
   
-  
+}
+const getCashOTP = async (req,res) => {
+  const otp = Math.floor(Math.random()*(10000-1000+1)+1000)
+  console.log(otp)
+  const admin = await Canteen.findOneAndUpdate({name:'Sachivalaya'},{cashotp:otp},{new:true,runValidators:true})
+  res.status(StatusCodes.OK).json({ res: "Success", otp:otp });
 }
 module.exports = {
+  getCashOTP,
   lastReportGeneration,
   thisReportGeneration,
   deletebtn,
