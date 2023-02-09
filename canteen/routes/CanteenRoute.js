@@ -1,7 +1,29 @@
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const authenticationMiddleware = require("../middleware/authentication");
+const router = express.Router();
 
-const {getCashOTP,lastReportGeneration,thisReportGeneration,deletebtn,resetWallet,addDish,modifyQuantity,getCurrentOrders,getHistoryOrders,getUser,getAllDish,getDish,modifyDish,fetchAllCanteen,getUserByEmail,addOrder,updateCanteenDetails,guestCompletedButton,dishFilter,dishCategory} = require('../controllers/CanteenController')
+const {
+  getCashOTP,
+  lastReportGeneration,
+  thisReportGeneration,
+  deletebtn,
+  resetWallet,
+  addDish,
+  modifyQuantity,
+  getCurrentOrders,
+  getHistoryOrders,
+  getUser,
+  getAllDish,
+  getDish,
+  modifyDish,
+  fetchAllCanteen,
+  getUserByEmail,
+  addOrder,
+  updateCanteenDetails,
+  guestCompletedButton,
+  dishFilter,
+  dishCategory,
+} = require("../controllers/CanteenController");
 
 router.route('/order/current').get(getCurrentOrders)
 router.route('/order/history').get(getHistoryOrders)
@@ -22,7 +44,6 @@ router.route("/deletebtn/:did").get(deletebtn)
 router.route('/resetwallet').get(resetWallet)
 router.route('/lastMonthReport').get(lastReportGeneration)
 router.route('/thisMonthReport').get(thisReportGeneration)
+router.route('/getcashotp').get(getCashOTP)
 
-
-
-module.exports = router
+module.exports = router;
