@@ -250,12 +250,13 @@ const thisReportGeneration = async (req,res) => {
 }
 
 const fullfillAdminPayment = async(req,res)=>{
+  console.log("received")
   const canteen = await Canteen.findOneAndUpdate({name:"Sachivalaya"},{wallet:0},{
     runValidators:true,
     new:true,
     setDefaultsOnInsert:true
   })
-
+  console.log("done")
   res.status(StatusCodes.OK).json({res:"success",data:canteen})
 
 }
