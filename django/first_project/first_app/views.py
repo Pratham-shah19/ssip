@@ -58,9 +58,10 @@ class ordersviewset(APIView):
         # new=newdata2.drop(['dishId','price','rating'],axis=1)
         # function={'category':'first','qty':'sum','name':'count'}
         # new=new.groupby(new['category'],as_index=False).aggregate(function)
-        values = newdata['qty'].values.tolist()
-        keys = newdata['name'].values.tolist()
-        graph= dict(zip(keys, values))
+        values1 = newdata['qty'].values.tolist()
+        values2 = newdata['name'].values.tolist()
+        graph = [{"name": name, "qty": qty} for name, qty in zip(values2, values1)]
+       
 
         output={'revenue':revenue,
                 'Highest Selling':high,
