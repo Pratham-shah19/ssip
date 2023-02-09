@@ -32,7 +32,7 @@ router
 
 router.route("/:email/validateOTP").post(validateOTP);
 router.route("/:email/updatePassword").patch(updatePassword);
-router.route("/fullfillpayment").post(authenticationMiddleware,fullfillAdminPayment)
+router.route("/fullfillpayment").post(fullfillAdminPayment)
 router.route("/payCanteen").post(authenticationMiddleware, payCanteen);
 router
   .route("/validateCashotp")
