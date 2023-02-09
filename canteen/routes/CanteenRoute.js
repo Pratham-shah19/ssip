@@ -22,7 +22,6 @@ router.route("/deletebtn/:did").get(deletebtn)
 router.route('/resetwallet').get(resetWallet)
 router.route('/lastMonthReport').get(lastReportGeneration)
 router.route('/thisMonthReport').get(thisReportGeneration)
-router.route('/getcashotp').get(getCashOTP)
 
 
 
