@@ -117,7 +117,6 @@ const getFilteredDishes = async (req, res) => {
     resp = await Dish.find({ isAvailable: true })
       .sort("-" + sortLIST)
       .limit(limit);
-    // resp = resp.sort(sortLIST).skip(skip).limit(limit);
   }
 
   res.status(StatusCodes.OK).json({ res: "success", data: resp });
@@ -343,7 +342,7 @@ const addRating = async (req, res) => {
     dish.noOfRating += 1;
   } else {
     dish.rating =
-      (dish.rating * dish.noOfRating + rating) / (dish.noOfRating + 1);
+      ((dish.rating * dish.noOfRating + rating) / (dish.noOfRating + 1)).toFixed(2);
     dish.noOfRating += 1;
   }
   const Updated = await Dish.findOneAndUpdate({ _id: dishId }, dish, {
