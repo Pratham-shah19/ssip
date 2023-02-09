@@ -50,7 +50,7 @@ const getCurrentOrders = async (req, res) => {
       res.status(StatusCodes.OK).json({ res: "Success",length:data.length, data: data });
 
     },timeout)
-  }, 100);
+  }, 1000);
 };
 
 const getHistoryOrders = async (req, res) => {

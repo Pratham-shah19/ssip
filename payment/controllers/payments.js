@@ -3,6 +3,7 @@ const Canteen = require("../models/Canteen");
 const Basket = require("../models/Basket");
 const Dish = require("../models/Dish");
 const Orders = require("../models/Orders");
+const { StatusCodes } = require("http-status-codes");
 
 const stripe = require("stripe")(
   "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"
@@ -13,6 +14,7 @@ const pubkey =
   "pk_live_51KyqwvSFXhJBixXAkcyirlXABSuwuQoC9a6daIFPkc7mrRotk18Xe1eISkB7tFR1krgUbuw8FY6SQxvmTx9ZZ89100S4jkwTWc";
 
 const YOUR_DOMAIN = "http://localhost:6990"; //put react's port number...
+
 
 const createcheckoutsession = async (req, res) => {
   const canteen = await Canteen.find({});
@@ -74,22 +76,15 @@ const paymentsheet = async (req, res) => {
 
 const payCanteen = async (req, res) => {
   const { uid } = req.params;
-  const user = await Users.findOne({ _id: uid });
   //canteen
   const canteen = await Canteen.findOne({ name: "Sachivalaya" });
   //user basket
   const basket = await Basket.findOne({ userId: uid });
   const price = basket.price;
-  //deducting price from user's wallet
-  const deduct = await Users.findOneAndUpdate(
-    { _id: uid },
-    { wallet: user.wallet - price },
-    { new: true, runValidators: true }
-  );
   //adding coins to canteen's wallet
   const pay = await Canteen.findOneAndUpdate(
     { name: "Sachivalaya" },
-    { wallet: canteen.wallet + price },
+    { wallet: canteen.onlinewallet + price },
     { new: true, runValidators: true }
   );
   //generating otp
@@ -106,50 +101,30 @@ const payCanteen = async (req, res) => {
 
   res.status(StatusCodes.CREATED).json({
     res: "success",
-    data: { "current balance": deduct.wallet, orderOtp: otp },
+    data: { orderOtp: otp }
   });
 };
 
-const webhook = async (req, res) => {
-  let event = req.body;
-  // Only verify the event if you have an endpoint secret defined.
-  // Otherwise use the basic event deserialized with JSON.parse
-  if (endpointSecret) {
-    // Get the signature sent by Stripe
-    const signature = req.headers["stripe-signature"];
-    try {
-      event = stripe.webhooks.constructEvent(
-        req.body,
-        signature,
-        endpointSecret
-      );
-    } catch (err) {
-      console.log(`⚠️  Webhook signature verification failed.`, err.message);
-      return res.sendStatus(400);
-    }
+const completeOnlinePayment = async(req,res)=>{
+  const {uid} = req.params;
+  const customer = await Users.findOne({_id:uid})
+  var payment_intent = await stripe.paymentIntents.list({customer:customer.customerId})
+  while(payment_intent.data[0].status !=='succeeded' || payment_intent.data[0].status!=='canceled')
+  {
+    payment_intent = await stripe.paymentIntents.list({customer:customer.customerId})
+
+  }
+  if(payment_intent.data[0].status === 'succeeded')
+  {
+    payCanteen(req,res)
+
+  }
+  else
+  {
+    res.status(StatusCodes.OK).json({res:"fail",data:"Online payment failed"})
   }
 
-  // Handle the event
-  switch (event.type) {
-    case "payment_intent.succeeded":
-      const paymentIntent = event.data.object;
-      console.log(`PaymentIntent for ${paymentIntent.amount} was successful!`);
-      // Then define and call a method to handle the successful payment intent.
-      // handlePaymentIntentSucceeded(paymentIntent);
-      payCanteen(req, res);
-      break;
-    case "payment_method.attached":
-      const paymentMethod = event.data.object;
-      // Then define and call a method to handle the successful attachment of a PaymentMethod.
-      // handlePaymentMethodAttached(paymentMethod);
-      break;
-    default:
-      // Unexpected event type
-      console.log(`Unhandled event type ${event.type}.`);
-  }
+}
 
-  // Return a 200 response to acknowledge receipt of the event
-  res.status(200).send("order placed");
-};
 
-module.exports = { paymentsheet, webhook, createcheckoutsession };
+module.exports = { paymentsheet, createcheckoutsession ,completeOnlinePayment};
