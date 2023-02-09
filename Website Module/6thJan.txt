@@ -1,8 +1,0 @@
-1)AddQty Styling
-2)OTP merging with Forget Email
-3)Linking New Password Screen 
-
-Todo: 
-1)Graph
-2)Report 
-3)Payment
