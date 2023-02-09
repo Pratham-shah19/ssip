@@ -10,7 +10,7 @@ const stripe = require("stripe")(
 const endpointSecret = "whsec_fb5686e7f586c42bd82e5e7a0839f44d5dd6c582ee7cf1fcce0f7be84d306fa1";
 const pubkey = "pk_live_51KyqwvSFXhJBixXAkcyirlXABSuwuQoC9a6daIFPkc7mrRotk18Xe1eISkB7tFR1krgUbuw8FY6SQxvmTx9ZZ89100S4jkwTWc";
 
-const YOUR_DOMAIN = "http://localhost:6990"
+const YOUR_DOMAIN = "http://localhost:6990"//put react's port number...
 
 const createcheckoutsession = async(req, res) => {
   const canteen = await Canteen.find({})
@@ -44,6 +44,7 @@ const createcheckoutsession = async(req, res) => {
   });
   res.redirect(303, session.url);
 };
+
 //mobile pg integration
 const paymentsheet = async (req, res) => {
   // Use an existing Customer ID if this is a returning customer.
@@ -80,8 +81,7 @@ const payCanteen = async (req, res) => {
     //adding coins to canteen's wallet
     const canteen = await Canteen.findOne({ name: 'Sachivalaya' });
     if (!canteen) {
-      console.log("canteen not found");
-      throw new BadRequestError("Invalid caneteen name");
+      throw new BadRequestError("Invalid canteen name");
 
     }
     const pay = await Canteen.findOneAndUpdate(
@@ -91,17 +91,13 @@ const payCanteen = async (req, res) => {
     );
     const basket = await Basket.findOne({ userId: user._id });
     if (!basket) {
-      console.log("basket not present");
       throw new BadRequestError("Invalid user id, could not find basket");
-      return;
     }
-    var arr = [];
     var items = basket.items;
     items.forEach(async (e) => {
       let obj = {};
       const dish = await Dish.findOne({ _id: e.dishId, isAvailable: true });
       if (!dish) {
-        console.log("dish not available");
         res
           .status(StatusCodes.OK)
           .json({ res: "fail", data: "dish is not actually available" });
@@ -115,14 +111,12 @@ const payCanteen = async (req, res) => {
               { quantity: obj.qty, isAvailable: false },
               { runValidators: true, new: true }
             );
-            console.log("less quantity", dish);
           } else {
             const dish = await Dish.findOneAndUpdate(
               { _id: obj.dishId },
               { quantity: obj.qty },
               { runValidators: true, new: true }
             );
-            console.log("enough quantity", dish);
           }
         } else {
           res
