@@ -248,6 +248,17 @@ const thisReportGeneration = async (req,res) => {
   
   
 }
+
+const fullfillAdminPayment = async(req,res)=>{
+  const canteen = await Canteen.findOneAndUpdate({name:"Sachivalaya"},{wallet:0},{
+    runValidators:true,
+    new:true,
+    setDefaultsOnInsert:true
+  })
+
+  res.status(StatusCodes.OK).json({res:"success",data:canteen})
+
+}
 module.exports = {
   validateOTP,
   updatePassword,
@@ -259,5 +270,6 @@ module.exports = {
   validateCashotp,
   getCustomersLength,
   thisReportGeneration,
-  lastReportGeneration
+  lastReportGeneration,
+  fullfillAdminPayment
 };
