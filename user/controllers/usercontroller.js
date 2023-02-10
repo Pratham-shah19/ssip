@@ -360,7 +360,7 @@ const addRating = async (req, res) => {
     dish.rating = (
       (dish.rating * dish.noOfRating + rating) /
       (dish.noOfRating + 1)
-    ).toFixed(2);
+    ).toFixed(1);
     dish.noOfRating += 1;
   }
   const Updated = await Dish.findOneAndUpdate({ _id: dishId }, dish, {
