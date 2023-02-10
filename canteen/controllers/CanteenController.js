@@ -421,7 +421,7 @@ const subscriptionSearch = async(req,res) => {
   const {search} = req.query;
   const obj={status:'ACTIVE'}
   if(search){
-    obj.name = {$regex:search,$options:'i'}
+    obj.username = {$regex:search,$options:'i'}
   }
   const subs = await Subscription.findOne(obj);
   setTimeout(()=>{
