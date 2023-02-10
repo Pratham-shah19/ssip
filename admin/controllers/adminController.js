@@ -258,8 +258,19 @@ const thisReportGeneration = async (req, res) => {
   }, 1000);
 };
 
+// const fullfillAdminPayment = async (req, res) => {
+//   console.log("fullfiled called");
+//   const canteen = await Canteen.findOneAndUpdate(
+//     { name: "Sachivalaya" },
+//     { wallet: 0 },
+//     {
+//       runValidators: true,
+//       new: true,
+//       setDefaultsOnInsert: true,
+//     }
+//   );
+
 const fullfillAdminPayment = async (req, res) => {
-  console.log("fullfiled called");
   const canteen = await Canteen.findOneAndUpdate(
     { name: "Sachivalaya" },
     { wallet: 0 },
@@ -270,16 +281,8 @@ const fullfillAdminPayment = async (req, res) => {
     }
   );
 
-const fullfillAdminPayment = async(req,res)=>{
-  const canteen = await Canteen.findOneAndUpdate({name:"Sachivalaya"},{wallet:0},{
-    runValidators:true,
-    new:true,
-    setDefaultsOnInsert:true
-  })
-
-  res.status(StatusCodes.OK).json({res:"success",data:canteen})
-
-}
+  res.status(StatusCodes.OK).json({ res: "success", data: canteen });
+};
 module.exports = {
   validateOTP,
   updatePassword,
