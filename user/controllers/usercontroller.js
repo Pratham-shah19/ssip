@@ -442,8 +442,10 @@ const buySubscription = async(req,res)=>{
   const price = dish.price * 30;
   if(user.wallet >= price)
   {
-    deduct = await User.findOneAndUpdate({_id:uid},{wallet:user.wallet-price},{ new:true });
-    sub = await Subscription.create({dishId,userId:uid,username:user.name});
+    const deduct = await User.findOneAndUpdate({_id:uid},{wallet:user.wallet-price},{ new:true });
+    const subs = await Subscription.find({})
+    let subscription_id = subs.length+1
+    const sub = await Subscription.create({dishId,userId:uid,username:user.name,subscription_id});
     res.status(StatusCodes.OK).json({res:"success",data:sub})
   }
   else
