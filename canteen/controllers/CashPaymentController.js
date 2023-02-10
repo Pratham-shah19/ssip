@@ -53,4 +53,19 @@ const canteenView = async (req, res) => {
   res.status(StatusCodes.OK).json({ res: "Success", data: payment });
 };
 
-module.exports = { adminRequest, canteenAccept, adminHistory, canteenView };
+const isPayButton = async (req, res) => {
+  const payment = await CashPayment.find({ isLoading: true });
+  if (payment.length >= 1) {
+    res.status(StatusCodes.OK).json({ res: "Success", bool: true });
+  } else {
+    res.status(StatusCodes.OK).json({ res: "Success", bool: false });
+  }
+};
+
+module.exports = {
+  isPayButton,
+  adminRequest,
+  canteenAccept,
+  adminHistory,
+  canteenView,
+};

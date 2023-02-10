@@ -6,9 +6,7 @@ from first_app.utils import get_db_handle, get_collection_handle
 import pandas as pd
 from rest_framework.views import APIView
 from rest_framework.response import Response
-import json
-import numpy as np
-import pandas as pd
+from datetime import datetime
 class ordersviewset(APIView):
     queryset= orders.objects.all()
     print(queryset)
@@ -26,7 +24,11 @@ class ordersviewset(APIView):
     def get(self, request, format=None):
         orders = pd.read_csv("file1.csv")
         dishes = pd.read_csv("file2.csv")
-        orders=orders.drop(['Unnamed: 0','_id','otp','button','userId','paymentmode','__v','createdAt','updatedAt','price'],axis=1)
+        orders['createdAt'] = pd.to_datetime(orders['createdAt'])
+        orders['createdDate'] = orders['createdAt'].dt.date
+        orders['updatedAt'] = pd.to_datetime(orders['updatedAt'])
+        orders['updatedDate'] = orders['updatedAt'].dt.date
+        orders=orders.drop(['Unnamed: 0','_id','otp','button','userId','paymentmode','__v'],axis=1)
         dishes['dishId']=dishes['_id']
         dishes=dishes.drop(['Unnamed: 0','_id','imageUrl','isAvailable','quantity','noOfRating','__v','priceId','prodId'],axis=1)
         def extract_dish_data(list_of_dicts):
@@ -41,6 +43,15 @@ class ordersviewset(APIView):
         orders = pd.concat([orders, dish_data], axis=1)
         orders.drop('items', axis=1, inplace=True)
         orders = orders.explode(['dishId','qty'])
+        daterevenue = {}
+        for index, data in orders.iterrows():
+            if data['status'] == "COMPLETED":
+                date = datetime.strftime(data['updatedDate'], '%d-%m-%Y')
+                if date in daterevenue:
+                    daterevenue[date] += data['price']*data['qty']
+                else:
+                    daterevenue[date] = data['price']*data['qty']
+        orders=orders.drop(['price','createdDate','updatedDate'],axis=1)
         function={'qty':'sum','status':'first'}
         newdata=orders.groupby(orders['dishId'],as_index=False).aggregate(function)
         newdata=pd.merge(newdata, dishes, on='dishId',)
@@ -60,14 +71,19 @@ class ordersviewset(APIView):
         # new=new.groupby(new['category'],as_index=False).aggregate(function)
         values1 = newdata['qty'].values.tolist()
         values2 = newdata['name'].values.tolist()
+        # keys = ['name','qty'] 
+        # values=zip(values1, values2)
+        # graph = dict(zip(keys, values))
         graph = [{"name": name, "qty": qty} for name, qty in zip(values2, values1)]
-       
-
+        # keys = [i+1 for i in range(len(values))] 
+        # graph = dict(zip(keys, values))
+        # graph=dict(values)
+        # graph=json.dumps(values)
+        # graph=(values)
         output={'revenue':revenue,
-                'Highest Selling':high,
-                'Top 5:':top5,
+                'Highest_Selling':high,
+                'Top_5:':top5,
                 'Graph':graph,
+                'Datewise':daterevenue,
             }
         return Response(output)
-# collection_handle.insert({...})
-# collection_handle.update({...})
