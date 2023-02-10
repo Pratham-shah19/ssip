@@ -454,6 +454,10 @@ const buySubscription = async(req,res)=>{
   }
 
 }
+const getSubscriptions = async(req,res)=>{
+  const subs = await Subscription.find({})
+  res.status(StatusCodes.OK).json({res:"success",data:subs})
+}
 const twilioWebhook = async (req, res) => {
   console.log(req.body);
   res.status(StatusCodes.OK).json({ res: "success", data: req.body });
@@ -481,4 +485,5 @@ module.exports = {
   showActiveSubscriptions,
   showExpiredSubscriptions,
   buySubscription,
+  getSubscriptions
 };

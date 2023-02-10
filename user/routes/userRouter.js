@@ -1,5 +1,5 @@
 const express = require('express')
-const { showActiveSubscriptions,showExpiredSubscriptions,buySubscription,twilioWebhook,validatePaymentOtp,getUserDetails ,getBalance,getOrdersSpecific,getAllDishes,getFilteredDishes,getDishesCategorized,addToCart,getCart,removeItem,canPayWallet,payCanteen,addRating,updateUserDetails,updatePassword,validateOTP,createOrder} = require('../controllers/usercontroller')
+const { showActiveSubscriptions,showExpiredSubscriptions,getSubscriptions,buySubscription,twilioWebhook,validatePaymentOtp,getUserDetails ,getBalance,getOrdersSpecific,getAllDishes,getFilteredDishes,getDishesCategorized,addToCart,getCart,removeItem,canPayWallet,payCanteen,addRating,updateUserDetails,updatePassword,validateOTP,createOrder} = require('../controllers/usercontroller')
 const router = express.Router()
 const authenticationMiddleware = require('../middleware/authentication')
 
@@ -8,6 +8,7 @@ const authenticationMiddleware = require('../middleware/authentication')
 //subscription end points
 
 //show subscriptions
+router.route('/subscriptions').get(authenticationMiddleware,getSubscriptions);
 router.route('/:uid/activesubscriptions').get(authenticationMiddleware,showActiveSubscriptions)
 router.route('/:uid/expiredsubscriptions').get(authenticationMiddleware,showExpiredSubscriptions)
 
