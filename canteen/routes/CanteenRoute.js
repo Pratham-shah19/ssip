@@ -3,6 +3,9 @@ const authenticationMiddleware = require("../middleware/authentication");
 const router = express.Router();
 
 const {
+  checkValidity,
+  decrementSubsQuantity,
+  subscriptionSearch,
   walletDetails,
   lastReportGeneration,
   thisReportGeneration,
@@ -54,5 +57,8 @@ router.route("/resetwallet").get(authenticationMiddleware, resetWallet);
 router.route("/lastMonthReport").get(lastReportGeneration);
 router.route("/thisMonthReport").get(thisReportGeneration);
 router.route('/wallet').get(walletDetails)
+router.route('/subscriptionSearch').get(subscriptionSearch)
+router.route('/decrementSubsQuantity/:sid').post(decrementSubsQuantity)
+
 
 module.exports = router;

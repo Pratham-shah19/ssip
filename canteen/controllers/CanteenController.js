@@ -5,6 +5,7 @@ const Canteen = require("../models/Canteen");
 const mime = require("mime");
 const xl = require("excel4node");
 const path = require("path");
+const Subscription = require('../models/Subscription')
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 const stripe = require("stripe")(
@@ -415,7 +416,55 @@ const walletDetails = async (req, res) => {
   const canteen = await Canteen.findOne({ name: "Sachivalaya" });
   res.status(StatusCodes.OK).json({ res: "success", wallet: canteen.wallet });
 };
+
+const subscriptionSearch = async(req,res) => {
+  const {search} = req.query;
+  const obj={status:'ACTIVE'}
+  if(search){
+    obj.name = {$regex:search,$options:'i'}
+  }
+  const subs = await Subscription.findOne(obj);
+  setTimeout(()=>{
+    res.status(StatusCodes.OK).json({ res: "success", data:subs });
+  },1000)
+}
+
+const decrementSubsQuantity = async (req,res) => {
+  const {sid} = req.params;
+  const {qty} = req.body;
+  if(!sid || !qty){
+    throw new BadRequestError("Please Provide Valid Credentials");
+  }
+  const subs = await Subscription.findOne({_id:sid})
+  if(subs.quantity-qty<0){
+    throw new BadRequestError("Not enough Quantity");
+  }
+  
+  subs.quantity = subs.quantity-qty;
+  const obj = {}
+  if(subs.quantity == 0){
+    const subsu = await Subscription.findOneAndUpdate({_id:sid},{status:"EXPIRED"},
+      { new: true, runValidators: true })
+    obj.status = "COMPLETED";
+    obj.userId = subsu.userId;
+    obj.items = [{dishId:subsu.dishId,qty:30}]
+    const dish = await Dish.findOne({_id:subsu.dishId})
+    obj.price = dish.price*30
+    obj.paymentmode = subsu.paymentmode
+    const order = await Order.create(obj)
+    res.status(StatusCodes.OK).send({res: "success"}) 
+  }
+  setTimeout(async()=>{
+    const subsuv = await Subscription.findOneAndUpdate({_id:sid},{quantity:subs.quantity},
+    { new: true, runValidators: true })
+    res.status(StatusCodes.OK).send({res:"success",data:subsuv})
+  },1000)
+
+}
+
 module.exports = {
+  decrementSubsQuantity,
+  subscriptionSearch,
   walletDetails,
   lastReportGeneration,
   thisReportGeneration,
