@@ -410,6 +410,7 @@ const showActiveSubscriptions = async (req, res) => {
     const obj ={}
     obj.quantity = subs[i].quantity;
     obj.dish = dish;
+    obj.paymentmode = subs[i].paymentmode
     subs[i] = obj;
   }
   res.status(StatusCodes.OK).json({ res: "success", data: subs });
@@ -424,6 +425,7 @@ const showExpiredSubscriptions = async (req, res) => {
     const obj ={}
     obj.quantity = subs[i].quantity;
     obj.dish = dish;
+    obj.paymentmode = subs[i].paymentmode
     subs[i] = obj;
   }
   res.status(StatusCodes.OK).json({ res: "success", data: subs });
@@ -445,7 +447,7 @@ const buySubscription = async(req,res)=>{
     const deduct = await User.findOneAndUpdate({_id:uid},{wallet:user.wallet-price},{ new:true });
     const subs = await Subscription.find({})
     let subscription_id = subs.length+1
-    const sub = await Subscription.create({dishId,userId:uid,username:user.name,subscription_id});
+    const sub = await Subscription.create({dishId,userId:uid,username:user.name,subscription_id,paymentmode:"KOT"});
     res.status(StatusCodes.OK).json({res:"success",data:sub})
   }
   else
@@ -455,7 +457,7 @@ const buySubscription = async(req,res)=>{
 
 }
 const getSubscriptions = async(req,res)=>{
-  const subs = await Subscription.find({})
+  const subs = await Dish.find({subscriptionAvailable:true})
   res.status(StatusCodes.OK).json({res:"success",data:subs})
 }
 const twilioWebhook = async (req, res) => {
