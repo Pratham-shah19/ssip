@@ -8,6 +8,10 @@ const Basket = require("../models/Basket");
 const Orders = require("../models/Orders");
 const bcrypt = require("bcryptjs");
 const { json } = require("express");
+require('dotenv').config()
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require('twilio')(accountSid, authToken);
 
 const getUserDetails = async (req, res) => {
   var { uid } = req.params;
@@ -243,6 +247,7 @@ const canPayWallet = async (req, res) => {
   }
 };
 
+
 const createOrder = async (req, res) => {
   const { uid } = req.params;
   const user = await User.findOne({ _id: uid });
@@ -318,8 +323,17 @@ const payCanteen = async (req, res) => {
   orderObj.userId = basket.userId;
   orderObj.price = price;
   orderObj.otp = otp;
+
   //creating order
   const order = await Orders.create(orderObj);
+  client.messages
+  .create({
+     from: 'whatsapp:+14155238886',
+     to: `whatsapp:+91${user.phone}`,
+     body:"hello there Sachivalaya employee"
+   })
+  .then(message => console.log(message));
+
   //deleting basket
   const emptyBasket = await Basket.findOneAndDelete({ userId: uid });
 
