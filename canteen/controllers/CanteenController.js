@@ -13,43 +13,54 @@ const stripe = require('stripe')('sk_test_51KyqwvSFXhJBixXAbp2HBSBo65HD0T1BqG60A
 
 const getCurrentOrders = async (req, res) => {
   // console.log('Request Received')
-  const order = await Order.find({ status: "NEW" }).sort({createdAt:1});
-  var timeout = 1000;
-  const orders = await order;
-  if(orders.length >=40 && orders.length <=80)
-  {
-    timeout = 6000;
+  const orders = await Order.find({ status: "NEW" }).sort({createdAt:1});
+  for (let i = 0; i < orders.length; i++) {
+    var items = orders[i].items;
+    var updatedItems = [];
+    for (let j = 0; j < items.length; j++) {
+      const dish = await Dish.findOne({ _id: items[j].dishId });
+      const obj = { qty: items[j].qty, dish };
+      updatedItems.push(obj);
+    }
+    orders[i].items = updatedItems;
   }
-  else{
-    timeout =  3000;
-  }
-  var k = 0;
-  var data = [];
-  setTimeout(() => {
-    orders.forEach(async (order) => {
-      let j = 0;
-      let arr = [];
-      for (let i = 0; i < order.items.length; i++) {
-        const dishname = await Dish.findOne({ _id: order.items[i].dishId });
-        arr[j] = { qty: order.items[i].qty, dishName: dishname.name };
-        j++;
-      }
-      let obj = {orderdetail: order, items: arr };
-      if (obj.orderdetail.button === false) {
-        const user = await User.findOne({ _id: obj.orderdetail.userId });
-        obj.userdetail = { username: user.name };
-      } else {
-        obj.userdetail = { username: "Guest" };
-      }
-      data[k] = obj;
-      //console.log(data)
-      k++;
-    });
-    setTimeout(()=>{
-      res.status(StatusCodes.OK).json({ res: "Success",length:data.length, data: data });
+  res.status(StatusCodes.OK).json({res:"success",length:orders.length,data:orders})
+  // var timeout = 1000;
+  // const orders = await order;
+  // if(orders.length >=40 && orders.length <=80)
+  // {
+  //   timeout = 6000;
+  // }
+  // else{
+  //   timeout =  3000;
+  // }
+  // var k = 0;
+  // var data = [];
+  // setTimeout(() => {
+  //   orders.forEach(async (order) => {
+  //     let j = 0;
+  //     let arr = [];
+  //     for (let i = 0; i < order.items.length; i++) {
+  //       const dishname = await Dish.findOne({ _id: order.items[i].dishId });
+  //       arr[j] = { qty: order.items[i].qty, dishName: dishname.name };
+  //       j++;
+  //     }
+  //     let obj = {orderdetail: order, items: arr };
+  //     if (obj.orderdetail.button === false) {
+  //       const user = await User.findOne({ _id: obj.orderdetail.userId });
+  //       obj.userdetail = { username: user.name };
+  //     } else {
+  //       obj.userdetail = { username: "Guest" };
+  //     }
+  //     data[k] = obj;
+  //     //console.log(data)
+  //     k++;
+  //   });
+  //   setTimeout(()=>{
+  //     res.status(StatusCodes.OK).json({ res: "Success",length:data.length, data: data });
 
-    },timeout)
-  }, 100);
+  //   },timeout)
+  // }, 100);
 };
 
 const getHistoryOrders = async (req, res) => {
