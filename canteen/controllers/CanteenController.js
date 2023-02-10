@@ -41,34 +41,32 @@ const getCurrentOrders = async (req, res) => {
 };
 
 const getHistoryOrders = async (req, res) => {
-  // console.log('Request Received')
-  const orders = await Order.find({ status: "COMPLETED" });
-  // console.log('Orders: ', orders)
-  let k = 0;
-  let data = [];
-  orders.forEach(async (order) => {
-    let j = 0;
-    let arr = [];
-    for (let i = 0; i < order.items.length; i++) {
-      const dishname = await Dish.findOne({ _id: order.items[i].dishId });
-      arr[j] = { qty: order.items[i].qty, dishName: dishname.name };
-      //  console.log(arr)
-      j++;
+  const orders = await Order.find({ status: "COMPLETED" }).sort({createdAt:-1});
+  var data = []
+  for (let i = 0; i < orders.length; i++) {
+    let orderObject = {}
+    const user = await User.findOne({_id:orders[i].userId})
+    if(!user){
+      var userName = 'Guest';
     }
-    let obj = { res: "Success", data: order, items: arr };
-    if (obj.data.button === false) {
-      const user = await User.findOne({ _id: obj.data.userId });
-      obj.userdetail = { username: user.name };
-    } else {
-      obj.userdetail = { username: "Guest" };
+    else{
+      var userName= user.name
+
     }
-    data[k] = obj;
-    //console.log(data)
-    k++;
-  });
-  setTimeout(() => {
-    res.status(StatusCodes.OK).json({ res: "Success", data: data });
-  }, 1000);
+    var items = orders[i].items;
+    var updatedItems = [];
+    for (let j = 0; j < items.length; j++) {
+      const dish = await Dish.findOne({ _id: items[j].dishId });
+      const obj = { qty: items[j].qty, dishName:dish.name };
+      updatedItems.push(obj);
+    }
+    orderObject.orderdetail = orders[i];
+    orderObject.items = updatedItems;
+    orderObject.userdetail = userName;
+    data.push(orderObject);
+
+  }
+  res.status(StatusCodes.OK).json({res:"success",length:orders.length,data})  
 };
 
 const getUser = async (req, res) => {
