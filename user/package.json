@@ -24,6 +24,7 @@
     "nodemailer": "^6.7.8",
     "rate-limiter": "^0.2.0",
     "swagger-ui-express": "^4.1.6",
+    "twilio": "^4.7.2",
     "xss-clean": "^0.1.1",
     "yamljs": "^0.3.0"
   },
