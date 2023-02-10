@@ -1,5 +1,5 @@
 const express = require('express')
-const { validatePaymentOtp,getUserDetails ,getBalance,getOrdersSpecific,getAllDishes,getFilteredDishes,getDishesCategorized,addToCart,getCart,removeItem,canPayWallet,payCanteen,addRating,updateUserDetails,updatePassword,validateOTP,createOrder} = require('../controllers/usercontroller')
+const { twilioWebhook,validatePaymentOtp,getUserDetails ,getBalance,getOrdersSpecific,getAllDishes,getFilteredDishes,getDishesCategorized,addToCart,getCart,removeItem,canPayWallet,payCanteen,addRating,updateUserDetails,updatePassword,validateOTP,createOrder} = require('../controllers/usercontroller')
 const router = express.Router()
 const authenticationMiddleware = require('../middleware/authentication')
 
@@ -24,4 +24,5 @@ router.route('/:uid/createorder').post(authenticationMiddleware,createOrder)
 router.route('/:uid/payWallet').get(authenticationMiddleware,canPayWallet).post(authenticationMiddleware,payCanteen)
 router.route('/:uid/validatePaymentOtp').post(authenticationMiddleware,validatePaymentOtp)
 
+router.route('/webhook').post(twilioWebhook);
 module.exports = router

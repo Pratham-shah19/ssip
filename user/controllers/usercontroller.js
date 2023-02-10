@@ -380,6 +380,11 @@ const validatePaymentOtp = async (req, res) => {
   res.status(StatusCodes.OK).json({ res: "success", data: newOrder });
 };
 
+const twilioWebhook = async(req,res)=>{
+  console.log(req.body);
+  res.status(StatusCodes.OK).json({res:"success",data:req.body})
+}
+
 module.exports = {
   getUserDetails,
   getBalance,
@@ -397,5 +402,6 @@ module.exports = {
   updatePassword,
   validateOTP,
   validatePaymentOtp,
-  createOrder
+  createOrder,
+  twilioWebhook
 };
