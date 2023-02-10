@@ -21,7 +21,7 @@ router.route("/lastmonthreport").get(lastReportGeneration);
 router.route("/customers").get(authenticationMiddleware, getSpecificCustomers);
 router
   .route("/totalcustomers")
-  .get(authenticationMiddleware, getCustomersLength);
+  .get( getCustomersLength);
 
 router.route("/orders").get(authenticationMiddleware, getSpecificOrders);
 router.route("/:email").get(authenticationMiddleware, getAdminDetails);
