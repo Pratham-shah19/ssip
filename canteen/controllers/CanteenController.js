@@ -17,9 +17,12 @@ const getCurrentOrders = async (req, res) => {
   for (let i = 0; i < orders.length; i++) {
     let orderObject = {}
     const user = await User.findOne({_id:orders[i].userId})
-    var userName= user.name
     if(!user){
       var userName = 'Guest';
+    }
+    else{
+      var userName= user.name
+
     }
     var items = orders[i].items;
     var updatedItems = [];
