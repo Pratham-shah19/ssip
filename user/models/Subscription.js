@@ -2,6 +2,14 @@ const mongoose = require('mongoose')
 require('dotenv').config()
 
 const SubscriptionSchema = new mongoose.Schema({
+  subscription_id:{
+    type:Number,
+    required:[true,'Please provide subscription id']
+  },
+  username:{
+    type:String,
+    required:[true,'Please provide name']
+  },
   userId:{
     type:mongoose.Types.ObjectId,
     ref:"User"

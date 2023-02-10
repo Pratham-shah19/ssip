@@ -2,16 +2,17 @@ const Order = require("../models/Orders");
 const User = require("../models/User");
 const Dish = require("../models/Dish");
 const Canteen = require("../models/Canteen");
+const Subscription = require("../models/Subscription");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 const Basket = require("../models/Basket");
 const Orders = require("../models/Orders");
 const bcrypt = require("bcryptjs");
 const { json } = require("express");
-require('dotenv').config()
+require("dotenv").config();
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
-const client = require('twilio')(accountSid, authToken);
+const client = require("twilio")(accountSid, authToken);
 
 const getUserDetails = async (req, res) => {
   var { uid } = req.params;
@@ -251,7 +252,6 @@ const canPayWallet = async (req, res) => {
   }
 };
 
-
 const createOrder = async (req, res) => {
   const { uid } = req.params;
   const user = await User.findOne({ _id: uid });
@@ -289,7 +289,9 @@ const createOrder = async (req, res) => {
             { runValidators: true, new: true }
           );
         }
-        res.status(StatusCodes.OK).json({res:"success",data:"Order valid"})
+        res
+          .status(StatusCodes.OK)
+          .json({ res: "success", data: "Order valid" });
       }
       //if quantity is not enough
       else {
@@ -331,12 +333,12 @@ const payCanteen = async (req, res) => {
   //creating order
   const order = await Orders.create(orderObj);
   client.messages
-  .create({
-     from: 'whatsapp:+14155238886',
-     to: `whatsapp:+91${user.phone}`,
-     body:"hello there Sachivalaya employee"
-   })
-  .then(message => console.log(message));
+    .create({
+      from: "whatsapp:+14155238886",
+      to: `whatsapp:+91${user.phone}`,
+      body: "hello there Sachivalaya employee",
+    })
+    .then((message) => console.log(message));
 
   //deleting basket
   const emptyBasket = await Basket.findOneAndDelete({ userId: uid });
@@ -398,10 +400,68 @@ const validatePaymentOtp = async (req, res) => {
   res.status(StatusCodes.OK).json({ res: "success", data: newOrder });
 };
 
-const twilioWebhook = async(req,res)=>{
-  console.log(req.body);
-  res.status(StatusCodes.OK).json({res:"success",data:req.body})
+const showActiveSubscriptions = async (req, res) => {
+  const userId = req.params.uid;
+  //most recent subscription
+  const subs = await Subscription.find({ userId,status:"ACTIVE" }).sort({ createdAt: -1 });
+
+  for (let i = 0; i < subs.length; i++) {
+    const dish = await Dish.findOne({_id:subs[i].dishId});
+    const obj ={}
+    obj.quantity = subs[i].quantity;
+    obj.dish = dish;
+    subs[i] = obj;
+  }
+  res.status(StatusCodes.OK).json({ res: "success", data: subs });
+};
+const showExpiredSubscriptions = async (req, res) => {
+  const userId = req.params.uid;
+  //most recent subscription
+  const subs = await Subscription.find({ userId,status:"EXPIRED" }).sort({ createdAt: -1 });
+
+  for (let i = 0; i < subs.length; i++) {
+    const dish = await Dish.findOne({_id:subs[i].dishId});
+    const obj ={}
+    obj.quantity = subs[i].quantity;
+    obj.dish = dish;
+    subs[i] = obj;
+  }
+  res.status(StatusCodes.OK).json({ res: "success", data: subs });
+};
+
+const buySubscription = async(req,res)=>{
+  const {uid} = req.params;
+  const {dishId} = req.body;
+
+  const user = await User.findOne({_id:uid});
+  const dish = await Dish.findOne({_id:dishId,subscriptionAvailable:true});
+  if(!dish)
+  {
+    throw new NotFoundError("this dish is not available for subscription");
+  }
+  const price = dish.price * 30;
+  if(user.wallet >= price)
+  {
+    const deduct = await User.findOneAndUpdate({_id:uid},{wallet:user.wallet-price},{ new:true });
+    const subs = await Subscription.find({})
+    let subscription_id = subs.length+1
+    const sub = await Subscription.create({dishId,userId:uid,username:user.name,subscription_id});
+    res.status(StatusCodes.OK).json({res:"success",data:sub})
+  }
+  else
+  {
+    res.status(StatusCodes.OK).json({res:"fail",data:abs(user.wallet-price)})
+  }
+
 }
+const getSubscriptions = async(req,res)=>{
+  const subs = await Subscription.find({})
+  res.status(StatusCodes.OK).json({res:"success",data:subs})
+}
+const twilioWebhook = async (req, res) => {
+  console.log(req.body);
+  res.status(StatusCodes.OK).json({ res: "success", data: req.body });
+};
 
 module.exports = {
   getUserDetails,
@@ -421,5 +481,9 @@ module.exports = {
   validateOTP,
   validatePaymentOtp,
   createOrder,
-  twilioWebhook
+  twilioWebhook,
+  showActiveSubscriptions,
+  showExpiredSubscriptions,
+  buySubscription,
+  getSubscriptions
 };

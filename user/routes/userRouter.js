@@ -1,9 +1,20 @@
 const express = require('express')
-const { twilioWebhook,validatePaymentOtp,getUserDetails ,getBalance,getOrdersSpecific,getAllDishes,getFilteredDishes,getDishesCategorized,addToCart,getCart,removeItem,canPayWallet,payCanteen,addRating,updateUserDetails,updatePassword,validateOTP,createOrder} = require('../controllers/usercontroller')
+const { showActiveSubscriptions,showExpiredSubscriptions,getSubscriptions,buySubscription,twilioWebhook,validatePaymentOtp,getUserDetails ,getBalance,getOrdersSpecific,getAllDishes,getFilteredDishes,getDishesCategorized,addToCart,getCart,removeItem,canPayWallet,payCanteen,addRating,updateUserDetails,updatePassword,validateOTP,createOrder} = require('../controllers/usercontroller')
 const router = express.Router()
 const authenticationMiddleware = require('../middleware/authentication')
 
 
+
+//subscription end points
+
+//show subscriptions
+router.route('/subscriptions').get(authenticationMiddleware,getSubscriptions);
+router.route('/:uid/activesubscriptions').get(authenticationMiddleware,showActiveSubscriptions)
+router.route('/:uid/expiredsubscriptions').get(authenticationMiddleware,showExpiredSubscriptions)
+
+//buy subscription
+router.route('/:uid/paysubscriptionwithwallet').post(authenticationMiddleware,buySubscription)//send dish id in req body->if the wallet have enough balance then subscription will be created
+//else will return the amount to be paid through stripe
 
 router.route('/:uid/orders').get(authenticationMiddleware,getOrdersSpecific) //orders of specific status for order history
 
@@ -23,6 +34,8 @@ router.route('/:uid/removeItem').patch(authenticationMiddleware,removeItem)
 router.route('/:uid/createorder').post(authenticationMiddleware,createOrder)
 router.route('/:uid/payWallet').get(authenticationMiddleware,canPayWallet).post(authenticationMiddleware,payCanteen)
 router.route('/:uid/validatePaymentOtp').post(authenticationMiddleware,validatePaymentOtp)
+
+
 
 router.route('/webhook').post(twilioWebhook);
 module.exports = router
