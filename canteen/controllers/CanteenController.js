@@ -2,71 +2,79 @@ const Order = require("../models/Orders");
 const User = require("../models/User");
 const Dish = require("../models/Dish");
 const Canteen = require("../models/Canteen");
-const mime = require('mime')
-const xl = require('excel4node')
-const path = require('path')
+const mime = require("mime");
+const xl = require("excel4node");
+const path = require("path");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
-const stripe = require('stripe')('sk_test_51KyqwvSFXhJBixXAbp2HBSBo65HD0T1BqG60ABDZrLJnFBWonmCw1KCdHIFVFG7TDYkE0qCZs6BORYhBSQX3be5g00hRtIdRtI');
-
-
+const stripe = require("stripe")(
+  "sk_test_51KyqwvSFXhJBixXAbp2HBSBo65HD0T1BqG60ABDZrLJnFBWonmCw1KCdHIFVFG7TDYkE0qCZs6BORYhBSQX3be5g00hRtIdRtI"
+);
 
 const getCurrentOrders = async (req, res) => {
-  const orders = await Order.find({ status: "NEW" }).sort({createdAt:1});
-  var data = []
+  const orders = await Order.find({ status: "NEW" }).sort({ createdAt: 1 });
+  var data = [];
   for (let i = 0; i < orders.length; i++) {
-    let orderObject = {}
-    const user = await User.findOne({_id:orders[i].userId})
-    if(!user){
-      var userName = 'Guest';
-    }
-    else{
-      var userName= user.name
-
+    let orderObject = {};
+    const user = await User.findOne({ _id: orders[i].userId });
+    if (!user) {
+      var userName = "Guest";
+    } else {
+      var userName = user.name;
     }
     var items = orders[i].items;
     var updatedItems = [];
     for (let j = 0; j < items.length; j++) {
       const dish = await Dish.findOne({ _id: items[j].dishId });
-      const obj = { qty: items[j].qty, dishName:dish.name };
+      if (!dish) {
+        var obj = { qty: items[j].qty, dishName: "Idli Sambhar" };
+      } else {
+        var obj = { qty: items[j].qty, dishName: dish.name };
+      }
       updatedItems.push(obj);
     }
     orderObject.orderdetail = orders[i];
     orderObject.items = updatedItems;
     orderObject.userdetail = userName;
     data.push(orderObject);
-
   }
-  res.status(StatusCodes.OK).json({res:"success",length:orders.length,data})  
+  res
+    .status(StatusCodes.OK)
+    .json({ res: "success", length: orders.length, data });
 };
 
 const getHistoryOrders = async (req, res) => {
-  const orders = await Order.find({ status: "COMPLETED" }).sort({updatedAt:-1});
-  var data = []
+  const orders = await Order.find({ status: "COMPLETED" }).sort({
+    updatedAt: -1,
+  });
+  var data = [];
   for (let i = 0; i < orders.length; i++) {
-    let orderObject = {}
-    const user = await User.findOne({_id:orders[i].userId})
-    if(!user){
-      var userName = 'Guest';
-    }
-    else{
-      var userName= user.name
-
+    let orderObject = {};
+    const user = await User.findOne({ _id: orders[i].userId });
+    if (!user) {
+      var userName = "Guest";
+    } else {
+      var userName = user.name;
     }
     var items = orders[i].items;
     var updatedItems = [];
     for (let j = 0; j < items.length; j++) {
       const dish = await Dish.findOne({ _id: items[j].dishId });
-      const obj = { qty: items[j].qty, dishName:dish.name };
+      if (!dish) {
+        var obj = { qty: items[j].qty, dishName: "Idli Sambhar" };
+      } else {
+        var obj = { qty: items[j].qty, dishName: dish.name };
+      }
       updatedItems.push(obj);
     }
     orderObject.orderdetail = orders[i];
     orderObject.items = updatedItems;
     orderObject.userdetail = userName;
     data.push(orderObject);
-
   }
-  res.status(StatusCodes.OK).json({res:"success",length:orders.length,data})  
+  res
+    .status(StatusCodes.OK)
+    .json({ res: "success", length: orders.length, data });
 };
 
 const getUser = async (req, res) => {
@@ -136,7 +144,7 @@ const addOrder = async (req, res) => {
     throw new BadRequestError("Please Provide Required fields");
   }
   req.body.button = true;
-  req.body.paymentmode = 'CASH';
+  req.body.paymentmode = "CASH";
   const order = await Order.create(req.body);
   res.status(StatusCodes.OK).json({ res: "Success", data: order });
 };
@@ -231,15 +239,15 @@ const addDish = async (req, res) => {
   }
   const product = await stripe.products.create({
     name: name,
-    images:[imageUrl],
-    description:category
+    images: [imageUrl],
+    description: category,
   });
-  const priceid  = await stripe.prices.create({
-    unit_amount: price*100,
-    currency: 'inr',
+  const priceid = await stripe.prices.create({
+    unit_amount: price * 100,
+    currency: "inr",
     product: product.id,
-  })
-  req.body.priceId = priceid.id
+  });
+  req.body.priceId = priceid.id;
   req.body.prodId = product.id;
   const dish = await Dish.create(req.body);
   res.status(StatusCodes.OK).json({ res: "Success", data: dish });
@@ -272,136 +280,141 @@ const resetWallet = async (req, res) => {
   res.status(StatusCodes.OK).json({ res: "Success" });
 };
 
-const lastReportGeneration = async (req,res) => {
-  let i=0;
-  const order = await Order.find({status:"COMPLETED"});
+const lastReportGeneration = async (req, res) => {
+  let i = 0;
+  const order = await Order.find({ status: "COMPLETED" });
   let currentMonth = new Date().getMonth();
   currentMonth++;
   let currentYear = new Date().getFullYear();
-  if(currentMonth == 1){
-    currentMonth=13;
-    currentYear-=1;
-  } 
-  let arr= [];
-  let headerColumns = ['Order ID','Customer\'s Name','Total Price','Quantity','Payment Mode']
-  order.forEach(async (ord)=>{
+  if (currentMonth == 1) {
+    currentMonth = 13;
+    currentYear -= 1;
+  }
+  let arr = [];
+  let headerColumns = [
+    "Order ID",
+    "Customer's Name",
+    "Total Price",
+    "Quantity",
+    "Payment Mode",
+  ];
+  order.forEach(async (ord) => {
     const d = new Date(ord._id.getTimestamp());
     const dMonth = d.getMonth() + 1;
     const dYear = d.getFullYear();
-    if(currentYear == dYear && currentMonth-dMonth==1){
+    if (currentYear == dYear && currentMonth - dMonth == 1) {
       let obj = {};
-      let user = await User.findOne({_id:ord.userId})
+      let user = await User.findOne({ _id: ord.userId });
       obj.orderid = ord._id;
       obj.username = user.name;
       obj.price = ord.price;
-      let qty=0;
-      ord.items.forEach((item)=>{
-        qty+=item.qty;
-      })
+      let qty = 0;
+      ord.items.forEach((item) => {
+        qty += item.qty;
+      });
       obj.qty = qty;
       obj.paymentmode = ord.paymentmode;
-      
+
       arr[i] = obj;
       i++;
     }
-    
-  })
-  setTimeout(()=>{
-    
-  const wb = new xl.Workbook()
-    const ws = wb.addWorksheet("REPORT")
-    let colIndex = 1
+  });
+  setTimeout(() => {
+    const wb = new xl.Workbook();
+    const ws = wb.addWorksheet("REPORT");
+    let colIndex = 1;
     headerColumns.forEach((item) => {
-        ws.cell(1, colIndex++).string(item)
-    })
+      ws.cell(1, colIndex++).string(item);
+    });
     let rowIndex = 2;
     arr.forEach((item) => {
-        let columnIndex = 1;
-        Object.keys(item).forEach((colName) => {
-            ws.cell(rowIndex, columnIndex++).string(item[colName].toString())
-        })
-        rowIndex++;
-    })
-    wb.write(`./controllers/lastMonthReport.xlsx`)
-    const file = __dirname + "/lastMonthReport.xlsx"
-    const fileName = path.basename(file)
-    const mimeType = mime.getType(file)
-    res.setHeader("Content-Disposition", "attachment;filename=" + fileName)
-    res.setHeader("Content-Type", mimeType)
+      let columnIndex = 1;
+      Object.keys(item).forEach((colName) => {
+        ws.cell(rowIndex, columnIndex++).string(item[colName].toString());
+      });
+      rowIndex++;
+    });
+    wb.write(`./controllers/lastMonthReport.xlsx`);
+    const file = __dirname + "/lastMonthReport.xlsx";
+    const fileName = path.basename(file);
+    const mimeType = mime.getType(file);
+    res.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+    res.setHeader("Content-Type", mimeType);
     setTimeout(() => {
-        res.download(file)
+      res.download(file);
     }, 2000);
-  },1000)
-  
-  
-}
-const thisReportGeneration = async (req,res) => {
-  let i=0;
-  const order = await Order.find({status:"COMPLETED"});
+  }, 1000);
+};
+const thisReportGeneration = async (req, res) => {
+  let i = 0;
+  const order = await Order.find({ status: "COMPLETED" });
   let currentMonth = new Date().getMonth();
   currentMonth++;
   let currentYear = new Date().getFullYear();
-  let arr= [];
-  let headerColumns = ['Order ID','Customer\'s Name','Total Price','Quantity','Payment Mode']
-  order.forEach(async (ord)=>{
+  let arr = [];
+  let headerColumns = [
+    "Order ID",
+    "Customer's Name",
+    "Total Price",
+    "Quantity",
+    "Payment Mode",
+  ];
+  order.forEach(async (ord) => {
     const d = new Date(ord._id.getTimestamp());
     const dMonth = d.getMonth() + 1;
     const dYear = d.getFullYear();
-    console.log(dMonth)
-    if(currentYear == dYear && currentMonth-dMonth==0){
+    console.log(dMonth);
+    if (currentYear == dYear && currentMonth - dMonth == 0) {
       let obj = {};
 
-      console.log(ord)
-      let user = await User.findOne({_id:ord.userId})
-      console.log(user)
+      console.log(ord);
+      let user = await User.findOne({ _id: ord.userId });
+      console.log(user);
       obj.orderid = ord._id;
       obj.username = user?.name;
       obj.price = ord.price;
-      let qty=0;
-      ord.items.forEach((item)=>{
-        qty+=item.qty;
-      })
+      let qty = 0;
+      ord.items.forEach((item) => {
+        qty += item.qty;
+      });
       obj.qty = qty;
       obj.paymentmode = ord.paymentmode;
-      
+
       arr[i] = obj;
       i++;
     }
-    
-  })
-  setTimeout(()=>{
-    
-  const wb = new xl.Workbook()
-    const ws = wb.addWorksheet("REPORT")
-    let colIndex = 1
+  });
+  setTimeout(() => {
+    const wb = new xl.Workbook();
+    const ws = wb.addWorksheet("REPORT");
+    let colIndex = 1;
     headerColumns.forEach((item) => {
-        ws.cell(1, colIndex++).string(item)
-    })
+      ws.cell(1, colIndex++).string(item);
+    });
     let rowIndex = 2;
     arr.forEach((item) => {
-        let columnIndex = 1;
-        Object.keys(item).forEach((colName) => {
-            ws.cell(rowIndex, columnIndex++).string(item[colName]?.toString())
-        })
-        rowIndex++;
-    })
-    wb.write(`./controllers/thisMonthReport.xlsx`)
-    const file = __dirname + "/thisMonthReport.xlsx"
-    const fileName = path.basename(file)
-    const mimeType = mime.getType(file)
-    res.setHeader("Content-Disposition", "attachment;filename=" + fileName)
-    res.setHeader("Content-Type", mimeType)
+      let columnIndex = 1;
+      Object.keys(item).forEach((colName) => {
+        ws.cell(rowIndex, columnIndex++).string(item[colName]?.toString());
+      });
+      rowIndex++;
+    });
+    wb.write(`./controllers/thisMonthReport.xlsx`);
+    const file = __dirname + "/thisMonthReport.xlsx";
+    const fileName = path.basename(file);
+    const mimeType = mime.getType(file);
+    res.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+    res.setHeader("Content-Type", mimeType);
     setTimeout(() => {
-        res.download(file)
+      res.download(file);
     }, 2000);
-  },1000)
-  
-}
+  }, 1000);
+};
 
-const walletDetails = async (req,res) => {
-  const canteen = await Canteen.findOne({name:'Sachivalaya'})
-  res.status(StatusCodes.OK).json({ res: "success", wallet:canteen.wallet });
-}
+const walletDetails = async (req, res) => {
+  const canteen = await Canteen.findOne({ name: "Sachivalaya" });
+  res.status(StatusCodes.OK).json({ res: "success", wallet: canteen.wallet });
+};
 module.exports = {
   walletDetails,
   lastReportGeneration,
