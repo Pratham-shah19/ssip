@@ -14,6 +14,13 @@ const registerUser = async (req, res) => {
   if (!email || !name || !password || !address) {
     throw new BadRequestError("Please provide necessary credentials");
   }
+  const userx = await User.findOne({email:req.body.email})
+  if(userx){
+    throw new BadRequestError("This Email already Exists");
+  }
+  if(req.body.password.length<8){
+    throw new BadRequestError("Minimum size of password should be 8");
+  }
   req.body.wallet = 5000;
   const customer = await stripe.customers.create({
     email:email,name:name
