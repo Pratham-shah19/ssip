@@ -270,8 +270,16 @@ const fullfillAdminPayment = async (req, res) => {
     }
   );
 
-  res.status(StatusCodes.OK).json({ res: "success", data: canteen });
-};
+const fullfillAdminPayment = async(req,res)=>{
+  const canteen = await Canteen.findOneAndUpdate({name:"Sachivalaya"},{wallet:0},{
+    runValidators:true,
+    new:true,
+    setDefaultsOnInsert:true
+  })
+
+  res.status(StatusCodes.OK).json({res:"success",data:canteen})
+
+}
 module.exports = {
   validateOTP,
   updatePassword,

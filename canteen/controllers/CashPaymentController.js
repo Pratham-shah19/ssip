@@ -27,6 +27,13 @@ const canteenAccept = async (req,res) => {
     new: true,
     runValidators: true,
   });
+  console.log(payment)
+  const canteen = await Canteen.findOne({name:'Sachivalaya'});
+  canteen.wallet = 0
+  const canteenx = await Canteen.findOneAndUpdate({name:'Sachivalaya'},canteen,{
+    new: true,
+    runValidators: true,
+  });
   res.status(StatusCodes.OK).json({ res: "Success" });
 }
 const adminRequest = async(req,res) => {
