@@ -3,6 +3,7 @@ const Canteen = require("../models/Canteen");
 const Basket = require("../models/Basket");
 const Dish = require("../models/Dish");
 const Orders = require("../models/Orders");
+const Subscription = require("../models/Subscription");
 const { StatusCodes } = require("http-status-codes");
 
 const stripe = require("stripe")(
@@ -14,7 +15,6 @@ const pubkey =
   "pk_live_51KyqwvSFXhJBixXAkcyirlXABSuwuQoC9a6daIFPkc7mrRotk18Xe1eISkB7tFR1krgUbuw8FY6SQxvmTx9ZZ89100S4jkwTWc";
 
 const YOUR_DOMAIN = "http://localhost:6990"; //put react's port number...
-
 
 const createcheckoutsession = async (req, res) => {
   const canteen = await Canteen.find({});
@@ -99,34 +99,79 @@ const payCanteen = async (req, res) => {
   const order = await Orders.create(orderObj);
   //deleting basket
   const emptyBasket = await Basket.findOneAndDelete({ userId: uid });
-    console.log(otp)
+  console.log(otp);
   res.status(StatusCodes.CREATED).json({
     res: "success",
-    data: { orderOtp: otp }
+    data: { orderOtp: otp },
   });
 };
 
-const completeOnlinePayment = async(req,res)=>{
-  const {uid} = req.params;
-  const customer = await Users.findOne({_id:uid})
-  var payment_intent = await stripe.paymentIntents.list({customer:customer.customerId})
-  while(payment_intent.data[0].status !='succeeded' && payment_intent.data[0].status!='canceled')
-  {
-    payment_intent = await stripe.paymentIntents.list({customer:customer.customerId})
-    console.log(payment_intent.data[0].status)
+const buySubscription = async (req, res) => {
+  const { uid } = req.params;
+  const { dishId, paymentmode } = req.body;
+  const user = await Users.findOne({_id:uid});
+  const subs = await Subscription.find({});
+  let subscription_id = subs.length + 1;
+  const sub = Subscription.create({
+    dishId,
+    userId: uid,
+    username: user.name,
+    subscription_id,
+    paymentmode,
+  });
+  res.status(StatusCodes.OK).json({res:"success",data:sub})
+};
 
+const completeOnlinePayment = async (req, res) => {
+  const { uid } = req.params;
+  const customer = await Users.findOne({ _id: uid });
+  var payment_intent = await stripe.paymentIntents.list({
+    customer: customer.customerId,
+  });
+  while (
+    payment_intent.data[0].status != "succeeded" &&
+    payment_intent.data[0].status != "canceled"
+  ) {
+    payment_intent = await stripe.paymentIntents.list({
+      customer: customer.customerId,
+    });
+    console.log(payment_intent.data[0].status);
   }
-  if(payment_intent.data[0].status === 'succeeded')
-  {
-    payCanteen(req,res)
-
+  if (payment_intent.data[0].status === "succeeded") {
+    buySubscription(req, res);
+  } else {
+    res
+      .status(StatusCodes.OK)
+      .json({ res: "fail", data: "Online payment failed" });
   }
-  else
-  {
-    res.status(StatusCodes.OK).json({res:"fail",data:"Online payment failed"})
+};
+const completeOnlinePaymentSubscription = async (req, res) => {
+  const { uid } = req.params;
+  const customer = await Users.findOne({ _id: uid });
+  var payment_intent = await stripe.paymentIntents.list({
+    customer: customer.customerId,
+  });
+  while (
+    payment_intent.data[0].status != "succeeded" &&
+    payment_intent.data[0].status != "canceled"
+  ) {
+    payment_intent = await stripe.paymentIntents.list({
+      customer: customer.customerId,
+    });
+    console.log(payment_intent.data[0].status);
   }
+  if (payment_intent.data[0].status === "succeeded") {
+    buySubscription(req, res);
+  } else {
+    res
+      .status(StatusCodes.OK)
+      .json({ res: "fail", data: "Online payment for subscription failed" });
+  }
+};
 
-}
-
-
-module.exports = { paymentsheet, createcheckoutsession ,completeOnlinePayment};
+module.exports = {
+  paymentsheet,
+  createcheckoutsession,
+  completeOnlinePayment,
+  completeOnlinePaymentSubscription,
+};
