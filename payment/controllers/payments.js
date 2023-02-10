@@ -14,7 +14,7 @@ const endpointSecret =
 const pubkey =
   "pk_live_51KyqwvSFXhJBixXAkcyirlXABSuwuQoC9a6daIFPkc7mrRotk18Xe1eISkB7tFR1krgUbuw8FY6SQxvmTx9ZZ89100S4jkwTWc";
 
-const YOUR_DOMAIN = "http://localhost:6990"; //put react's port number...
+const YOUR_DOMAIN = "http://localhost:3000"; //put react's port number...
 
 const createcheckoutsession = async (req, res) => {
   const canteen = await Canteen.find({});
