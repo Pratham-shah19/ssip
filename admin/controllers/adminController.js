@@ -190,7 +190,7 @@ const lastReportGeneration = async (req, res) => {
     setTimeout(() => {
       res.download(file);
     }, 2000);
-  }, 1000);
+  }, 2000);
 };
 const thisReportGeneration = async (req, res) => {
   let i = 0;
@@ -255,7 +255,7 @@ const thisReportGeneration = async (req, res) => {
     setTimeout(() => {
       res.download(file);
     }, 2000);
-  }, 1000);
+  }, 2000);
 };
 
 // const fullfillAdminPayment = async (req, res) => {

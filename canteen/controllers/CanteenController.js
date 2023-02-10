@@ -344,7 +344,7 @@ const lastReportGeneration = async (req, res) => {
     setTimeout(() => {
       res.download(file);
     }, 2000);
-  }, 1000);
+  }, 2000);
 };
 const thisReportGeneration = async (req, res) => {
   let i = 0;
@@ -364,12 +364,13 @@ const thisReportGeneration = async (req, res) => {
     const d = new Date(ord._id.getTimestamp());
     const dMonth = d.getMonth() + 1;
     const dYear = d.getFullYear();
-  //  console.log("MONTH",dMonth);
+    console.log(dMonth);
     if (currentYear == dYear && currentMonth - dMonth == 0) {
       let obj = {};
 
-    //  console.log(ord);
+      console.log(ord);
       let user = await User.findOne({ _id: ord.userId });
+      console.log(user);
       obj.orderid = ord._id;
       obj.username = user?.name;
       obj.price = ord.price;
@@ -385,7 +386,6 @@ const thisReportGeneration = async (req, res) => {
     }
   });
   setTimeout(() => {
-    console.log(arr)
     const wb = new xl.Workbook();
     const ws = wb.addWorksheet("REPORT");
     let colIndex = 1;
@@ -409,7 +409,7 @@ const thisReportGeneration = async (req, res) => {
     setTimeout(() => {
       res.download(file);
     }, 2000);
-  }, 1000);
+  }, 2000);
 };
 
 const walletDetails = async (req, res) => {
@@ -459,7 +459,7 @@ const decrementSubsQuantity = async (req,res) => {
       const subsuv = await Subscription.findOneAndUpdate({_id:sid},{quantity:subs.quantity},
       { new: true, runValidators: true })
       res.status(StatusCodes.OK).send({res:"success"})
-    },3000)
+    },1000)
   
   }
   
