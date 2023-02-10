@@ -83,7 +83,7 @@ const billController = async (req, res) => {
         res.status(StatusCodes.OK).json({ res: "Success" });
       });
     });
-  }, 100);
+  }, 1000);
 };
 
 module.exports = { billController };
