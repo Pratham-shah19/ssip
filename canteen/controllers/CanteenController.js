@@ -423,7 +423,7 @@ const subscriptionSearch = async(req,res) => {
   if(search){
     obj.username = {$regex:search,$options:'i'}
   }
-  const subs = await Subscription.findOne(obj);
+  const subs = await Subscription.find(obj);
   setTimeout(()=>{
     res.status(StatusCodes.OK).json({ res: "success", data:subs });
   },1000)
@@ -452,14 +452,17 @@ const decrementSubsQuantity = async (req,res) => {
     obj.price = dish.price*30
     obj.paymentmode = subsu.paymentmode
     const order = await Order.create(obj)
-    res.status(StatusCodes.OK).send({res: "success"}) 
+    res.status(StatusCodes.OK).send({res: "success",data:order}) 
   }
-  setTimeout(async()=>{
-    const subsuv = await Subscription.findOneAndUpdate({_id:sid},{quantity:subs.quantity},
-    { new: true, runValidators: true })
-    res.status(StatusCodes.OK).send({res:"success",data:subsuv})
-  },1000)
-
+  else{
+    setTimeout(async()=>{
+      const subsuv = await Subscription.findOneAndUpdate({_id:sid},{quantity:subs.quantity},
+      { new: true, runValidators: true })
+      res.status(StatusCodes.OK).send({res:"success"})
+    },1000)
+  
+  }
+  
 }
 
 module.exports = {
