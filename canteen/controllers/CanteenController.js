@@ -12,12 +12,15 @@ const stripe = require('stripe')('sk_test_51KyqwvSFXhJBixXAbp2HBSBo65HD0T1BqG60A
 
 
 const getCurrentOrders = async (req, res) => {
-  // console.log('Request Received')
   const orders = await Order.find({ status: "NEW" }).sort({createdAt:1});
   var data = []
   for (let i = 0; i < orders.length; i++) {
     let orderObject = {}
     const user = await User.findOne({_id:orders[i].userId})
+    var userName= user.name
+    if(!user){
+      var userName = 'Guest';
+    }
     var items = orders[i].items;
     var updatedItems = [];
     for (let j = 0; j < items.length; j++) {
@@ -27,43 +30,11 @@ const getCurrentOrders = async (req, res) => {
     }
     orderObject.orderdetail = orders[i];
     orderObject.items = updatedItems;
-    orderObject.userdetail = user.name;
+    orderObject.userdetail = userName;
     data.push(orderObject);
 
   }
-  res.status(StatusCodes.OK).json({res:"success",length:orders.length,data})
-  // var timeout = 1000;
-  // const orders = await order;
-  // if(orders.length >=40 && orders.length <=80)
-  // {
-  //   timeout = 6000;
-  // }
-  // else{
-  //   timeout =  3000;
-  // }
-  // var k = 0;
-  // var data = [];
-  // for(let ind=0;ind<order.length;ind++){
-  //     let j = 0;
-  //     let arr = [];
-  //     for (let i = 0; i < order.items.length; i++) {
-  //       const dishname = await Dish.findOne({ _id: order.items[i].dishId });
-  //       arr[j] = { qty: order.items[i].qty, dishName: dishname.name };
-  //       j++;
-  //     }
-  //     let obj = {orderdetail: order, items: arr };
-  //     if (obj.orderdetail.button === false) {
-  //       const user = await User.findOne({ _id: obj.orderdetail.userId });
-  //       obj.userdetail = { username: user.name };
-  //     } else {
-  //       obj.userdetail = { username: "Guest" };
-  //     }
-  //     data[k] = obj;
-  //     //console.log(data)
-  //     k++;
-  //   };
-
-    
+  res.status(StatusCodes.OK).json({res:"success",length:orders.length,data})  
 };
 
 const getHistoryOrders = async (req, res) => {
