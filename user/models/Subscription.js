@@ -30,6 +30,10 @@ const SubscriptionSchema = new mongoose.Schema({
         "EXPIRED"
     ]
   },
+  paymentmode:{
+    type:String,
+    default:"KOT"
+  }
   
 },{timestamps:true})
 
