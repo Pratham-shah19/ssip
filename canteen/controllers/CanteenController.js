@@ -14,17 +14,24 @@ const stripe = require('stripe')('sk_test_51KyqwvSFXhJBixXAbp2HBSBo65HD0T1BqG60A
 const getCurrentOrders = async (req, res) => {
   // console.log('Request Received')
   const orders = await Order.find({ status: "NEW" }).sort({createdAt:1});
+  var data = []
   for (let i = 0; i < orders.length; i++) {
+    let orderObject = {}
+    const user = await User.findOne({_id:orders[i].userId})
     var items = orders[i].items;
     var updatedItems = [];
     for (let j = 0; j < items.length; j++) {
       const dish = await Dish.findOne({ _id: items[j].dishId });
-      const obj = { qty: items[j].qty, dish };
+      const obj = { qty: items[j].qty, dishName:dish.name };
       updatedItems.push(obj);
     }
-    orders[i].items = updatedItems;
+    orderObject.orderdetail = orders[i];
+    orderObject.items = updatedItems;
+    orderObject.userdetail = user.name;
+    data.push(orderObject);
+
   }
-  res.status(StatusCodes.OK).json({res:"success",length:orders.length,data:orders})
+  res.status(StatusCodes.OK).json({res:"success",length:orders.length,data})
   // var timeout = 1000;
   // const orders = await order;
   // if(orders.length >=40 && orders.length <=80)
@@ -36,8 +43,7 @@ const getCurrentOrders = async (req, res) => {
   // }
   // var k = 0;
   // var data = [];
-  // setTimeout(() => {
-  //   orders.forEach(async (order) => {
+  // for(let ind=0;ind<order.length;ind++){
   //     let j = 0;
   //     let arr = [];
   //     for (let i = 0; i < order.items.length; i++) {
@@ -55,12 +61,9 @@ const getCurrentOrders = async (req, res) => {
   //     data[k] = obj;
   //     //console.log(data)
   //     k++;
-  //   });
-  //   setTimeout(()=>{
-  //     res.status(StatusCodes.OK).json({ res: "Success",length:data.length, data: data });
+  //   };
 
-  //   },timeout)
-  // }, 100);
+    
 };
 
 const getHistoryOrders = async (req, res) => {
