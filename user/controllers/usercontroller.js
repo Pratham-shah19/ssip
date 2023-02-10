@@ -450,9 +450,10 @@ const buySubscription = async(req,res)=>{
     const sub = await Subscription.create({dishId,userId:uid,username:user.name,subscription_id,paymentmode:"KOT"});
     res.status(StatusCodes.OK).json({res:"success",data:sub})
   }
+
   else
   {
-    res.status(StatusCodes.OK).json({res:"fail",data:abs(user.wallet-price)})
+    res.status(StatusCodes.OK).json({res:"fail",data:Math.abs(user.wallet-price)})
   }
 
 }
