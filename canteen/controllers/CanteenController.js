@@ -415,7 +415,17 @@ const walletDetails = async (req, res) => {
   const canteen = await Canteen.findOne({ name: "Sachivalaya" });
   res.status(StatusCodes.OK).json({ res: "success", wallet: canteen.wallet });
 };
+
+const subscriptionSearch = async(req,res) => {
+  const {search} = req.query;
+  const obj={}
+  if(search){
+    obj.name = {}
+  }
+}
+
 module.exports = {
+  subscriptionSearch,
   walletDetails,
   lastReportGeneration,
   thisReportGeneration,

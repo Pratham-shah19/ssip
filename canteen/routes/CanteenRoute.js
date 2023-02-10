@@ -3,6 +3,7 @@ const authenticationMiddleware = require("../middleware/authentication");
 const router = express.Router();
 
 const {
+  subscriptionSearch,
   walletDetails,
   lastReportGeneration,
   thisReportGeneration,
@@ -54,5 +55,6 @@ router.route("/resetwallet").get(authenticationMiddleware, resetWallet);
 router.route("/lastMonthReport").get(lastReportGeneration);
 router.route("/thisMonthReport").get(thisReportGeneration);
 router.route('/wallet').get(walletDetails)
+router.route('/subscriptionSearch').get(subscriptionSearch)
 
 module.exports = router;
