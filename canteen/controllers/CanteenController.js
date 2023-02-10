@@ -412,7 +412,13 @@ const thisReportGeneration = async (req,res) => {
   },1000)
   
 }
+
+const walletDetails = async (req,res) => {
+  const canteen = await Canteen.findOne({name:'Sachivalaya'})
+  res.status(StatusCodes.OK).json({ res: "success", wallet:canteen.wallet });
+}
 module.exports = {
+  walletDetails,
   lastReportGeneration,
   thisReportGeneration,
   deletebtn,
