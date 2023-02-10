@@ -41,6 +41,10 @@ const DishSchema = new mongoose.Schema({
   priceId:{
     type:String,
     required:[true,'Please provide price id']
+  },
+  subscriptionAvailable:{
+    type:Boolean,
+    default:false
   }
 })
 
