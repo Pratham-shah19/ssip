@@ -86,7 +86,11 @@ const getOrdersSpecific = async (req, res) => {
       var updatedItems = [];
       for (let j = 0; j < items.length; j++) {
         const dish = await Dish.findOne({ _id: items[j].dishId });
-        const obj = { qty: items[j].qty, dish };
+        if (!dish) {
+          var obj = { qty: items[j].qty, dishName: "Idli Sambhar" };
+        } else {
+          var obj = { qty: items[j].qty, dishName: dish.name };
+        }
         updatedItems.push(obj);
       }
       orders[i].items = updatedItems;
