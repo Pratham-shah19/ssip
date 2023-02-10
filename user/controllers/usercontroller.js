@@ -406,6 +406,7 @@ const showActiveSubscriptions = async (req, res) => {
   const subs = await Subscription.find({ userId,status:"ACTIVE" }).sort({ createdAt: -1 });
 
   for (let i = 0; i < subs.length; i++) {
+    console.log(subs[i])
     const dish = await Dish.findOne({_id:subs[i].dishId});
     const obj ={}
     obj.quantity = subs[i].quantity;
