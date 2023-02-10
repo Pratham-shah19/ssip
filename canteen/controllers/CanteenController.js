@@ -41,7 +41,7 @@ const getCurrentOrders = async (req, res) => {
 };
 
 const getHistoryOrders = async (req, res) => {
-  const orders = await Order.find({ status: "COMPLETED" }).sort({createdAt:-1});
+  const orders = await Order.find({ status: "COMPLETED" }).sort({updatedAt:-1});
   var data = []
   for (let i = 0; i < orders.length; i++) {
     let orderObject = {}
