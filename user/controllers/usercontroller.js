@@ -260,7 +260,14 @@ const createOrder = async (req, res) => {
   if (!user) {
     throw new BadRequestError("Invalid userid");
   }
-  const time = new Date().getHours();
+  var currentTime = new Date();
+
+  var currentOffset = currentTime.getTimezoneOffset();
+
+  var ISTOffset = 330;   // IST offset UTC +5:30 
+
+  var ISTTime = new Date(currentTime.getTime() + (ISTOffset + currentOffset)*60000);
+  const time = ISTTime.getHours();
   const basket = await Basket.findOne({ userId: uid });
   if (!basket) {
     throw new NotFoundError("Invalid user id, could not find basket");
