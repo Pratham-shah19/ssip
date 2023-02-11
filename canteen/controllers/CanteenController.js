@@ -483,6 +483,7 @@ const resetButton = async (req,res) => {
     dish.slot2=0
     dish.slot3=0
   })
+  res.status(StatusCodes.OK).send({res:"success"})
 }
 
 const displayDish = async (req,res) => {
