@@ -417,6 +417,7 @@ const showActiveSubscriptions = async (req, res) => {
     obj.quantity = subs[i].quantity;
     obj.dish = dish;
     obj.paymentmode = subs[i].paymentmode
+    obj.subscription_id = subs[i].subscription_id
     subs[i] = obj;
   }
   res.status(StatusCodes.OK).json({ res: "success", data: subs });
@@ -432,6 +433,8 @@ const showExpiredSubscriptions = async (req, res) => {
     obj.quantity = subs[i].quantity;
     obj.dish = dish;
     obj.paymentmode = subs[i].paymentmode
+    obj.subscription_id = subs[i].subscription_id
+
     subs[i] = obj;
   }
   res.status(StatusCodes.OK).json({ res: "success", data: subs });
