@@ -273,6 +273,7 @@ const createOrder = async (req, res) => {
     throw new NotFoundError("Invalid user id, could not find basket");
   }
   var items = basket.items;
+  console.log(items);
   items.forEach(async (e) => {
     let obj = {};
     const dish = await Dish.findOne({ _id: e.dishId, isAvailable: true });
