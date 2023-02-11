@@ -1,0 +1,76 @@
+.pay_tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pay_header {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.pay_opt {
+  width: 41%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border: 1px solid lightgray;
+  margin-left: 250px;
+  margin-bottom: 30px;
+  padding: 8px 10px 8px 2px;
+  position: relative;
+  /* flex-direction: column; */
+}
+
+.pay_box {
+  width: 20rem;
+  height: 8rem;
+  border: 3px solid lightgray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.checkout-btn {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.bor {
+  margin-top: 40px;
+}
+
+.pay_info {
+  margin-left: 100px;
+  margin-top: 30px;
+}
+
+#card,
+#check {
+  width: 30px;
+}
+
+.pay_img {
+  height: 25px;
+  position: absolute;
+  right: 5px;
+  width: 140px;
+}
+
+.loading {
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 160px;
+  margin-top: 5rem;
+}
+
+.loading img {
+  width: 100px;
+  margin-top: 2rem;
+}

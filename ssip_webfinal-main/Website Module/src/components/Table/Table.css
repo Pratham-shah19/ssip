@@ -1,0 +1,13 @@
+.table-container{
+    width: 80vw;
+}
+
+.green-row{
+    background: rgb(70, 235, 70);
+}
+
+.light-green{
+    background: rgb(151, 228, 151);
+}
+
+::-webkit-scrollbar {display:none;}

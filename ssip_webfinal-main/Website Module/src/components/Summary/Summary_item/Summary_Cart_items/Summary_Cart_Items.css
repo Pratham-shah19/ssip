@@ -1,0 +1,29 @@
+.sum_items_cart{
+    display: flex;
+    margin-top: 10px;
+}
+.img_comp{
+    flex: 1;
+}
+.sum_img_src{
+    height: 90px;
+    width: 118px;
+    object-fit: cover;
+    padding: 5px;
+}
+.title_qty_comp{
+    flex: 2;
+    margin-left: 20px;
+}
+.sum_item_title{
+    font-size: 1.5rem;
+}
+.sum_item_qty{
+    font-size: 1.5rem;
+}
+.price_comp{
+    margin-right: 20px;
+}
+.sum_item_price{
+    font-size: 1.5rem;
+}

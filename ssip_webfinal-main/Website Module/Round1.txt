@@ -1,0 +1,6 @@
+1)Menu -> DELETE,UPDATE,NEW
+2)Cart , live show 
+3)Current,Past Orders
+4)Example of Completion of Orders and showing in Past Orders
+5)
+

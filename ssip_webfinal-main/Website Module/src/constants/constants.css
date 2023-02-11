@@ -1,0 +1,21 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nunitovfbeta.css);
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap");
+* {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-transform: capitalize;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  transition: all 0.2s linear;
+  font-weight: 50;
+}
+:root {
+  --theme: linear-gradient(to right, #ff4b28, #ff228c);
+}
+*::selection {
+  background: var(--theme);
+  color: #222;
+}

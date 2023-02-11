@@ -1,0 +1,86 @@
+.menu_card_container {
+  width: 80%;
+  height: 80%;
+  /* margin: auto; */
+  /* border: 1px solid black; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 40px;
+}
+
+.menu_items {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.menu_item {
+  display: flex;
+  border: 3px solid lightgrey;
+  width: 500px;
+  align-items: center;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.menu_card_img {
+  height: 135px;
+  width: 135px;
+  object-fit: cover;
+  margin-bottom: -7px;
+}
+
+.left {
+  /* flex: 1; */
+}
+
+.right {
+  /* display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  flex: 4; */
+  /* padding: 6px 30px; */
+  margin-top: -10px;
+  position: relative;
+  left: 15px;
+}
+
+input[type="number"] {
+  width: 58px;
+  padding: 2px 6px;
+  border: 3px solid lightgray;
+}
+
+.menu_card_btn {
+  /* padding: 7px 15px;
+  cursor: pointer;
+  font-weight: bolder;
+  margin-top: 19px;
+  background-color: gray;
+  border: none;
+  border-radius: 10px; */
+  padding: 7px 20px;
+  margin: -6px;
+  position: relative;
+  bottom: 8px;
+}
+
+.avail {
+  line-height: 5px;
+}
+
+.new {
+  position: relative;
+  bottom: 17px;
+}
+
+.info {
+  margin-top: 10px;
+}

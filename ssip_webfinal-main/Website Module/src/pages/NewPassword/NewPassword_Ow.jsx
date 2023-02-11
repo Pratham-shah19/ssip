@@ -1,0 +1,78 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+// import './OTP.css'
+import { API } from "../../constants/API";
+const NewPassword = () => {
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+
+  const email = localStorage.getItem("email");
+
+  const navigate = useNavigate();
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleConfirmChange = (e) => {
+    setConfirm(e.target.value);
+  };
+
+  const handlePassword = () => {
+    if (password === confirm) {
+      const obj = {
+        password: password,
+      };
+      //le.log("vivek");
+      //le.log(email);
+      axios
+        .post(
+          `${API.canteen_server}/api/v1/canteenpasswordchange/${email}`,
+          obj
+        )
+        .then((res) => {
+          const data = res;
+          if (data.data.res === "Success") {
+            //le.log('success');
+            //   localStorage.setItem('token',data.token);
+            // <Navigate replace={true}  to="/owner-dashboard"/>\
+            navigate("/");
+          }
+        })
+        .catch((err) => {
+          console.log(err.response.data.msg, "fsdffdafa");
+        });
+    } else {
+      alert("Please enter same password and confirm password");
+    }
+  };
+
+  return (
+    <div className="otp-container">
+      <div className="otp-outer">
+        <h1 className="otp-title">Enter New Password</h1>
+        <input
+          type="password"
+          name="forget-password"
+          id="forget-password"
+          onChange={handlePasswordChange}
+          value={password}
+        />
+        <h1 className="otp-title">Confirm Password</h1>
+        <input
+          type="password"
+          name="forget-password-confirm"
+          id="forget-password-confirm"
+          onChange={handleConfirmChange}
+          value={confirm}
+        />
+        <button type="button" onClick={handlePassword} className="otp-btn">
+          SUBMIT
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default NewPassword;

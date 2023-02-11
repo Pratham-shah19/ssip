@@ -1,0 +1,84 @@
+.admin-register {
+  margin: 55px 100px 0 0;
+}
+
+.form-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 6px 2px;
+}
+
+input {
+  background: white;
+  border: 3px solid lightgray;
+  padding: 12px 15px;
+  margin: 8px 15px;
+  border-radius: 5px;
+  /* border: none; */
+  outline: none;
+  width: 250px;
+}
+
+.form-cell textarea {
+  border: 1px solid black;
+  padding: 12px 15px;
+  margin: 8px 15px;
+  width: 250px;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.form-left {
+  width: 50%;
+  text-align: right;
+  /* border: 1px solid black; */
+}
+
+.form-right {
+  width: 50%;
+  text-align: left;
+  /* border: 1px solid black; */
+}
+
+.options {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-left: 15px;
+  width: 250px;
+}
+
+.opt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 95px;
+}
+
+.submit-btn {
+  margin: 20px 0 0 200px;
+  width: 150px;
+  padding: 10px 10px;
+  background: linear-gradient(to right, #fd431e, #f81a85);
+  color: white;
+  font-weight: bolder;
+  letter-spacing: 2px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+}
+
+::-webkit-file-upload-button {
+  padding: 4px 7px;
+  background: #fd431e;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: 0.2s;
+}
+
+::-webkit-file-upload-button:hover {
+  transform: scale(0.9);
+}

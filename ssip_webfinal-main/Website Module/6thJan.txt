@@ -1,0 +1,49 @@
+
+2)OTP merging with Forget Email
+3)Linking New Password Screen 
+
+5)Analytics for Admin at Dashboard Screen
+6)isopen state for Collapsible box 
+7)Last-Current Month Revenue Box for Admin 
+8)Max Length Error Message
+9) Delete Items from ICecream
+10)Remove White Icon form item for Disabled
+11)Payment Info & Logout
+12)scrolling screen issue
+
+pratham: 
+1)Total User & Wallet data for Canteen Owner
+2)CUrrent ORders
+3)Total User for Admin is not showing 
+4) Showing all registered users at starting at admin dashboard
+5)Cash by check
+
+  
+
+<h2 className="pay_header">Payment Using</h2>
+        <Box sx={{ width: "15%", margin: "5px auto" }}>
+          <Box
+            sx={{ borderBottom: 1, borderColor: "divider" }}
+            className="pay_tabs"
+          >
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="basic tabs example"
+            >
+              <Tab label="CARD" />
+              <Tab label="CHECK" />
+            </Tabs>
+          </Box>
+
+          <TabPanel value={value} index={0}>
+            {/* <MenuCardList data={IceCreams} /> */}
+            <form action="/create-checkout-session" method="POST">
+              <button type="submit">Checkout</button>
+            </form>
+          </TabPanel>
+
+          <TabPanel value={value  } index={1}>
+            {/* <MenuCardList data={MainCourse} /> */}
+          </TabPanel>
+        </Box>

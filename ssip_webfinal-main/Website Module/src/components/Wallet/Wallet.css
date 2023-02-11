@@ -1,0 +1,195 @@
+.home-container {
+  max-height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.top-components {
+  height: fit-content;
+  width: 98%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.wallet-box {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 26%;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  padding: 10px 16px 3px;
+  height: 155px;
+  border-radius: 20px;
+}
+
+.box-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  height: 98%;
+}
+
+.box-right-top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.box-right-top p {
+  position: relative;
+  top: 4px;
+}
+
+.box-title {
+  color: gray;
+  font-weight: bolder;
+  font-size: 0.9rem;
+}
+
+.box-value {
+  font-size: 2.1rem;
+  font-weight: 500;
+}
+
+.box-desc {
+  text-decoration: dotted;
+  cursor: pointer;
+}
+
+.green {
+  color: green;
+}
+
+.red {
+  color: red;
+}
+
+.yellow {
+  color: rgb(235, 235, 5);
+}
+
+.bottom-components {
+  width: 98%;
+  display: flex;
+  margin-top: 10px;
+  padding: 20px;
+  gap: 25px;
+  overflow: scroll;
+}
+
+.bottom-left {
+  flex: 2;
+}
+
+.revenue-box {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
+  padding: 5px 10px;
+  border-radius: 20px;
+}
+
+.revenue-box-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+.center {
+  text-align: center;
+}
+
+.revenue-data {
+  height: 100px;
+}
+
+.values {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -30px;
+}
+
+.values p {
+  position: relative;
+  top: 4px;
+}
+
+.para {
+  font-size: 1.1rem;
+}
+
+.amount {
+  font-size: 2.4rem;
+}
+
+.desc {
+  font-size: 0.8rem;
+  color: gray;
+}
+
+.bottom-right {
+  /* flex: 4 1; */
+  height: 560px;
+  width: 100%;
+  object-fit: cover;
+  overflow: scroll;
+  box-shadow: 0 10px 20px rgb(0 0 0 / 25%), 0 5px 5px rgb(0 0 0 / 22%);
+  padding: 5px 10px;
+  border-radius: 20px;
+}
+
+@media only screen and (min-width: 1330px) {
+  .box-value {
+    font-size: 1.8rem;
+    margin-top: -10px;
+  }
+}
+
+.pay-btn {
+  padding: 6px 10px;
+  margin-left: 0;
+  margin-bottom: 0;
+  position: relative;
+  bottom: 1px;
+}
+
+.report-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 305px;
+}
+
+.chart-btn {
+  margin: 10px 0px 0px 0px;
+  padding: 5px 9px;
+}
+
+.gen-btn {
+  margin-top: 10px;
+  color: white;
+  background: #ff4b2b;
+  border-radius: 20px;
+  padding: 6px 9px;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+  cursor: pointer;
+}
+
+.boxed {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 327px;
+  border: 3px solid lightgray;
+  margin-bottom: 6px;
+  padding: 3px 17px 0px;
+  border-radius: 10px;
+}
