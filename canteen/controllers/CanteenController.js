@@ -476,7 +476,45 @@ const decrementSubsQuantity = async (req,res) => {
   
 }
 
+const resetButton = async (req,res) => {
+  const dishes = await Dish.find({})
+  dishes.forEach((dish)=>{
+    dish.slot1=0
+    dish.slot2=0
+    dish.slot3=0
+  })
+}
+
+const displayDishes = async (req,res) => {
+  const dishes = await Dish.find({})
+  setTimeout(()=>{
+    const arr=[];
+    let i=0;
+    dishes.forEach((dish)=>{
+      arr[i] = {'name':dish.name,'data':[dish.slot1,dish.slot2,dish.slot3]}
+      ++i
+    })
+    res.status(StatusCodes.OK).send({res:"success",data:arr,items:arr.length})
+  },100)
+
+}
+
+const searchGraph = async (req,res) => {
+  const {search} = req.query;
+  const obj={}
+  if(search){
+    obj.name = {$regex:search,$options:'i'}
+  }
+  const dish = await Dish.find(obj);
+  setTimeout(()=>{
+    res.status(StatusCodes.OK).json({ res: "success", data:dish });
+  },1000)
+}
+
 module.exports = {
+  searchGraph,
+  displayDishes,
+  resetButton,
   decrementSubsQuantity,
   subscriptionSearch,
   walletDetails,
