@@ -7,12 +7,12 @@ const Subscription = require("../models/Subscription");
 const { StatusCodes } = require("http-status-codes");
 
 const stripe = require("stripe")(
-  "sk_test_51KyqwvSFXhJBixXAbp2HBSBo65HD0T1BqG60ABDZrLJnFBWonmCw1KCdHIFVFG7TDYkE0qCZs6BORYhBSQX3be5g00hRtIdRtI"
+  "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"
 );
 const endpointSecret =
   "whsec_fb5686e7f586c42bd82e5e7a0839f44d5dd6c582ee7cf1fcce0f7be84d306fa1";
 const pubkey =
-  "pk_test_51KyqwvSFXhJBixXADhCK7QcvopmkFSi5zg7i2wFLoGvFHYXNb2waPBALIHBoj6ONtR9mZMRAYAi5f5wurs14H1cL00mKeQfwrs";
+  "pk_live_51MaAAxSIA0Gt3R3f4zyYGLKj8bpt9tPGjgWtEFvSMoWM5Ry3Az6dL9PS5Uo2qCmD8IJC8cshW2FSp645SuB0Vm2p004sigxfg5";
 
 const YOUR_DOMAIN = "http://localhost:3000"; //put react's port number...
 
