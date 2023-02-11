@@ -280,11 +280,12 @@ const createOrder = async (req, res) => {
     if (!dish) 
     {
         const d = await Dish.findOne({ _id: e.dishId});
-        if(time>=9 && time<=12){
+        if(time>=9 && time<12){
           const slot1 = d.slot1 + e.qty;
           const update = await Dish.findOneAndUpdate({_id:e.dishId},{slot1})
         }
-        else if(time>=12 && time<=15){
+        else if(time>=12 && time<15){
+          console.log(time)
           const slot2 = d.slot2 + e.qty;
           const update = await Dish.findOneAndUpdate({_id:e.dishId},{slot2})
         }
