@@ -110,9 +110,17 @@ const buySubscription = async (req, res) => {
   const { uid } = req.params;
   const { dishId, paymentmode ,amount} = req.body;
   const user = await Users.findOne({_id:uid});
-  const updateuser = await Users.findOneAndUpdate({_id:uid},{wallet:0})
-  const canteen = await Canteen.findOne({name:"Sachivalaya"})
-  const update = await Canteen.findOneAndUpdate({name:"Sachivalaya"},{wallet:canteen.wallet+user.wallet,onlinewallet:canteen.wallet+amount})
+  var canteen = await Canteen.findOne({name:"Sachivalaya"})
+  if(paymentmode==='KOT+ONLINE')
+  {
+    const updateuser = await Users.findOneAndUpdate({_id:uid},{wallet:0})
+    const update = await Canteen.findOneAndUpdate({name:"Sachivalaya"},{wallet:canteen.wallet+user.wallet,onlinewallet:canteen.wallet+amount})
+  }
+  else
+  {
+    const update = await Canteen.findOneAndUpdate({name:"Sachivalaya"},{onlinewallet:canteen.wallet+amount})
+  }
+
   const subs = await Subscription.find({});
   let subscription_id = subs.length + 1;
   const sub = Subscription.create({
