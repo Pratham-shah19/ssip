@@ -141,7 +141,7 @@ const completeOnlinePayment = async (req, res) => {
     console.log(payment_intent.data[0].status);
   }
   if (payment_intent.data[0].status === "succeeded") {
-    buySubscription(req, res);
+    payCanteen(req, res);
   } else {
     res
       .status(StatusCodes.OK)
