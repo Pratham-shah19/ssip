@@ -44,6 +44,11 @@ const billController = async (req, res) => {
     const htmlstring = fs.readFileSync(filepathname).toString();
     const options = {
       format: "Letter",
+      childProcessOptions: {
+        env: {
+          OPENSSL_CONF: '/dev/null',
+        },
+      }
     };
     const ejsdata = ejs.render(htmlstring, data);
     pdf.create(ejsdata, options).toFile(`bill-${oid}.pdf`, (err, response) => {

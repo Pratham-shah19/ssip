@@ -476,7 +476,41 @@ const decrementSubsQuantity = async (req,res) => {
   
 }
 
+const resetButton = async (req,res) => {
+  const dishes = await Dish.find({})
+  dishes.forEach((dish)=>{
+    dish.slot1=0
+    dish.slot2=0
+    dish.slot3=0
+  })
+}
+
+const displayDish = async (req,res) => {
+  const {did} = req.params
+  if(!did){
+    throw new BadRequestError("Please Provide Valid Dish ID");
+  }
+  const dish = await Dish.findOne({_id:did})
+  console
+  res.status(StatusCodes.OK).send({res:"success",name:dish.name,data:[dish.slot1,dish.slot2,dish.slot3]})
+}
+
+const searchGraph = async (req,res) => {
+  const {search} = req.query;
+  const obj={}
+  if(search){
+    obj.name = {$regex:search,$options:'i'}
+  }
+  const dish = await Dish.find(obj);
+  setTimeout(()=>{
+    res.status(StatusCodes.OK).json({ res: "success", data:dish });
+  },1000)
+}
+
 module.exports = {
+  searchGraph,
+  displayDish,
+  resetButton,
   decrementSubsQuantity,
   subscriptionSearch,
   walletDetails,
