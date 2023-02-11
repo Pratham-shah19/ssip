@@ -45,6 +45,18 @@ const DishSchema = new mongoose.Schema({
   subscriptionAvailable:{
     type:Boolean,
     default:false
+  },
+  slot1:{
+    type:Number,
+    default:0
+  }
+  ,slot2:{
+    type:Number,
+    default:0
+  }
+  ,slot3:{
+    type:Number,
+    default:0
   }
 })
 

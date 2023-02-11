@@ -3,7 +3,9 @@ const authenticationMiddleware = require("../middleware/authentication");
 const router = express.Router();
 
 const {
-  checkValidity,
+  searchGraph,
+  displayDishes,
+  resetButton,
   decrementSubsQuantity,
   subscriptionSearch,
   walletDetails,
@@ -59,6 +61,9 @@ router.route("/thisMonthReport").get(thisReportGeneration);
 router.route('/wallet').get(walletDetails)
 router.route('/subscriptionSearch').get(subscriptionSearch)
 router.route('/decrementSubsQuantity/:sid').post(decrementSubsQuantity)
+router.route('/resetButton').get(resetButton)
+router.route('/displayDishes').get(displayDishes)
+router.route('/searchGraph').get(searchGraph)
 
 
 module.exports = router;
