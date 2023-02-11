@@ -445,20 +445,30 @@ const decrementSubsQuantity = async (req,res) => {
   if(subs.quantity == 0){
     const subsu = await Subscription.findOneAndUpdate({_id:sid},{status:"EXPIRED"},
       { new: true, runValidators: true })
-    obj.status = "COMPLETED";
-    obj.userId = subsu.userId;
-    obj.items = [{dishId:subsu.dishId,qty:30}]
-    const dish = await Dish.findOne({_id:subsu.dishId})
-    obj.price = dish.price*30
-    obj.paymentmode = subsu.paymentmode
-    const order = await Order.create(obj)
-    res.status(StatusCodes.OK).send({res: "success",data:order}) 
+    // obj.status = "COMPLETED";
+    // obj.userId = subsu.userId;
+    // obj.items = [{dishId:subsu.dishId,qty:30}]
+    // const dish = await Dish.findOne({_id:subsu.dishId})
+    // obj.price = dish.price*30
+    // obj.paymentmode = subsu.paymentmode
+    // const order = await Order.create(obj)
+    res.status(StatusCodes.OK).send({res: "success"}) 
   }
   else{
     setTimeout(async()=>{
+      const subsu = await Subscription.findOne({_id:sid})
+      obj.status = "COMPLETED";
+      obj.userId = subsu.userId;
+      obj.items = [{dishId:subsu.dishId,qty:qty}]
+      const dish = await Dish.findOne({_id:subsu.dishId})
+      obj.price = dish.price*qty
+      obj.paymentmode = subsu.paymentmode
+      obj.ordertype = "SUBSCRIPTION";
+      const order = await Order.create(obj)
+    //  res.status(StatusCodes.OK).send({res: "success",data:order}) 
       const subsuv = await Subscription.findOneAndUpdate({_id:sid},{quantity:subs.quantity},
       { new: true, runValidators: true })
-      res.status(StatusCodes.OK).send({res:"success"})
+      res.status(StatusCodes.OK).send({res:"success",data:subsuv})
     },1000)
   
   }
