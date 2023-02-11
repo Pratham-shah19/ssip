@@ -459,7 +459,8 @@ const decrementSubsQuantity = async (req,res) => {
       const subsu = await Subscription.findOne({_id:sid})
       obj.status = "COMPLETED";
       obj.userId = subsu.userId;
-      obj.items = [{dishId:subsu.dishId,qty:qty}]
+      let dishId = String(subsu.dishId)
+      obj.items = [{dishId:dishId,qty:qty}]
       const dish = await Dish.findOne({_id:subsu.dishId})
       obj.price = dish.price*qty
       obj.paymentmode = subsu.paymentmode
