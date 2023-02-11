@@ -74,23 +74,28 @@ const getBalance = async (req, res) => {
   }
   res.status(StatusCodes.OK).json({ res: "success", data: user.wallet });
 };
-
 const getOrdersSpecific = async (req, res) => {
   const { status } = req.query;
   const userId = req.params.uid;
 
   if (status === "NEW" || status === "COMPLETED") {
     const orders = await Order.find({ status, userId }).sort({ createdAt: -1 });
+    const idli = await Dish.findOne({name:"Idli Sambhar"});
 
     for (let i = 0; i < orders.length; i++) {
       var items = orders[i].items;
       var updatedItems = [];
       for (let j = 0; j < items.length; j++) {
         const dish = await Dish.findOne({ _id: items[j].dishId });
-        if (!dish) {
-          var obj = { qty: items[j].qty, dishName: "Idli Sambhar" };
-        } else {
-          var obj = { qty: items[j].qty, dishName: dish.name };
+        if(!dish)
+        {
+          var obj = { qty: items[j].qty, idli };
+
+        }
+        else
+        {
+          var obj = { qty: items[j].qty, dish };
+
         }
         updatedItems.push(obj);
       }
