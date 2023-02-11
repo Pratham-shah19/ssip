@@ -43,6 +43,14 @@ const OrderSchema = new mongoose.Schema({
       "CASH"
     ]
   },
+  ordertype:{
+    type:String,
+    default:'NORMAL',
+    enum:[
+      "NORMAL",
+      "SUBSCRIPTION"
+    ]
+  }
 },{timestamps:true})
 
 
