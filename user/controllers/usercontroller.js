@@ -10,9 +10,6 @@ const Orders = require("../models/Orders");
 const bcrypt = require("bcryptjs");
 const { json } = require("express");
 require("dotenv").config();
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const client = require("twilio")(accountSid, authToken);
 
 const getUserDetails = async (req, res) => {
   var { uid } = req.params;
@@ -263,6 +260,7 @@ const createOrder = async (req, res) => {
   if (!user) {
     throw new BadRequestError("Invalid userid");
   }
+  const time = new Date().getHours();
   const basket = await Basket.findOne({ userId: uid });
   if (!basket) {
     throw new NotFoundError("Invalid user id, could not find basket");
@@ -272,40 +270,95 @@ const createOrder = async (req, res) => {
     let obj = {};
     const dish = await Dish.findOne({ _id: e.dishId, isAvailable: true });
     //if the dish is not available
-    if (!dish) {
-      res
-        .status(StatusCodes.OK)
-        .json({ res: "fail", data: "dish is not actually available" });
-    } else {
-      //if quantity is enough
-      if (dish?.quantity >= e.qty) {
-        obj.dishId = e.dishId;
-        obj.qty = dish?.quantity - e.qty;
-        if (obj.qty < 10) {
-          const dish = await Dish.findOneAndUpdate(
-            { _id: obj.dishId },
-            { quantity: obj.qty, isAvailable: false },
-            { runValidators: true, new: true }
-          );
-        } else {
-          const dish = await Dish.findOneAndUpdate(
-            { _id: obj.dishId },
-            { quantity: obj.qty },
-            { runValidators: true, new: true }
-          );
+    if (!dish) 
+    {
+        const d = await Dish.findOne({ _id: e.dishId});
+        if(time>=9 && time<=12){
+          const slot1 = d.slot1 + e.qty;
+          const update = await Dish.findOneAndUpdate({_id:e.dishId},{slot1})
+        }
+        else if(time>=12 && time<=15){
+          const slot2 = d.slot2 + e.qty;
+          const update = await Dish.findOneAndUpdate({_id:e.dishId},{slot2})
+        }
+        else{
+          const slot3 = d.slot3 + e.qty;
+          const update = await Dish.findOneAndUpdate({_id:e.dishId},{slot3})
         }
         res
           .status(StatusCodes.OK)
-          .json({ res: "success", data: "Order valid" });
-      }
-      //if quantity is not enough
-      else {
-        res
-          .status(StatusCodes.OK)
-          .json({ res: "fail", data: "not enough quantity" });
-      }
+          .json({ res: "fail", data: "dish is not actually available" });
     }
-  });
+    else 
+    {
+      //if quantity is enough
+          if (dish?.quantity >= e.qty) 
+          {
+            obj.dishId = e.dishId;
+            obj.qty = dish?.quantity - e.qty;
+            if (obj.qty < 10) {
+              const count = Math.abs(10-obj.qty)
+              if(time>=9 && time<=12){
+                const slot1 = dish.slot1 + count;
+                const dish = await Dish.findOneAndUpdate(
+                  { _id: obj.dishId },
+                  { quantity: obj.qty, isAvailable: false ,slot1},
+                  { runValidators: true, new: true }
+                );          
+              }
+              else if(time>=12 && time<=15){
+                const slot2 = dish.slot2 + count;
+                const dish = await Dish.findOneAndUpdate(
+                  { _id: obj.dishId },
+                  { quantity: obj.qty, isAvailable: false ,slot2},
+                  { runValidators: true, new: true }
+                );
+              }
+              else{
+                const slot3 = dish.slot3 + count;
+                const dish = await Dish.findOneAndUpdate(
+                  { _id: obj.dishId },
+                  { quantity: obj.qty, isAvailable: false,s3 },
+                  { runValidators: true, new: true }
+                );          
+              }
+            } else {
+              const dish = await Dish.findOneAndUpdate(
+                { _id: obj.dishId },
+                { quantity: obj.qty },
+                { runValidators: true, new: true }
+              );
+            }
+            res
+              .status(StatusCodes.OK)
+              .json({ res: "success", data: "Order valid" });
+          }
+          //if quantity is not enough
+          else 
+          {
+                if (!dish) {
+                  if(time>=9 && time<=12){
+                    const count = e.qty - dish?.quantity;
+                    const slot1 = dish.slot1 + count;
+                    const update = await Dish.findOneAndUpdate({_id:e.dishId},{slot1})
+                  }
+                  else if(time>=12 && time<=15){
+                    const count = e.qty - dish?.quantity;
+                    const slot2 = dish.slot2 + count;
+                    const update = await Dish.findOneAndUpdate({_id:e.dishId},{slot2})
+                  }
+                  else{
+                    const count = e.qty - dish?.quantity;
+                    const slot3 = dish.slot3 + count;
+                    const update = await Dish.findOneAndUpdate({_id:e.dishId},{slot3})
+                  }
+                res
+                  .status(StatusCodes.OK)
+                  .json({ res: "fail", data: "not enough quantity" });
+              }
+          }
+    }
+})
 };
 const payCanteen = async (req, res) => {
   const { uid } = req.params;
@@ -470,10 +523,6 @@ const getSubscriptions = async(req,res)=>{
   const subs = await Dish.find({subscriptionAvailable:true})
   res.status(StatusCodes.OK).json({res:"success",data:subs})
 }
-const twilioWebhook = async (req, res) => {
-  console.log(req.body);
-  res.status(StatusCodes.OK).json({ res: "success", data: req.body });
-};
 
 module.exports = {
   getUserDetails,
@@ -493,7 +542,6 @@ module.exports = {
   validateOTP,
   validatePaymentOtp,
   createOrder,
-  twilioWebhook,
   showActiveSubscriptions,
   showExpiredSubscriptions,
   buySubscription,

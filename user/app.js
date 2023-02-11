@@ -32,6 +32,8 @@ app.use('/api/v1/user',userRouter)
 // error handler
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
+const Dish = require('./models/Dish');
+
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

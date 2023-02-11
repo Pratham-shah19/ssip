@@ -37,5 +37,4 @@ router.route('/:uid/validatePaymentOtp').post(authenticationMiddleware,validateP
 
 
 
-router.route('/webhook').post(twilioWebhook);
 module.exports = router
