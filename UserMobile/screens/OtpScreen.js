@@ -1,0 +1,105 @@
+import {View, Text, TextInput, Pressable, Image} from 'react-native';
+import React, {useState} from 'react';
+import axios from 'axios';
+import {useAuthContext} from '../src/Context/AuthContext';
+import {useRoute} from '@react-navigation/native';
+
+const OtpScreen = () => {
+  const {users} = useAuthContext();
+  const {tokens} = useAuthContext();
+  const [text, setText] = useState(null);
+  const [status, setStatus] = useState(null);
+  const route = useRoute();
+  const otp = route.params?.otp;
+  // const onPress = async () => {
+  //   const response = await axios.post(
+  //     `http://65.0.189.107:8000/api/v1/user/${users}/validatePaymentOtp`,
+  //     {otp: otp},
+  //     {headers: {Authorization: `Bearer ${tokens}`}},
+  //   );
+  //   setStatus(response.data.res);
+  // };
+  return (
+    <View style={{backgroundColor: 'white', flex: 1, alignItems: 'center'}}>
+      <Image
+        source={require('../data/otpt.webp')}
+        style={{
+          height: 340,
+          width: 340,
+          alignSelf: 'center',
+        }}
+        resizeMode="contain"
+      />
+      <Text
+        style={{
+          color: 'black',
+          fontFamily: 'Fredoka-Regular',
+          fontSize: 17,
+          marginTop: 15,
+          opacity: status === 'success' ? 0 : 1,
+        }}>
+        Please provide this OTP to canteen administrator, your OTP is:
+      </Text>
+      <Text
+        style={{
+          color: 'black',
+          fontFamily: 'Fredoka-Medium',
+          fontSize: 27,
+          alignSelf: 'center',
+          marginTop: 15,
+          opacity: status === 'success' ? 0 : 1,
+        }}>
+        {otp}
+      </Text>
+      <Text
+        style={{
+          color: 'grey',
+          fontFamily: 'Fredoka-Regular',
+          fontSize: 14,
+          alignSelf: 'center',
+          marginTop: 50,
+          opacity: status === 'success' ? 0 : 1,
+        }}>
+        *This OTP is also visible in your order history
+      </Text>
+      {/* <Pressable
+        onPress={onPress}
+        style={{
+          opacity: status === 'success' ? 0 : 1,
+          alignItems: 'center',
+          alignSelf: 'center',
+          backgroundColor: '#f7442d',
+          paddingVertical: 10,
+          paddingHorizontal: 20,
+        }}>
+        <Text
+          style={{fontFamily: 'Fredoka-Regular', color: 'white', fontSize: 15}}>
+          Validate Otp
+        </Text>
+      </Pressable> */}
+      <Image
+        source={{
+          uri: 'https://t3.ftcdn.net/jpg/03/38/92/74/360_F_338927425_ORe15ecNoxoWiV78YSdAQXXoHZzsNY4c.jpg',
+        }}
+        style={{
+          width: 200,
+          height: 200,
+          opacity: status === 'success' ? 1 : 0,
+          alignSelf: 'center',
+        }}
+      />
+      <Text
+        style={{
+          opacity: status === 'success' ? 1 : 0,
+          fontFamily: 'Fredoka-Regular',
+          color: 'black',
+          alignSelf: 'center',
+          fontSize: 28,
+        }}>
+        Done
+      </Text>
+    </View>
+  );
+};
+
+export default OtpScreen;
