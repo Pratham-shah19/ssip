@@ -478,12 +478,12 @@ const decrementSubsQuantity = async (req,res) => {
 
 const resetButton = async (req,res) => {
   const dishes = await Dish.find({})
-  dishes.forEach((dish)=>{
-    dish.slot1=0
-    dish.slot2=0
-    dish.slot3=0
+  dishes.forEach(async (dish)=>{
+    const dishx = await Dish.findOneAndUpdate({_id:dish._id},{slot1:0,slot2:0,slot3:0},{ new: true, runValidators: true })
   })
-  res.status(StatusCodes.OK).send({res:"success"})
+  setTimeout(()=>{
+    res.status(StatusCodes.OK).send({res:"success"})
+  },2000)
 }
 
 const displayDish = async (req,res) => {
