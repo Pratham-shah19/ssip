@@ -4,7 +4,7 @@ const router = express.Router();
 
 const {
   searchGraph,
-  displayDishes,
+  displayDish,
   resetButton,
   decrementSubsQuantity,
   subscriptionSearch,
@@ -62,7 +62,7 @@ router.route('/wallet').get(walletDetails)
 router.route('/subscriptionSearch').get(subscriptionSearch)
 router.route('/decrementSubsQuantity/:sid').post(decrementSubsQuantity)
 router.route('/resetButton').get(resetButton)
-router.route('/displayDishes').get(displayDishes)
+router.route('/displayDish/:did').get(displayDish)
 router.route('/searchGraph').get(searchGraph)
 
 

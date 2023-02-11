@@ -485,18 +485,14 @@ const resetButton = async (req,res) => {
   })
 }
 
-const displayDishes = async (req,res) => {
-  const dishes = await Dish.find({})
-  setTimeout(()=>{
-    const arr=[];
-    let i=0;
-    dishes.forEach((dish)=>{
-      arr[i] = {'name':dish.name,'data':[dish.slot1,dish.slot2,dish.slot3]}
-      ++i
-    })
-    res.status(StatusCodes.OK).send({res:"success",data:arr,items:arr.length})
-  },100)
-
+const displayDish = async (req,res) => {
+  const {did} = req.params
+  if(!did){
+    throw new BadRequestError("Please Provide Valid Dish ID");
+  }
+  const dish = await Dish.findOne({_id:did})
+  console
+  res.status(StatusCodes.OK).send({res:"success",name:dish.name,data:[dish.slot1,dish.slot2,dish.slot3]})
 }
 
 const searchGraph = async (req,res) => {
@@ -513,7 +509,7 @@ const searchGraph = async (req,res) => {
 
 module.exports = {
   searchGraph,
-  displayDishes,
+  displayDish,
   resetButton,
   decrementSubsQuantity,
   subscriptionSearch,
