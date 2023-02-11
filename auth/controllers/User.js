@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 
 const stripe = require("stripe")(
-  "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"
+  "sk_test_51KyqwvSFXhJBixXAbp2HBSBo65HD0T1BqG60ABDZrLJnFBWonmCw1KCdHIFVFG7TDYkE0qCZs6BORYhBSQX3be5g00hRtIdRtI"
 );
 
 const registerUser = async (req, res) => {
