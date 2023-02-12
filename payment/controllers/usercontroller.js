@@ -382,7 +382,7 @@ const createOrder = async (req, res) => {
     const dish = await Dish.findOne({ _id: e.dishId, isAvailable: true });
     //if the dish is not available
     if (!dish) {
-      const d = await Dish.findOne({ _id: e.dishId });
+      var d = await Dish.findOne({ _id: e.dishId });
       if (time >= 9 && time < 12) {
         const slot1 = d.slot1 + e.qty;
         const update = await Dish.findOneAndUpdate(
@@ -415,28 +415,28 @@ const createOrder = async (req, res) => {
           const count = Math.abs(10 - obj.qty);
           if (time >= 9 && time <= 12) {
             const slot1 = dish.slot1 + count;
-            const dish = await Dish.findOneAndUpdate(
+            const dishx = await Dish.findOneAndUpdate(
               { _id: obj.dishId },
               { quantity: obj.qty, isAvailable: false, slot1 },
               { runValidators: true, new: true }
             );
           } else if (time >= 12 && time <= 15) {
             const slot2 = dish.slot2 + count;
-            const dish = await Dish.findOneAndUpdate(
+            const dishx = await Dish.findOneAndUpdate(
               { _id: obj.dishId },
               { quantity: obj.qty, isAvailable: false, slot2 },
               { runValidators: true, new: true }
             );
           } else {
             const slot3 = dish.slot3 + count;
-            const dish = await Dish.findOneAndUpdate(
+            const dishx = await Dish.findOneAndUpdate(
               { _id: obj.dishId },
-              { quantity: obj.qty, isAvailable: false, s3 },
+              { quantity: obj.qty, isAvailable: false, slot3 },
               { runValidators: true, new: true }
             );
           }
         } else {
-          const dish = await Dish.findOneAndUpdate(
+          const dishx = await Dish.findOneAndUpdate(
             { _id: obj.dishId },
             { quantity: obj.qty },
             { runValidators: true, new: true }
