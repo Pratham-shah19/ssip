@@ -148,6 +148,7 @@ const completeOnlinePayment = async (req, res) => {
           customer: customer.customerId,
         });
       }
+      console.log(payment_intent.data[0].status);
       if (payment_intent.data[0].status === "succeeded") {
         payCanteen(req, res);
       } else {
