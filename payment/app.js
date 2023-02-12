@@ -10,6 +10,7 @@ const connectDB = require("./db/connect");
 //middleware
 
 // routers
+const userRouter = require("./routes/userRouter")
 const paymentRouter = require("./routes/payment_routes");
 
 app.use(
@@ -23,10 +24,10 @@ app.use(function (req, res, next) {
 });
 app.use(express.json());
 //routes
-app.get("/",(req,res)=>{
-  res.send("hello");
-})
+
+app.use('/api/v1/user',userRouter)
 app.use("/api/v1/payments", paymentRouter);
+
 
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");

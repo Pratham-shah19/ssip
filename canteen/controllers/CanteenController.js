@@ -445,13 +445,6 @@ const decrementSubsQuantity = async (req,res) => {
   if(subs.quantity == 0){
     const subsu = await Subscription.findOneAndUpdate({_id:sid},{status:"EXPIRED"},
       { new: true, runValidators: true })
-    // obj.status = "COMPLETED";
-    // obj.userId = subsu.userId;
-    // obj.items = [{dishId:subsu.dishId,qty:30}]
-    // const dish = await Dish.findOne({_id:subsu.dishId})
-    // obj.price = dish.price*30
-    // obj.paymentmode = subsu.paymentmode
-    // const order = await Order.create(obj)
     res.status(StatusCodes.OK).send({res: "success"}) 
   }
   else{
@@ -466,7 +459,6 @@ const decrementSubsQuantity = async (req,res) => {
       obj.paymentmode = subsu.paymentmode
       obj.ordertype = "SUBSCRIPTION";
       const order = await Order.create(obj)
-    //  res.status(StatusCodes.OK).send({res: "success",data:order}) 
       const subsuv = await Subscription.findOneAndUpdate({_id:sid},{quantity:subs.quantity},
       { new: true, runValidators: true })
       res.status(StatusCodes.OK).send({res:"success",data:subsuv})
@@ -492,7 +484,6 @@ const displayDish = async (req,res) => {
     throw new BadRequestError("Please Provide Valid Dish ID");
   }
   const dish = await Dish.findOne({_id:did})
-  console
   res.status(StatusCodes.OK).send({res:"success",name:dish.name,data:[dish.slot1,dish.slot2,dish.slot3]})
 }
 

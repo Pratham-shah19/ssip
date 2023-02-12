@@ -1,12 +1,15 @@
 const express = require('express')
-const { getDish,showActiveSubscriptions,showExpiredSubscriptions,getSubscriptions,buySubscription,twilioWebhook,validatePaymentOtp,getUserDetails ,getBalance,getOrdersSpecific,getAllDishes,getFilteredDishes,getDishesCategorized,addToCart,getCart,removeItem,canPayWallet,payCanteen,addRating,updateUserDetails,updatePassword,validateOTP,createOrder} = require('../controllers/usercontroller')
+const { registerUser,loginUser,forgotPasswordUser,getDish,showActiveSubscriptions,showExpiredSubscriptions,getSubscriptions,buySubscription,validatePaymentOtp,getUserDetails ,getBalance,getOrdersSpecific,getAllDishes,getFilteredDishes,getDishesCategorized,addToCart,getCart,removeItem,canPayWallet,payCanteen,addRating,updateUserDetails,updatePassword,validateOTP,createOrder} = require('../controllers/usercontroller')
 const router = express.Router()
 const authenticationMiddleware = require('../middleware/authentication')
 
 
+//authentication routes
+router.route('/register').post(registerUser)
+router.route('/login').post(loginUser)
+router.route('/forgotpassword').patch(forgotPasswordUser)
 
 //subscription end points
-
 //show subscriptions
 router.route('/subscriptions').get(authenticationMiddleware,getSubscriptions);
 router.route('/:uid/activesubscriptions').get(authenticationMiddleware,showActiveSubscriptions)

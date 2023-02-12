@@ -7,12 +7,12 @@ const Subscription = require("../models/Subscription");
 const { StatusCodes } = require("http-status-codes");
 
 const stripe = require("stripe")(
-  "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"
+  "sk_test_51MahAbSFY3NUTfznUgvTw3nFg2433V4oodPAZFDfk5WHRLTXEFfmUlNn9qJxYFTXuVAJj3958YQDVHevePnuVLue00RzmXNgfG"
 );
 const endpointSecret =
   "whsec_fb5686e7f586c42bd82e5e7a0839f44d5dd6c582ee7cf1fcce0f7be84d306fa1";
 const pubkey =
-  "pk_live_51MaAAxSIA0Gt3R3f4zyYGLKj8bpt9tPGjgWtEFvSMoWM5Ry3Az6dL9PS5Uo2qCmD8IJC8cshW2FSp645SuB0Vm2p004sigxfg5";
+  "pk_test_51MahAbSFY3NUTfznmKygjsiCK1qiRw22x3OdaPHzGvntkEKomwfjnQHUn9IHhK3v8GDjEDgMxwBqLmI5HievHS9200Dp6JiXWq";
 
 const YOUR_DOMAIN = "http://localhost:3000"; //put react's port number...
 
@@ -133,6 +133,7 @@ const buySubscription = async (req, res) => {
   res.status(StatusCodes.OK).json({res:"success",data:sub})
 };
 
+//webhook jugaad for normal payment
 const completeOnlinePayment = async (req, res) => {
   const { uid } = req.params;
   const customer = await Users.findOne({ _id: uid });
@@ -143,19 +144,17 @@ const completeOnlinePayment = async (req, res) => {
     payment_intent.data[0].status != "succeeded" &&
     payment_intent.data[0].status != "canceled"
   ) {
-    payment_intent = await stripe.paymentIntents.list({
-      customer: customer.customerId,
-    });
-    console.log(payment_intent.data[0].status);
-  }
-  if (payment_intent.data[0].status === "succeeded") {
-    payCanteen(req, res);
-  } else {
-    res
-      .status(StatusCodes.OK)
-      .json({ res: "fail", data: "Online payment failed" });
-  }
+        payment_intent = await stripe.paymentIntents.list({
+          customer: customer.customerId,
+        });
+      }
+      if (payment_intent.data[0].status === "succeeded") {
+        payCanteen(req, res);
+      } else {
+        res.status(StatusCodes.OK).json({ res: "fail", data: "Online payment failed" });
+      }
 };
+//webhook jugaad for subscription
 const completeOnlinePaymentSubscription = async (req, res) => {
   const { uid } = req.params;
   const customer = await Users.findOne({ _id: uid });
