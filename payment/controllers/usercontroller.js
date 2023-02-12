@@ -511,14 +511,7 @@ const payCanteen = async (req, res) => {
 
   //creating order
   const order = await Order.create(orderObj);
-  client.messages
-    .create({
-      from: "whatsapp:+14155238886",
-      to: `whatsapp:+91${user.phone}`,
-      body: "hello there Sachivalaya employee",
-    })
-    .then((message) => console.log(message));
-
+  
   //deleting basket
   const emptyBasket = await Basket.findOneAndDelete({ userId: uid });
 
