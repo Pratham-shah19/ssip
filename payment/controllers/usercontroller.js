@@ -510,7 +510,7 @@ const payCanteen = async (req, res) => {
   orderObj.otp = otp;
 
   //creating order
-  const order = await Orders.create(orderObj);
+  const order = await Order.create(orderObj);
   client.messages
     .create({
       from: "whatsapp:+14155238886",
