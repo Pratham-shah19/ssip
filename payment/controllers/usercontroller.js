@@ -398,9 +398,9 @@ const createOrder = async (req, res) => {
       } else {
         console.log("Hello from else");
         console.log(e.qty)
-        console.log(d?.slot3)
+        console.log(d['slot3'])
         console.log('d',d)
-        let slotx = d?.slot3 + e.qty;
+        let slotx = d['slot3'] + e.qty;
         console.log(slotx)
         const update = await Dish.findOneAndUpdate(
           { _id: e.dishId },
@@ -408,7 +408,7 @@ const createOrder = async (req, res) => {
           { new: true, runValidators: true }
         );
         console.log(update)
-        console.log(update?.slot3);
+        console.log(update['slot3']);
       }
       res
         .status(StatusCodes.OK)
