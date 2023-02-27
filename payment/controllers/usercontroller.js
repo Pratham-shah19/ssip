@@ -354,7 +354,6 @@ const canPayWallet = async (req, res) => {
 };
 
 const createOrder = async (req, res) => {
-  var flag = 0;
   const { uid } = req.params;
   const user = await User.findOne({ _id: uid });
   if (!user) {
@@ -375,14 +374,14 @@ const createOrder = async (req, res) => {
     throw new NotFoundError("Invalid user id, could not find basket");
   }
   var items = basket.items;
-  // console.log(items);
-  for(let i=0;i<items.length;i++){
-    var e = items[i];
+  console.log(items);
+  items.forEach(async (e) => {
     let obj = {};
     const dish = await Dish.findOne({ _id: e.dishId, isAvailable: true });
     //if the dish is not available
     if (!dish) {
-      var d = await Dish.findOne({ _id: e.dishId });
+      const d = await Dish.findOne({ _id: e.dishId });
+      console.log(time);
       if (time >= 9 && time < 12) {
         const slot1 = d.slot1 + e.qty;
         const update = await Dish.findOneAndUpdate(
@@ -390,19 +389,22 @@ const createOrder = async (req, res) => {
           { slot1 }
         );
       } else if (time >= 12 && time < 15) {
+        console.log(time);
         const slot2 = d.slot2 + e.qty;
         const update = await Dish.findOneAndUpdate(
           { _id: e.dishId },
           { slot2 }
         );
       } else {
+        console.log("Hello from else");
         const slot3 = d.slot3 + e.qty;
         const update = await Dish.findOneAndUpdate(
           { _id: e.dishId },
-          { slot3 }
+          { slot3 },
+          { new: true, runValidators: true }
         );
+        console.log(update.slot3);
       }
-      flag = 1;
       res
         .status(StatusCodes.OK)
         .json({ res: "fail", data: "dish is not actually available" });
@@ -415,33 +417,36 @@ const createOrder = async (req, res) => {
           const count = Math.abs(10 - obj.qty);
           if (time >= 9 && time <= 12) {
             const slot1 = dish.slot1 + count;
-            const dishx = await Dish.findOneAndUpdate(
+            const dish = await Dish.findOneAndUpdate(
               { _id: obj.dishId },
               { quantity: obj.qty, isAvailable: false, slot1 },
               { runValidators: true, new: true }
             );
           } else if (time >= 12 && time <= 15) {
             const slot2 = dish.slot2 + count;
-            const dishx = await Dish.findOneAndUpdate(
+            const dish = await Dish.findOneAndUpdate(
               { _id: obj.dishId },
               { quantity: obj.qty, isAvailable: false, slot2 },
               { runValidators: true, new: true }
             );
           } else {
             const slot3 = dish.slot3 + count;
-            const dishx = await Dish.findOneAndUpdate(
+            const dish = await Dish.findOneAndUpdate(
               { _id: obj.dishId },
-              { quantity: obj.qty, isAvailable: false, slot3 },
+              { quantity: obj.qty, isAvailable: false, s3 },
               { runValidators: true, new: true }
             );
           }
         } else {
-          const dishx = await Dish.findOneAndUpdate(
+          const dish = await Dish.findOneAndUpdate(
             { _id: obj.dishId },
             { quantity: obj.qty },
             { runValidators: true, new: true }
           );
         }
+        res
+          .status(StatusCodes.OK)
+          .json({ res: "success", data: "Order valid" });
       }
       //if quantity is not enough
       else {
@@ -468,18 +473,13 @@ const createOrder = async (req, res) => {
               { slot3 }
             );
           }
-          flag = 1;
           res
             .status(StatusCodes.OK)
             .json({ res: "fail", data: "not enough quantity" });
         }
       }
     }
-  };
-  if(flag===0){
-    res.status(StatusCodes.OK).json({ res: "success", data: "Order valid" });
-
-  }
+  });
 };
 const payCanteen = async (req, res) => {
   const { uid } = req.params;
