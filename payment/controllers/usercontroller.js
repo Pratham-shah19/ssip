@@ -398,6 +398,7 @@ const createOrder = async (req, res) => {
       } else {
         console.log("Hello from else");
         const slot3 = d.slot3 + e.qty;
+        console.log(slot3)
         const update = await Dish.findOneAndUpdate(
           { _id: e.dishId },
           { slot3 },
