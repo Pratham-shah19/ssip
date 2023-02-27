@@ -483,11 +483,6 @@ const displayDish = async (req, res) => {
   if (!did) {
     throw new BadRequestError("Please Provide Valid Dish ID");
   }
-<<<<<<< HEAD
-  const dish = await Dish.findOne({_id:did})
-  res.status(StatusCodes.OK).send({res:"success",name:dish.name,data:[dish.slot1,dish.slot2,dish.slot3]})
-}
-=======
   const dish = await Dish.findOne({ _id: did });
   const arr = [
     { name: "slot1", qty: dish.slot1 },
@@ -498,7 +493,7 @@ const displayDish = async (req, res) => {
     .status(StatusCodes.OK)
     .send({ res: "success", name: dish.name, data: arr });
 };
->>>>>>> 9a4e5b999fcbc36c614bb90aaba4f6014810ac81
+
 
 const searchGraph = async (req,res) => {
   const {search} = req.query;
