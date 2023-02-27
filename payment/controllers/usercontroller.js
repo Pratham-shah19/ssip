@@ -403,7 +403,8 @@ const createOrder = async (req, res) => {
           { slot3 },
           { new: true, runValidators: true }
         );
-        console.log(update.slot3);
+        console.log(update)
+        console.log(update?.slot3);
       }
       res
         .status(StatusCodes.OK)
