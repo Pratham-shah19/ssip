@@ -398,11 +398,12 @@ const createOrder = async (req, res) => {
       } else {
         console.log("Hello from else");
         console.log(e.qty)
-        let slot3 = d.slot3 + e.qty;
-        console.log(slot3)
+        console.log(d.slot3)
+        let slotx = d.slot3 + e.qty;
+        console.log(slotx)
         const update = await Dish.findOneAndUpdate(
           { _id: e.dishId },
-          { slot3 },
+          { slot3:slotx },
           { new: true, runValidators: true }
         );
         console.log(update)
