@@ -399,7 +399,7 @@ const createOrder = async (req, res) => {
         console.log("Hello from else");
         console.log(e.qty)
         let slot3 = d.slot3 + e.qty;
-        slot3=NUmber(slot3)
+        slot3=Number(slot3)
         console.log(slot3)
         const update = await Dish.findOneAndUpdate(
           { _id: e.dishId },
